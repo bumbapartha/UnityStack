@@ -96,7 +96,8 @@ Priorities in this document mean:
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
 - Review and merge through GitHub, with UnityStack reflecting PR status.
-- Delivery: GitHub Actions builds, runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy), pushes the image to GitHub Container Registry and deploys the managed application (starting with Hello World) to the local Docker environment.
+- Checks: GitHub Actions runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy) on every PR. It does not deploy during local development.
+- Local delivery: the managed application (starting with Hello World) is rebuilt and restarted in local Docker Compose after changes (§15.3).
 - Testing: end-to-end tests with Playwright; test cases kept in Git and each run's results recorded in Kiwi TCMS, linked to requirements, release and Change ID.
 - Observe: the deployed application's logs (Loki) and metrics (Prometheus) are collected and viewable in Grafana and from UnityStack; the user can ask AI to analyse them.
 - Feedback: AI can propose a bug from log evidence; once the user accepts it, the bug is created in the tracker, linked to the Change ID, and enters the loop again.
@@ -107,7 +108,7 @@ Priorities in this document mean:
 
 ### 6.2 Next (P1)
 
-- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS, Amazon ECR adapter (AD-2).
+- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS (AD-2). CI/CD then builds images, publishes them to the container registry (GitHub Container Registry, then Amazon ECR), deploys each PR to a preview environment and deploys merges to main to the main (production) environment.
 - Black-box security testing of the deployed application with OWASP ZAP.
 - Alerting and on-call: Grafana alerts page the on-call developer through GoAlert; at the same time AI investigates logs and metrics and adds a summary to the incident.
 - Notifications (review requests, alerts, incident summaries) through Mattermost.
@@ -195,16 +196,17 @@ flowchart LR
 | Identity and access | Keycloak | Azure AD / Entra ID, Okta through Keycloak federation or own adapter (P2) | Yes |
 | Project management (epics, stories, bugs) | OpenProject | Jira (P1), Plane (P2) | Yes |
 | CI/CD | GitHub Actions | Jenkins, Argo CD (P2) | Yes |
-| Artifact (container) registry | GitHub Container Registry | Amazon ECR (P1, with the AWS move), Harbor (P2) | Yes |
+| Artifact (container) registry | GitHub Container Registry | Amazon ECR (with the AWS move), Harbor (P2) | P1 (with the AWS move) |
 | Static code security scanning (SAST) | Semgrep (community edition) | SonarQube security rules, others (P2) | Yes |
 | Dependency, image, IaC and secret scanning (SCA) | Trivy | OWASP Dependency-Check, GitHub scanning (P2) | Yes |
 | Dynamic / black-box security testing (DAST) | OWASP ZAP | — | P1 |
 | Unit tests | JUnit (Java), Vitest (Vue) | — | Yes |
 | End-to-end tests | Playwright | — | Yes |
 | Test management (cases, runs, reports) | Kiwi TCMS | — | Yes |
-| Logs | Loki | — | Yes |
+| Telemetry collection | OpenTelemetry (Java agent, SDKs, Collector) | — | Yes |
+| Logs | Loki | Elasticsearch with Kibana, OpenSearch with OpenSearch Dashboards (P2) | Yes |
 | Metrics | Prometheus | — | Yes |
-| Dashboards and alert rules | Grafana | — | Yes (dashboards); P1 (alerts) |
+| Dashboards and alert rules | Grafana (Grafana alerting) | Prometheus Alertmanager (P2) | Yes (dashboards); P1 (alerts) |
 | On-call paging and escalation | GoAlert | Opsgenie, PagerDuty, OneUptime (P2) | P1 |
 | Feature flags | OpenFeature with Unleash | Flagsmith or an organisation's own provider via OpenFeature (P2) | P1 |
 | Notifications and team chat | Mattermost | Slack, Microsoft Teams (P2) | P1 |
@@ -223,7 +225,10 @@ The nine originally selected tools are OpenProject, Excalidraw, Penpot, Mermaid,
 Notes on how the new tools fit together:
 
 - **Semgrep vs Trivy:** Semgrep reads UnityStack's own code for risky patterns (for example injection or unsafe input handling). Trivy checks what the code depends on: library versions, container images, infrastructure misconfigurations and leaked secrets. Both are needed.
-- **Grafana, Loki, Prometheus:** Loki stores logs, Prometheus stores metrics, Grafana shows both and evaluates alert rules.
+- **OpenTelemetry:** the open standard for logs, metrics and traces. The Java agent instruments Spring Boot requests, database and HTTP calls without code changes; custom spans can be added where needed. Existing logging (Logback, Log4j) keeps working: the agent adds the trace ID to each log line and sends logs on. Every signal carries `service.name`, `service.version` (release) and the Change ID. All telemetry goes through the **OpenTelemetry Collector**, so the backends behind it can change without touching application code.
+- **Grafana, Loki, Prometheus:** Loki stores logs (indexing labels only, so it is light), Prometheus stores metrics, Grafana shows both, links a log line to its trace, and evaluates alert rules.
+- **Changing the log store later (for example to Elasticsearch/Kibana or OpenSearch):** add or connect the new store; change the Collector configuration to send logs there (alongside Loki or instead of it); add a UnityStack log adapter for its query language; move log alert rules. Application code does not change, and Grafana can read Elasticsearch too.
+- **Alert rules as code:** Grafana alerting rules are files in Git and are provisioned into Grafana at start-up, which makes them read-only in the Grafana UI; a change is a PR. As a safety net, a UnityStack sync job exports rules through Grafana's API and opens a PR if they have drifted (FR-024).
 - **GoAlert:** on-call rotations (daily, weekly, hourly), temporary overrides and escalation policies; pages by phone call or SMS. Its API allows UnityStack to manage rotations later.
 - **Kiwi TCMS:** test cases, test plans, test runs per build or release, and reports such as requirements without tests. Test cases are authored in Git (by AI, reviewed by PR); Kiwi keeps run history so every release has a permanent record of what was tested and what passed.
 - **OpenFeature with Unleash:** Unleash is the flag server and dashboard; OpenFeature is the standard SDK the code calls. An organisation with its own flag system writes an OpenFeature provider and plugs it in without UnityStack code changes.
@@ -382,12 +387,13 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 
 | ID | Priority | Requirement |
 |---|---|---|
-| FR-097 | P0 | Deploy a Hello World walking skeleton through an automated pipeline to a production-designated environment. |
+| FR-097 | P0 | Run a Hello World walking skeleton that is rebuilt and redeployed automatically: locally by Docker Compose during the thin loop, and through a CI/CD pipeline to AWS environments after the move. |
+| FR-129 | P1 | **New.** After the AWS move, deploy each PR to its own preview environment for testing, and deploy merges to main to the main (production) environment, with environment protection. |
 | FR-044 | P0 | Version tests, CI/CD pipelines, deployment configuration and monitoring configuration in Git. *(Was P1.)* |
 | FR-045 | P0 | Run validation and deployment through trusted pipelines with environment protection. *(Was P1.)* |
 | FR-117 | P0 | **New.** Run static code security scanning (SAST) and dependency, image, infrastructure and secret scanning (SCA) in CI on every PR; link findings to the PR and Change ID; failing scans block merge according to policy. |
 | FR-118 | P1 | **New.** Run dynamic black-box security testing (DAST) against the deployed application after deployment; link findings to the deployment and Change ID, and let AI propose bugs from them (FR-115). |
-| FR-119 | P0 | **New.** Publish built images to the artifact registry through its adapter, tagged with version, commit SHA and Change ID. |
+| FR-119 | P1 | **New.** Publish built images to the artifact registry through its adapter, tagged with version, commit SHA and Change ID. Needed from the AWS move; local development builds images locally. |
 | FR-120 | P0 | **New.** Keep test cases in Git, record every test run's results (unit, end-to-end, manual) in the test-management tool against the build or release, and link them to requirement, story and Change ID; provide a per-release test report kept in history. |
 | FR-121 | P1 | **New.** Control feature exposure through feature flags reached via the OpenFeature SDK, with per-environment settings; flag changes are audited. |
 | FR-098 | P1 | Support configured automatic delivery or human production release approval with quality gates. |
@@ -397,7 +403,8 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 
 | ID | Priority | Requirement |
 |---|---|---|
-| FR-113 | P0 | **New.** The deployed application emits structured logs (and basic metrics) tagged with service version and Change ID; they are collected by the observability provider and viewable from UnityStack. |
+| FR-113 | P0 | **New.** The deployed application emits logs, metrics and traces through OpenTelemetry, tagged with service name, service version and Change ID, with trace IDs in log lines; the OpenTelemetry Collector forwards them to the observability providers, and they are viewable from UnityStack. |
+| FR-128 | P1 | **New.** Keep alert rules as files in Git, provisioned into the alerting tool; detect rules changed directly in the tool and propose them back to Git as a PR. |
 | FR-114 | P0 | **New.** The user can ask AI to analyse logs for an environment and time window; the AI's findings cite the log entries they are based on. |
 | FR-115 | P0 | **New.** AI may propose a bug from its findings; the bug is created in the tracker only after a person accepts it, and is linked to the Change ID, deployment and log evidence. |
 | FR-046 | P0 | Connect production signals to incident or improvement proposals that re-enter the governed loop. *(Was P1.)* |
@@ -588,7 +595,13 @@ flowchart TB
 
 `docker compose --profile core up` starts the everyday stack; adding `--profile monitoring` and others brings in the rest. Memory use is the main constraint on a laptop.
 
-**Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. The ECR adapter is added alongside the AWS move.
+**Local rebuilds (no CI deployment).** During local development nothing is deployed by CI. Instead:
+
+- **When AI edits code:** after finishing a batch of edits (not after each file), the AI runs `docker compose up --build -d <service>` to rebuild and restart only the changed service (or the whole stack without a service name). This avoids repeated restarts while files are still changing.
+- **When editing by hand:** `docker compose watch` watches the source folders; it syncs frontend changes straight into the running container and rebuilds the backend only when backend files change.
+- GitHub Actions still runs tests and security scans on every PR, but does not deploy.
+
+**Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. From here CI/CD deploys: each PR to a preview environment, merges to main to the main (production) environment (FR-129). Images go to GitHub Container Registry, with the ECR adapter added alongside.
 
 **Later — enterprise.** See §15.5.
 
@@ -676,7 +689,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 2. Discuss a requirement change with AI, inspect the diff, finalise a revision and get a PR in the mapped repository.
 3. After merge, have AI propose epics and stories; after their PR merges, they are published once to the tracker, even if events are replayed.
 4. Pick a story; AI proposes code and tests together on a branch; the PR carries the Change ID.
-5. Merge the PR under repository policy; CI builds, runs unit tests, Semgrep and Trivy, pushes the image to GitHub Container Registry and deploys to the local environment. A failing scan or test blocks the merge or deploy according to policy.
+5. On the PR, CI runs unit tests, Semgrep and Trivy; a failing scan or test blocks the merge according to policy. After merge, the application is rebuilt and restarted in local Docker Compose.
 6. Playwright end-to-end tests run against the deployed version, and the run's results are recorded in Kiwi TCMS against the release, linked to the requirement and Change ID.
 7. See the deployed version's logs, tagged with the Change ID, from UnityStack.
 8. Ask AI whether things work as expected; AI answers with cited log evidence.
@@ -697,6 +710,9 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | D-2 | Local Docker until the thin loop works, then AWS as soon as possible (AD-2). |
 | D-3 | Grafana, Loki and Prometheus for observability (§8.3). |
 | D-6 | GitHub Actions for CI/CD; Jenkins and Argo CD as future adapters. |
+| D-14 | Grafana alerting, with rules kept as files in Git (Git is the source) and an export sync as a safety net. |
+| D-15 | OpenTelemetry (Java agent, Collector) for logs, metrics and traces; Loki first, Elasticsearch/Kibana or OpenSearch as later log adapters. |
+| D-16 | No CI deployment locally: AI rebuilds with `docker compose up --build` after a batch of edits; `docker compose watch` for manual edits. Per-PR preview and main environments on AWS later. |
 | — | Thin loop first (PD-4); Git provider adapter with GitHub first (AD-4); Keycloak now (AD-3); Semgrep, Trivy, OWASP ZAP; JUnit, Vitest, Playwright, Kiwi TCMS; GitHub Container Registry (ECR with AWS, Harbor later); GoAlert; OpenFeature with Unleash; Mattermost; AI meeting assistant as a future feature. |
 
 ### 18.2 Still open
@@ -712,9 +728,6 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | D-11 | Adapter, event envelope and schema contracts | Define in HLD; the event envelope includes `eventId`, `eventType`, `occurredAt`, `organisationId`, `projectId`, `correlationId`, `changeId`, `actor`, `artifactRefs`, `schemaVersion`. |
 | D-12 | SSO for third-party tools | Keycloak is decided for UnityStack (AD-3). Which tools join Keycloak SSO, and how (OIDC or SAML), is decided per tool. |
 | D-13 | Scale, SLOs, RTO and RPO | After baseline measurement. |
-| D-14 | Alert rule engine | Grafana alerting (proposed default) or Prometheus Alertmanager, feeding GoAlert and UnityStack. |
-| D-15 | Instrumentation standard | Proposed: OpenTelemetry for logs, metrics and traces from the managed application. |
-| D-16 | How CI deploys to the local environment during the thin loop | For example, the local environment pulls the new image from GitHub Container Registry after CI succeeds. |
 | D-17 | MCP servers for tools | Community MCP servers exist for some tools (for example the security scanners); check maturity before adapters depend on them. |
 | D-19 | Order of further Git providers | Proposed: Gitea first (keeps a fully open-source option), then GitLab and Bitbucket. |
 | D-18 | Meeting platform for the AI meeting assistant | Later (P2); candidates Jitsi Meet or Mattermost calls, with Zoom and Teams adapters. |
@@ -745,7 +758,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | 1.2 | 21 Nov 2026 | AI-first two-pane UX, coexistence, Change ID, enterprise adoption (§17–21, FR-061 to FR-101). |
 | 1.3 | Nov 2026 | Project Inception (§22, FR-102 to FR-108). |
 | 2.0 | 27 Nov 2026 | Consolidated into one current-state document; product decisions PD-1 to PD-3; priorities reset; adapter architecture and closed loop made central; new FR-109 to FR-116 and NFR-013/014; observability added as a capability. |
-| 2.1 | 27 Nov 2026 | PD-4 thin loop first, PD-5 open-source defaults with swappable adapters; AD-1 Java with portable AI module, AD-2 Docker then AWS, AD-3 Keycloak now; default tools for identity, CI/CD, registry, security scanning, testing, observability, on-call, feature flags and notifications; AI meeting assistant as a future capability; new FR-117 to FR-127 and NFR-015 to NFR-017; §15.3 runtime environments; AD-4 Git provider adapter (GitHub first; Gitea, GitLab, Bitbucket, Azure DevOps later). |
+| 2.1 | 27 Nov 2026 | PD-4 thin loop first, PD-5 open-source defaults with swappable adapters; AD-1 Java with portable AI module, AD-2 Docker then AWS, AD-3 Keycloak now; default tools for identity, CI/CD, registry, security scanning, testing, observability, on-call, feature flags and notifications; AI meeting assistant as a future capability; new FR-117 to FR-129 and NFR-015 to NFR-017; OpenTelemetry, Grafana alerting rules in Git and local rebuild workflow; §15.3 runtime environments; AD-4 Git provider adapter (GitHub first; Gitea, GitLab, Bitbucket, Azure DevOps later). |
 
 | Old section | New section |
 |---|---|

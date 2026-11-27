@@ -88,10 +88,10 @@ The default set also covers the rest of the SDLC, all open source:
 | --- | --- |
 | Identity | Keycloak |
 | CI/CD | GitHub Actions |
-| Container registry | GitHub Container Registry (Amazon ECR, Harbor later) |
+| Container registry | GitHub Container Registry from the AWS move (Amazon ECR, Harbor later) |
 | Security scanning | Semgrep (code), Trivy (dependencies, images, secrets), OWASP ZAP (black-box) |
 | Testing | JUnit, Vitest, Playwright; Kiwi TCMS for test management |
-| Observability | Grafana, Loki, Prometheus |
+| Observability | OpenTelemetry, Grafana, Loki, Prometheus |
 | On-call | GoAlert |
 | Feature flags | OpenFeature with Unleash |
 | Notifications | Mattermost |
