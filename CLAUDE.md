@@ -38,4 +38,4 @@ Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If 
 
 ## Current state
 
-Only Project Inception is built. The code still uses the old package layout (`inception/`, `project/`, `ai/`, `common/` and `views/`). Moving it to feature modules is a planned Phase 0 step in `docs/roadmap.md`. Until then, put **new** code in the target layout and leave the existing code where it is, unless the task is the restructure itself.
+Only Project Inception is built. It lives in the `requirements` feature module (backend and frontend), with shared code in `core`. The Spring Modulith boundary test runs with `./gradlew test`. Put all new code in the feature-module layout.

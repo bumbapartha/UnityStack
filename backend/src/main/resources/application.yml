@@ -5,6 +5,16 @@ spring:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/unitystack}
     username: ${DB_USER:unitystack}
     password: ${DB_PASSWORD:unitystack}
+  jpa:
+    # Flyway owns the schema; Hibernate only checks that the entities match it (TD-12).
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        # Read and write timestamptz values in UTC, as the JDBC code did.
+        timezone:
+          default_storage: NORMALIZE_UTC
 
 management:
   endpoints:

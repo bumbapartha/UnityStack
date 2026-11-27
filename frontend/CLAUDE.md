@@ -49,4 +49,4 @@ src/
 
 ## Current state
 
-The existing inception screens are still in `src/views/`, `src/components/` and `src/api.js`. They will move to `modules/requirements/` and `core/` during the Phase 0 restructure. Put new work in the target layout.
+The inception screens live in `modules/requirements/`. `main.js` passes each module's `index.js` to `core/router.js`. The app shell (`App.vue`) and global styles (`core/ui/style.css`) are in `core/`. The boundary lint rule is not added yet.
