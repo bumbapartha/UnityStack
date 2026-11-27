@@ -20,6 +20,10 @@ This folder replaces the single `Requirements.md` (v2.1) and the dogfooding deve
 | [Development setup](dev-setup.md) | Docker Compose profiles, local rebuilds, move to AWS |
 | [Document history](history.md) | Version history and where old sections went |
 
+## Coding guidelines
+
+The rules that people and AI assistants follow when writing code are in [`CLAUDE.md`](../CLAUDE.md) (whole repository), [`backend/CLAUDE.md`](../backend/CLAUDE.md) and [`frontend/CLAUDE.md`](../frontend/CLAUDE.md). Claude Code reads the file for the folder it is working in.
+
 ## Linking conventions
 
 - Requirement IDs (FR-, NFR-), decision IDs (PD-, AD-, TD-) and open-question IDs (D-) are stable and never reused; links use them.
