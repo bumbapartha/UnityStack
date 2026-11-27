@@ -12,6 +12,7 @@ AI-proposed code and tests, branches and pull requests.
 
 | ID | Priority | Requirement |
 |---|---|---|
+| FR-133 | P0 | **New.** Sprint planning: the AI proposes which stories go into the next sprint, based on priority, dependencies and team capacity; the user adjusts and approves; the sprint is created in the project-management tool through its adapter (OpenProject first, Jira later). "Pick a story" then shows stories from the current sprint, and accepted bugs go to the backlog for planning. |
 | FR-116 | P0 | **New.** For a story, the developer agent proposes code changes and matching tests together, on a branch, after reading the linked requirement, story, ADRs and repository conventions. |
 | FR-018 | P0 | Treat approved GitHub content as the canonical version of durable, reviewable SDLC artifacts. |
 | FR-019 | P0 | AI-generated changes are made on branches and proposed through PRs; no direct AI push to protected branches. |
