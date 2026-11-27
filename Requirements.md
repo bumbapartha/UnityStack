@@ -2,7 +2,7 @@
 
 **Product:** UnityStack — Enterprise AI Software Factory  
 **Document type:** Product Requirements Document (PRD), single current-state version  
-**Version:** 2.0 (consolidated draft)  
+**Version:** 2.1 (tool and architecture decisions)  
 **Status:** Draft for review  
 **Date:** 27 November 2026  
 **Owner:** Partha Sarathi Ghosh  
@@ -33,10 +33,18 @@ Every external tool, and the AI model itself, sits behind an adapter, so any of 
 | # | Question | Decision |
 |---|---|---|
 | PD-1 | Primary user for the next 6–12 months | **The founder as sole user and developer, dogfooding.** UnityStack is built with UnityStack. Later, free demos with a few developers or organisations; enterprise buyers after that. Enterprise needs (installer, SSO, HA, onboarding, backfill) stay as direction, not current design constraints. |
-| PD-2 | Bundle or connect | **Adapters everywhere.** Every SDLC tool and the LLM are reached only through an adapter. The nine selected open-source tools (§8.3) are the default providers, chosen because they are open source; alternatives such as Jira, or a different model, must be swappable. Bundling all nine into an installer is a later packaging concern, not the product core. |
+| PD-2 | Bundle or connect | **Adapters everywhere.** Every SDLC tool and the LLM are reached only through an adapter. The selected open-source tools (§8.3) are the default providers, chosen because they are open source; alternatives such as Jira, or a different model, must be swappable. Bundling the default tools into an installer is a later packaging concern, not the product core. |
 | PD-3 | Product core | **The closed loop, joined by one shared ID.** Requirement → stories → code and tests on a branch → PR review → deployment → logs and monitoring → AI-assisted problem detection → accepted bug back in the tracker → next change. AI drafting, traceability and the full lifecycle go hand in hand; none is built in isolation. |
+| PD-4 | Delivery approach | **Thin loop first.** Build every stage of the loop in a basic form from end to end, with the Change ID in place from day one, then deepen each stage. See §6 and §17. |
+| PD-5 | Tool selection | **Open source by default, every tool behind an adapter.** Default providers for each capability are listed in §8.3. Changing a provider must only mean adding or switching an adapter and its configuration. Later, an organisation picks the provider for each capability when UnityStack is installed. |
 
-**Consequence for delivery (proposed, to confirm):** build the loop *thin* from end to end first, with the Change ID in place from day one, then deepen each stage. See §6 and §17.
+### 3.1 Architecture decisions (27 November 2026)
+
+| # | Decision |
+|---|---|
+| AD-1 | **Java only for now.** AI logic stays in Java (Spring Boot application), not a separate Python service. It lives in its own module behind clean interfaces, with plain data objects in and out and no Spring-specific code inside, so that it can later be moved to a Python service (with AI help) without touching the rest. |
+| AD-2 | **Local Docker until the thin loop works, then AWS as soon as possible.** All tools run in Docker Compose, grouped by Compose profiles so only what is needed is started. Once the loop works end to end, move to AWS (Terraform, EC2 + Docker Compose). Moving only the heavy tools to one EC2 host first is an allowed middle step. |
+| AD-3 | **Keycloak from the start.** Keycloak handles sign-in, users, groups and broad roles; UnityStack checks project-level permissions. No temporary built-in login. |
 
 ## 4. Product principles
 
@@ -77,7 +85,7 @@ Priorities in this document mean:
 |---|---|
 | **P0 — MVP** | Needed for the thin closed loop, used by the sole user (PD-1, PD-3). |
 | **P1 — Next** | Deepens the loop while dogfooding and prepares for a small group of demo users. |
-| **P2 — Later** | Enterprise distribution and adoption: installer, full nine-tool bundle, BYOT selection, SSO, HA, large-scale ingestion. |
+| **P2 — Later** | Enterprise distribution and adoption: installer, full default-tool bundle, BYOT selection, SSO, HA, large-scale ingestion. |
 
 ### 6.1 MVP (P0) — the thin closed loop
 
@@ -86,31 +94,40 @@ Priorities in this document mean:
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
 - Review and merge through GitHub, with UnityStack reflecting PR status.
-- Delivery: CI builds, tests and deploys the managed application (starting with Hello World) to one environment.
-- Observe: the deployed application's logs are collected and viewable; the user can ask AI to analyse them.
+- Delivery: GitHub Actions builds, runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy), pushes the image to GitHub Container Registry and deploys the managed application (starting with Hello World) to the local Docker environment.
+- Testing: end-to-end tests with Playwright; test cases kept in Git and each run's results recorded in Kiwi TCMS, linked to requirements, release and Change ID.
+- Observe: the deployed application's logs (Loki) and metrics (Prometheus) are collected and viewable in Grafana and from UnityStack; the user can ask AI to analyse them.
 - Feedback: AI can propose a bug from log evidence; once the user accepts it, the bug is created in the tracker, linked to the Change ID, and enters the loop again.
+- Sign-in and roles through Keycloak (AD-3).
 - Adapters for every tool used above, plus the LLM adapter with a mock provider.
 - Change ID created at the start and carried through every stage.
+- Everything runs locally in Docker Compose, using profiles (AD-2).
 
 ### 6.2 Next (P1)
 
+- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS, Amazon ECR adapter (AD-2).
+- Black-box security testing of the deployed application with OWASP ZAP.
+- Alerting and on-call: Grafana alerts page the on-call developer through GoAlert; at the same time AI investigates logs and metrics and adds a summary to the incident.
+- Notifications (review requests, alerts, incident summaries) through Mattermost.
+- Feature flags through OpenFeature, with Unleash as the provider.
 - Second provider behind an existing adapter (Jira for project management) to prove swappability.
 - Architecture workspace (HLD, ADRs, Mermaid) and richer previews.
 - Passive observation of work done outside UnityStack, webhook reconciliation and bounded history import.
 - My Work queues, workflow orchestration with parallel work and dependencies.
-- Basic multi-user sign-in and roles, ready for demo users.
+- Multi-user roles and resource permissions ready for demo users.
 - Model routing, budgets, RAG over project documents, agent evaluation.
 
 ### 6.3 Later (P2)
 
-- Versioned, installable distribution with Terraform-provisioned AWS, the full nine-tool profile, upgrade, backup and restore.
-- Bring Your Own Tool chosen by the customer at install time or runtime.
+- Versioned, installable distribution with Terraform-provisioned AWS, the full default tool profile, upgrade, backup and restore.
+- Bring Your Own Tool: the organisation picks the provider for each capability at install time (for example GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams).
+- **AI meeting assistant:** an AI participant in requirement meetings that listens, asks questions, suggests solutions, summarises on request and later proposes requirement updates as PRs (§13.15).
 - Enterprise onboarding: connect existing tools, historical backfill, relationship reconstruction, completeness reports.
-- Full SSO, HA, Kubernetes, multi-cloud, cross-repository change sets.
+- Full SSO across all tools, HA, Kubernetes, multi-cloud, cross-repository change sets.
 
 ### 6.4 Explicit exclusions from the MVP
 
-Manual artifact editors inside UnityStack; installing all nine tools; enterprise installer; universal SSO; high availability; multi-tenant SaaS; multi-cloud; autonomous production deployment; atomic cross-repository merges; advanced visual diagram diffs; large-scale historical ingestion.
+Manual artifact editors inside UnityStack; installing all default tools; cloud deployment (comes straight after, in P1); enterprise installer; SSO across every third-party tool; high availability; multi-tenant SaaS; multi-cloud; autonomous production deployment; atomic cross-repository merges; advanced visual diagram diffs; large-scale historical ingestion.
 
 ## 7. The closed loop
 
@@ -120,9 +137,11 @@ flowchart LR
   R --> P[Epics and stories]
   P --> D[Code + tests on a branch]
   D --> PR[PR review and merge]
-  PR --> CI[Build, test, deploy]
+  PR --> CI[Build, scan, test, deploy]
   CI --> O[Logs and monitoring]
   O --> A[AI analysis]
+  O -->|alert| AL[On-call page + AI incident summary]
+  AL --> A
   A -->|user accepts| B[Bug in tracker]
   B --> D
   B -.-> R
@@ -135,8 +154,9 @@ flowchart LR
 | Planning | AI proposes epics, stories and acceptance criteria | User finalises → PR; after merge, published to the tracker | Git for the approved definition; tracker for operational status |
 | Development | AI proposes code and tests together for a story | User finalises → PR | Git |
 | Review | PR reviewed and merged under repository policy | Reviewer / policy | GitHub |
-| Delivery | CI builds, tests and deploys | Environment protection and release policy | CI/CD system |
+| Delivery | CI builds, scans (SAST, dependencies, images, secrets), tests, publishes the image and deploys; later a DAST scan runs against the deployed app | Environment protection, release policy, failing scans or tests block per policy | CI/CD system; test results in the test-management tool |
 | Observe | Logs and metrics collected, tagged with service version and Change ID | — | Monitoring system |
+| Alert (P1) | An alert pages the on-call developer; AI investigates and adds a summary to the incident | On-call developer acknowledges | On-call tool |
 | Analyse | User asks AI about behaviour in an environment; AI answers with log evidence | — | UnityStack (analysis is derived, not authoritative) |
 | Feedback | AI proposes a bug with evidence | User accepts → bug created in tracker | Tracker |
 
@@ -151,6 +171,9 @@ flowchart LR
 - A **capability registry** records, for each capability in each installation: provider ID, connection mode (provisioned or existing), endpoint, credential reference, supported operations, health and scope.
 - Unsupported or edition-restricted operations return an explicit "unsupported operation" error; callers must handle it.
 - MVP needs one working provider per capability used in the loop. The interfaces must not leak provider-specific concepts, so that a second provider can be added without changing workflows.
+- **Swap rule:** changing the provider of a capability means adding or selecting an adapter and changing configuration — nothing else in UnityStack changes (NFR-015).
+- **Selection:** today the provider is chosen in configuration. Later, an organisation chooses the provider for each capability at install time, and the installer deploys or connects only those (FR-043, FR-060).
+- Where a provider already has a standard client abstraction, the adapter may use it (for example OpenFeature for feature flags, OpenID Connect for identity). Where an MCP server exists for a tool, an adapter may call it, subject to the trusted execution rules (§14); community MCP servers are checked for maturity before use.
 
 ### 8.2 LLM adapter and model-independent context
 
@@ -159,6 +182,7 @@ flowchart LR
 - All context an agent needs — conversation, charter, drafts, approved artifacts, decisions, trace links — is stored in UnityStack, Git or the connected tools. Nothing depends on provider-side memory, threads or assistants.
 - Switching provider or model takes effect for the next agent turn. The new model is given context rebuilt from those stores, so in-progress work continues.
 - Every agent run records the provider and model used (`agentRef`, for example `openai:gpt-4.1-mini`) for audit.
+- **Portable AI module (AD-1):** agents, prompts and LLM adapters live in a separate module of the Java code base. The module exposes interfaces with plain data objects (no framework or persistence types), contains no Spring-specific code, and is called by the rest of the application only through those interfaces. This keeps a later move to a separate (for example Python) AI service a contained change (NFR-016).
 
 ### 8.3 Capabilities and default providers
 
@@ -166,9 +190,23 @@ flowchart LR
 |---|---|---|---|
 | Source control and PRs | GitHub | Other Git providers (P2) | Yes |
 | LLM | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
+| Identity and access | Keycloak | Azure AD / Entra ID, Okta through Keycloak federation or own adapter (P2) | Yes |
 | Project management (epics, stories, bugs) | OpenProject | Jira (P1), Plane (P2) | Yes |
-| CI/CD | GitHub Actions | Jenkins and others (P2) | Yes |
-| Observability (logs, metrics) | *To be selected — see D-3* | — | Yes |
+| CI/CD | GitHub Actions | Jenkins, Argo CD (P2) | Yes |
+| Artifact (container) registry | GitHub Container Registry | Amazon ECR (P1, with the AWS move), Harbor (P2) | Yes |
+| Static code security scanning (SAST) | Semgrep (community edition) | SonarQube security rules, others (P2) | Yes |
+| Dependency, image, IaC and secret scanning (SCA) | Trivy | OWASP Dependency-Check, GitHub scanning (P2) | Yes |
+| Dynamic / black-box security testing (DAST) | OWASP ZAP | — | P1 |
+| Unit tests | JUnit (Java), Vitest (Vue) | — | Yes |
+| End-to-end tests | Playwright | — | Yes |
+| Test management (cases, runs, reports) | Kiwi TCMS | — | Yes |
+| Logs | Loki | — | Yes |
+| Metrics | Prometheus | — | Yes |
+| Dashboards and alert rules | Grafana | — | Yes (dashboards); P1 (alerts) |
+| On-call paging and escalation | GoAlert | Opsgenie, PagerDuty, OneUptime (P2) | P1 |
+| Feature flags | OpenFeature with Unleash | Flagsmith or an organisation's own provider via OpenFeature (P2) | P1 |
+| Notifications and team chat | Mattermost | Slack, Microsoft Teams (P2) | P1 |
+| Meetings (AI meeting assistant) | *To be selected, for example Jitsi Meet or Mattermost calls* | Zoom, Teams (P2) | P2 |
 | Architecture diagrams | Mermaid (library) | — | P1 |
 | Technical documentation | MkDocs | Confluence (P2) | P1 |
 | API documentation | Swagger UI | — | P1 |
@@ -178,7 +216,15 @@ flowchart LR
 | Software catalogue | Backstage | — | P2 |
 | Web IDE | Eclipse Theia | Local IDE (always) | P2 |
 
-The nine originally selected tools are OpenProject, Excalidraw, Penpot, Mermaid, MkDocs, Backstage, Swagger UI, Eclipse Theia and SonarQube Community Build. None of them covers logs and monitoring, so the loop needs an additional observability provider.
+The nine originally selected tools are OpenProject, Excalidraw, Penpot, Mermaid, MkDocs, Backstage, Swagger UI, Eclipse Theia and SonarQube Community Build. On 27 November 2026 the default set was extended to cover the remaining SDLC gaps: identity, CI/CD, artifact registry, security scanning, testing, observability, alerting and on-call, feature flags and notifications. All defaults are open source; Semgrep and Unleash have paid editions whose extra features are not required.
+
+Notes on how the new tools fit together:
+
+- **Semgrep vs Trivy:** Semgrep reads UnityStack's own code for risky patterns (for example injection or unsafe input handling). Trivy checks what the code depends on: library versions, container images, infrastructure misconfigurations and leaked secrets. Both are needed.
+- **Grafana, Loki, Prometheus:** Loki stores logs, Prometheus stores metrics, Grafana shows both and evaluates alert rules.
+- **GoAlert:** on-call rotations (daily, weekly, hourly), temporary overrides and escalation policies; pages by phone call or SMS. Its API allows UnityStack to manage rotations later.
+- **Kiwi TCMS:** test cases, test plans, test runs per build or release, and reports such as requirements without tests. Test cases are authored in Git (by AI, reviewed by PR); Kiwi keeps run history so every release has a permanent record of what was tested and what passed.
+- **OpenFeature with Unleash:** Unleash is the flag server and dashboard; OpenFeature is the standard SDK the code calls. An organisation with its own flag system writes an OpenFeature provider and plugs it in without UnityStack code changes.
 
 **Important:** an available provider does not imply full integration, SSO or feature parity. Each adapter documents its supported operations, versions, licensing and limitations.
 
@@ -336,6 +382,11 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 | FR-097 | P0 | Deploy a Hello World walking skeleton through an automated pipeline to a production-designated environment. |
 | FR-044 | P0 | Version tests, CI/CD pipelines, deployment configuration and monitoring configuration in Git. *(Was P1.)* |
 | FR-045 | P0 | Run validation and deployment through trusted pipelines with environment protection. *(Was P1.)* |
+| FR-117 | P0 | **New.** Run static code security scanning (SAST) and dependency, image, infrastructure and secret scanning (SCA) in CI on every PR; link findings to the PR and Change ID; failing scans block merge according to policy. |
+| FR-118 | P1 | **New.** Run dynamic black-box security testing (DAST) against the deployed application after deployment; link findings to the deployment and Change ID, and let AI propose bugs from them (FR-115). |
+| FR-119 | P0 | **New.** Publish built images to the artifact registry through its adapter, tagged with version, commit SHA and Change ID. |
+| FR-120 | P0 | **New.** Keep test cases in Git, record every test run's results (unit, end-to-end, manual) in the test-management tool against the build or release, and link them to requirement, story and Change ID; provide a per-release test report kept in history. |
+| FR-121 | P1 | **New.** Control feature exposure through feature flags reached via the OpenFeature SDK, with per-environment settings; flag changes are audited. |
 | FR-098 | P1 | Support configured automatic delivery or human production release approval with quality gates. |
 | FR-041 | P1 | Bring code-quality results (SonarQube) and IDE workflows into PR review. |
 
@@ -347,6 +398,9 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 | FR-114 | P0 | **New.** The user can ask AI to analyse logs for an environment and time window; the AI's findings cite the log entries they are based on. |
 | FR-115 | P0 | **New.** AI may propose a bug from its findings; the bug is created in the tracker only after a person accepts it, and is linked to the Change ID, deployment and log evidence. |
 | FR-046 | P0 | Connect production signals to incident or improvement proposals that re-enter the governed loop. *(Was P1.)* |
+| FR-122 | P1 | **New.** Route alerts from alert rules to the on-call tool, which pages the on-call developer (phone, SMS, app) using rotations, overrides and escalation policies. |
+| FR-123 | P1 | **New.** When an alert fires, notify UnityStack as well; AI investigates the related logs and metrics and attaches a summary with cited evidence to the incident while the developer is being paged. Any resulting bug still needs a person to accept it (FR-115). |
+| FR-124 | P1 | **New.** Send notifications (review requests, PR status, alerts, incident summaries, publication failures) through a notification adapter. |
 
 ### 13.8 Traceability and Change ID
 
@@ -416,7 +470,8 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 | ID | Priority | Requirement |
 |---|---|---|
 | FR-052 | P0 | All agent action requests pass through a trusted policy, authorisation and execution layer with scoped credentials and approval checks. |
-| FR-049 | P1 | Provide central identity, session management and platform roles; map platform identities to tool access where supported and document exceptions. *(Was P0. MVP minimum: any deployed environment requires authentication — see §14.)* |
+| FR-049 | P0 | Provide central identity, session management and platform roles through the identity provider (Keycloak, AD-3); map platform identities to tool access where supported and document exceptions. |
+| FR-125 | P0 | **New.** Enforce resource-level permissions: which user or role may perform which operation (for example view, edit, finalise, approve, deploy) on which resource (for example a project, artifact, PR or environment). The identity provider supplies identity, groups and broad roles; UnityStack evaluates project-level rules. |
 
 ### 13.13 Design and documentation tools
 
@@ -433,9 +488,9 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 |---|---|---|
 | FR-001 | P2 | Deliver a versioned UnityStack distribution with infrastructure modules, deployment definitions, configuration templates and installer scripts. *(Was P0.)* |
 | FR-002 | P2 | Accept organisation-specific cloud region, domain, GitHub organisation, AI provider and deployment profile settings. *(Was P0.)* |
-| FR-003 | P1 | Use Terraform to provision required AWS resources with repeatable plan and apply workflows. *(Was P0; timing depends on D-2.)* |
-| FR-004 | P2 | A full installation profile deploys UnityStack and all nine default tools with their dependencies. *(Was P0.)* |
-| FR-035 | P2 | Deploy and expose all nine default tools. *(Was P0.)* |
+| FR-003 | P1 | Use Terraform to provision required AWS resources with repeatable plan and apply workflows. *(Was P0; needed as soon as the thin loop works, AD-2.)* |
+| FR-004 | P2 | A full installation profile deploys UnityStack and the default tool for every selected capability (§8.3), with their dependencies. *(Was P0.)* |
+| FR-035 | P2 | Deploy and expose the default tools chosen at install time. *(Was P0.)* |
 | FR-006 | P2 | Make installation idempotent where practical; rerunning must not destroy persistent data. *(Was P0.)* |
 | FR-007 | P2 | Pin application and infrastructure versions in a release manifest. *(Was P0.)* |
 | FR-008 | P1 | Provide backup and restore of UnityStack data, health checks and documented upgrade steps. *(Was P0.)* |
@@ -446,6 +501,12 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 | FR-057 | P2 | Provide onboarding templates and validation for domain, region, repositories, identity, AI settings and tool endpoints. *(Was P1.)* |
 | FR-059 | P2 | Provide cost and resource reporting and sizing profiles based on measured usage. *(Was P1.)* |
 
+### 13.15 Future: AI meeting assistant
+
+| ID | Priority | Requirement |
+|---|---|---|
+| FR-126 | P2 | **New.** An AI participant can join requirement meetings (with the participants' consent) through a meeting adapter; it listens, raises questions, suggests solutions when asked, produces a summary and transcript on request, and afterwards proposes requirement updates in the requirements workspace, which follow the normal finalise → PR flow. |
+
 ## 14. Security, identity and governance
 
 1. AI output is attributable to an agent run (provider and model) and a source request.
@@ -455,7 +516,7 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 5. **Least privilege:** GitHub App with scoped permissions, short-lived credentials where available, separate read / propose / execute privileges.
 6. **Untrusted input:** repository files, retrieved documents, tool output, issue text and **logs** are untrusted; instructions inside them never override system policy.
 7. **Secrets** never go into Git or model prompts unnecessarily. Real keys live only in `.env` (git-ignored) locally, or a secrets manager when deployed; `.env.example` holds placeholders only.
-8. **MVP minimum for a sole user:** local use may run without sign-in; any environment reachable from the internet must require authentication and HTTPS.
+8. **Sign-in from the start:** UnityStack uses Keycloak (OpenID Connect) even locally; any environment reachable from the internet must also use HTTPS. Keycloak realm configuration is exported to a file in Git (no secrets) so the local setup rebuilds the same way.
 9. Sandboxed code execution, secret redaction, outbound access controls and emergency revocation are required as the developer agent matures.
 10. Every adapter defines its authority, sync direction, conflict handling and audit events.
 
@@ -469,10 +530,11 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 |---|---|
 | Frontend | Vue 3 + Vite, served by nginx (`frontend/`) |
 | Control plane | Java + Spring Boot (`backend/`), Flyway migrations |
-| AI | Inside the Spring Boot backend, behind the provider-neutral `InceptionAgent` interface; mock and OpenAI implementations. **No separate Python service yet** (see D-1). |
+| AI | Inside the Spring Boot backend, behind the provider-neutral `InceptionAgent` interface; mock and OpenAI implementations. Stays in Java (AD-1); to be moved into its own framework-free module. |
 | State | PostgreSQL |
 | Runtime | Local Docker Compose (PostgreSQL + backend + frontend) |
-| Cloud | None yet (see D-2) |
+| Identity | Not yet; Keycloak to be added (AD-3) |
+| Cloud | None yet; AWS after the thin loop works (AD-2) |
 
 ### 15.2 Target logical architecture
 
@@ -487,20 +549,47 @@ flowchart TB
   Policy --> Adapters[Capability adapters]
   Adapters --> GitHub[GitHub]
   Adapters --> PM[Project management: OpenProject / Jira]
-  Adapters --> CI[CI/CD: GitHub Actions]
-  Adapters --> Obs[Observability]
-  CI --> Env[Deployed environment]
+  Adapters --> CI[CI/CD: GitHub Actions + Semgrep + Trivy]
+  Adapters --> Reg[Registry: GHCR / ECR]
+  Adapters --> Test[Tests: Playwright + Kiwi TCMS]
+  Adapters --> Obs[Grafana + Loki + Prometheus]
+  Adapters --> OnCall[On-call: GoAlert]
+  Adapters --> Notify[Notifications: Mattermost]
+  API --> IdP[Keycloak]
+  CI --> Reg
+  Reg --> Env[Deployed environment]
   Env --> Obs
+  Obs -->|alerts| OnCall
   Obs --> Agents
 ```
 
 - **Control plane:** portal, API, registry, identity and policy, workflow state.
-- **AI plane:** agents and the LLM adapter; models hold no direct infrastructure permissions.
+- **AI plane:** agents and the LLM adapter, in a separate framework-free Java module (AD-1); models hold no direct infrastructure permissions.
 - **Integration plane:** capability adapters, optionally exposed via MCP behind trusted execution.
 - **Data plane:** GitHub for canonical artifacts; PostgreSQL for application and workflow data; tool databases for tool data; the observability provider for logs and metrics.
 - **Deployment plane:** CI/CD deploys the managed application; infrastructure as code provisions environments.
 
-### 15.3 Artifact types and repository flexibility
+### 15.3 Runtime environments (AD-2)
+
+**Now — local Docker Compose.** Every tool runs as a container from its official image; nothing is installed on the developer's machine. Services are grouped with Docker Compose profiles so only what is needed starts, for example:
+
+| Profile | Services |
+|---|---|
+| `core` | PostgreSQL, backend, frontend, Keycloak |
+| `pm` | OpenProject |
+| `test` | Kiwi TCMS |
+| `monitoring` | Grafana, Loki, Prometheus |
+| `oncall` | GoAlert |
+| `chat` | Mattermost |
+| `flags` | Unleash |
+
+`docker compose --profile core up` starts the everyday stack; adding `--profile monitoring` and others brings in the rest. Memory use is the main constraint on a laptop.
+
+**Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. The ECR adapter is added alongside the AWS move.
+
+**Later — enterprise.** See §15.5.
+
+### 15.4 Artifact types and repository flexibility
 
 UnityStack must not assume one repository or fixed folders.
 
@@ -544,9 +633,9 @@ repositories:
         path: src/test/
 ```
 
-### 15.4 Later: enterprise distribution and onboarding (P2)
+### 15.5 Later: enterprise distribution and onboarding (P2)
 
-- **Distribution:** versioned package; Terraform-provisioned AWS (EC2 + Docker Compose first, EKS later); S3 remote state with locking; IAM least privilege and GitHub OIDC; Secrets Manager or SSM; ECR; TLS; pinned versions in a release manifest; installer, upgrade, validate and uninstall scripts; full nine-tool profile with health checks.
+- **Distribution:** versioned package; Terraform-provisioned AWS (EC2 + Docker Compose first, EKS later); S3 remote state with locking; IAM least privilege and GitHub OIDC; Secrets Manager or SSM; ECR; TLS; pinned versions in a release manifest; installer, upgrade, validate and uninstall scripts; full default-tool profile with health checks.
 - **Platform lifecycle:** install, configure, upgrade, rollback/recovery and uninstall are separate from the lifecycle of managed software; a platform upgrade never triggers a product release. Irreversible migrations are never promised automatic rollback.
 - **Adoption modes:** greenfield (deploy with default tools) or existing organisation (connect existing tools, ingest accessible history, keep teams' own processes).
 - **Onboarding steps:** discover and configure providers and permissions; connect with least privilege, read-only first; start event capture before or with backfill; import history in resumable batches; normalise records while keeping source IDs and provenance; build verified links, then optionally propose inferred ones; report completeness and gaps; enable steady-state sync and health alerts.
@@ -570,6 +659,9 @@ repositories:
 | NFR-012 | Accessibility | Portal navigation and controls are accessible. |
 | NFR-013 | Model independence | **New.** Switching LLM provider or model needs configuration only and loses no project context. |
 | NFR-014 | Local-first development | **New.** The whole MVP loop can run locally with Docker and the mock LLM, without cloud resources. |
+| NFR-015 | Replaceability | **New.** Changing the provider of any capability touches only that capability's adapter and configuration files. |
+| NFR-016 | AI module portability | **New.** The AI module has no framework dependencies and exchanges only plain data objects, so it can be moved to a separate service in another language without changes elsewhere (AD-1). |
+| NFR-017 | Resource footprint | **New.** Local services are grouped in Compose profiles; the everyday `core` profile runs comfortably on a developer laptop. |
 
 Quantitative targets (install time, cloud spend, SLOs, RTO, RPO) are deliberately TBD until measured.
 
@@ -581,32 +673,47 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 2. Discuss a requirement change with AI, inspect the diff, finalise a revision and get a PR in the mapped repository.
 3. After merge, have AI propose epics and stories; after their PR merges, they are published once to the tracker, even if events are replayed.
 4. Pick a story; AI proposes code and tests together on a branch; the PR carries the Change ID.
-5. Merge the PR under repository policy; CI builds, tests and deploys to the environment.
-6. See the deployed version's logs, tagged with the Change ID, from UnityStack.
-7. Ask AI whether things work as expected; AI answers with cited log evidence.
-8. Accept an AI-proposed bug; it appears in the tracker linked to the Change ID, deployment and log evidence, and can start the next change.
-9. View one timeline for the Change ID from requirement to bug; missing links show as gaps.
-10. Switch the LLM provider or model by configuration mid-project and continue working without losing context.
-11. A PR created directly in GitHub, outside UnityStack, is detected and shown with its source status.
-12. No AI action merges, deploys to production or creates a tracker item without the required human action.
+5. Merge the PR under repository policy; CI builds, runs unit tests, Semgrep and Trivy, pushes the image to GitHub Container Registry and deploys to the local environment. A failing scan or test blocks the merge or deploy according to policy.
+6. Playwright end-to-end tests run against the deployed version, and the run's results are recorded in Kiwi TCMS against the release, linked to the requirement and Change ID.
+7. See the deployed version's logs, tagged with the Change ID, from UnityStack.
+8. Ask AI whether things work as expected; AI answers with cited log evidence.
+9. Accept an AI-proposed bug; it appears in the tracker linked to the Change ID, deployment and log evidence, and can start the next change.
+10. View one timeline for the Change ID from requirement to test report to bug; missing links show as gaps.
+11. Switch the LLM provider or model by configuration mid-project and continue working without losing context.
+12. A PR created directly in GitHub, outside UnityStack, is detected and shown with its source status.
+13. No AI action merges, deploys to production or creates a tracker item without the required human action.
+14. All of the above works with the user signed in through Keycloak, and an action the user's role does not permit is refused.
 
-## 18. Open decisions
+## 18. Decisions and open questions
+
+### 18.1 Resolved on 27 November 2026
+
+| Former ID | Decision |
+|---|---|
+| D-1 | Stay in Java; AI in its own framework-free module (AD-1). |
+| D-2 | Local Docker until the thin loop works, then AWS as soon as possible (AD-2). |
+| D-3 | Grafana, Loki and Prometheus for observability (§8.3). |
+| D-6 | GitHub Actions for CI/CD; Jenkins and Argo CD as future adapters. |
+| — | Thin loop first (PD-4); Keycloak now (AD-3); Semgrep, Trivy, OWASP ZAP; JUnit, Vitest, Playwright, Kiwi TCMS; GitHub Container Registry (ECR with AWS, Harbor later); GoAlert; OpenFeature with Unleash; Mattermost; AI meeting assistant as a future feature. |
+
+### 18.2 Still open
 
 | ID | Decision | Current state |
 |---|---|---|
-| D-1 | Separate Python AI service (LangGraph) or keep AI in Spring Boot | AI currently runs in Spring Boot behind an interface. Python is deferred; decide when agent workflows need it. |
-| D-2 | When a cloud (AWS) environment becomes required | Loop can run locally; a deployed environment is needed for the delivery and observe stages. Decide whether the first one is local Docker or AWS. |
-| D-3 | Observability provider for logs and metrics | Not among the nine tools. Open-source candidates to evaluate, for example Grafana with Loki and Prometheus, OpenSearch, or SigNoz. |
 | D-4 | Change ID format and how it is carried | For example `<PROJECTKEY>-CHG-001`, in branch names, commit trailers, PR labels, build metadata and log fields. |
 | D-5 | First project-management provider in the loop | OpenProject is the default; Jira follows as the second adapter. |
-| D-6 | CI/CD provider | GitHub Actions as the default behind the CI adapter. |
 | D-7 | Review policy for a sole user | GitHub does not let an author approve their own PR. Decide on self-merge rules for the sole-user phase. |
 | D-8 | OpenProject sync direction | Git-to-tool for approved definitions with field-level ownership (§11); controlled tool-to-PR proposals later. |
 | D-9 | Penpot export fidelity and authoritative design format | Later (P2). |
 | D-10 | Tool versions, licensing and distribution rights | Verify before packaging (P2). |
 | D-11 | Adapter, event envelope and schema contracts | Define in HLD; the event envelope includes `eventId`, `eventType`, `occurredAt`, `organisationId`, `projectId`, `correlationId`, `changeId`, `actor`, `artifactRefs`, `schemaVersion`. |
-| D-12 | Identity provider and SSO | Later; evaluate Keycloak with OIDC/SAML per tool. |
+| D-12 | SSO for third-party tools | Keycloak is decided for UnityStack (AD-3). Which tools join Keycloak SSO, and how (OIDC or SAML), is decided per tool. |
 | D-13 | Scale, SLOs, RTO and RPO | After baseline measurement. |
+| D-14 | Alert rule engine | Grafana alerting (proposed default) or Prometheus Alertmanager, feeding GoAlert and UnityStack. |
+| D-15 | Instrumentation standard | Proposed: OpenTelemetry for logs, metrics and traces from the managed application. |
+| D-16 | How CI deploys to the local environment during the thin loop | For example, the local environment pulls the new image from GitHub Container Registry after CI succeeds. |
+| D-17 | MCP servers for tools | Community MCP servers exist for some tools (for example the security scanners); check maturity before adapters depend on them. |
+| D-18 | Meeting platform for the AI meeting assistant | Later (P2); candidates Jitsi Meet or Mattermost calls, with Zoom and Teams adapters. |
 
 ## 19. Risks
 
@@ -623,6 +730,8 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | Faulty changes deployed | Tests, protected branches, health checks, rollback, feature flags |
 | Tool licensing or SSO limits | Verify per tool before packaging |
 | Solo capacity | Keep scope to the thin loop; defer P2 entirely |
+| Laptop memory with many tools | Compose profiles; move heavy tools to one EC2 host early if needed |
+| Community MCP servers or tool editions change | Adapters call tools directly by default; MCP only after a maturity check |
 
 ## Appendix A — Change history and section map
 
@@ -632,6 +741,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | 1.2 | 21 Nov 2026 | AI-first two-pane UX, coexistence, Change ID, enterprise adoption (§17–21, FR-061 to FR-101). |
 | 1.3 | Nov 2026 | Project Inception (§22, FR-102 to FR-108). |
 | 2.0 | 27 Nov 2026 | Consolidated into one current-state document; product decisions PD-1 to PD-3; priorities reset; adapter architecture and closed loop made central; new FR-109 to FR-116 and NFR-013/014; observability added as a capability. |
+| 2.1 | 27 Nov 2026 | PD-4 thin loop first, PD-5 open-source defaults with swappable adapters; AD-1 Java with portable AI module, AD-2 Docker then AWS, AD-3 Keycloak now; default tools for identity, CI/CD, registry, security scanning, testing, observability, on-call, feature flags and notifications; AI meeting assistant as a future capability; new FR-117 to FR-126 and NFR-015 to NFR-017; §15.3 runtime environments. |
 
 | Old section | New section |
 |---|---|
@@ -640,12 +750,12 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | §4 Stakeholders | §5 |
 | §5 Tool stack | §8.3 |
 | §6.1–6.6, §6.7 Functional requirements | §13 |
-| §7 Artifact types | §15.3 |
+| §7 Artifact types | §15.4 |
 | §8 Reference architecture | §15.2 |
-| §9 AWS deployment | §15.4 |
+| §9 AWS deployment | §15.3, §15.5 |
 | §10 Governance, §11B Identity | §14 |
 | §11 NFRs | §16 |
-| §11A Platform lifecycle | §15.4 |
+| §11A Platform lifecycle | §15.5 |
 | §11C Ownership and reconciliation, §18 Coexistence | §11 |
 | §11D Capability registry | §8.1 |
 | §11E Workflow events | §11, §18 (D-11) |
@@ -657,7 +767,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | §14 Risks | §19 |
 | §15, §21.2 Open decisions | §18 |
 | §17 AI-first interaction | §9 |
-| §20 Enterprise adoption | §15.4 |
+| §20 Enterprise adoption | §15.5 |
 | §22 Project Inception | §10 |
 
 ## Appendix B — Architecture decision records to prepare
@@ -668,7 +778,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | ADR-002 | GitHub canonical artifact ownership and review governance |
 | ADR-003 | Cloud provisioning boundary (AWS / Terraform) |
 | ADR-004 | Docker Compose runtime and evolution path |
-| ADR-005 | AI service placement: Spring Boot or separate Python service (D-1) |
+| ADR-005 | AI in Java, in a portable framework-free module (AD-1) — decided |
 | ADR-006 | Model-agnostic LLM adapter and model-independent context |
 | ADR-007 | Capability adapters and registry |
 | ADR-008 | Git synchronisation, conflict resolution and native-tool ownership |
@@ -679,12 +789,17 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | ADR-013 | Source-system authority and passive ingestion |
 | ADR-014 | Enterprise onboarding, backfill and provenance |
 | ADR-015 | Walking-skeleton delivery and Change ID traceability |
-| ADR-016 | **New.** Observability provider and log-to-Change-ID correlation (D-3, D-4) |
+| ADR-016 | Observability with Grafana, Loki and Prometheus, and log-to-Change-ID correlation (D-4) |
+| ADR-017 | **New.** Keycloak identity and the authorisation split with UnityStack (AD-3) |
+| ADR-018 | **New.** Security scanning pipeline: Semgrep, Trivy, OWASP ZAP |
+| ADR-019 | **New.** Test management and release test reports with Kiwi TCMS |
+| ADR-020 | **New.** Alerting, on-call and AI incident summaries with GoAlert |
+| ADR-021 | **New.** Local Compose profiles and the move to AWS (AD-2) |
 
 ## Appendix C — Next documents
 
 - System architecture and C4 diagrams
-- Capability adapter contracts (including LLM and observability)
+- Capability adapter contracts (including LLM, observability, identity, registry, test management, on-call and notifications)
 - Change ID and traceability schema
 - Git repository and artifact schema
 - MVP user stories and acceptance tests for the thin loop
