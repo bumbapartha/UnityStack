@@ -100,5 +100,6 @@ Cross-cutting: the parts of UnityStack itself that every SDLC phase relies on â€
 | FR-020 | P0 | Show the proposed artifact and diff before publication or approval. |
 | FR-064 | P0 | Apply conversational revisions to versioned previews and show inline or structured diffs. |
 | FR-065 | P0 | Require explicit user finalisation of a specific draft revision before creating a GitHub PR. |
+| FR-131 | P0 | **New.** Show design artifacts read-only in the workspace preview pane: Excalidraw wireframes rendered from Git, Penpot designs as exported images or an embedded prototype, and OpenAPI contracts through Swagger UI. An "Open in tool" action opens the external tool through its adapter for editing ([TD-13](../decisions.md#td-13)). |
 | FR-077 | P2 | Offer launch-in-browser or local editor for manual artifact changes. |
 | FR-078 | P2 | Optionally support direct artifact editing inside UnityStack. |

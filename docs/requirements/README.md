@@ -22,7 +22,7 @@ Requirements are grouped by SDLC phase, in the order work flows through the loop
 | Security | [07-security.md](07-security.md) | 5 |
 | Communication | [08-communication.md](08-communication.md) | 2 |
 | Traceability and integration | [09-traceability-and-integration.md](09-traceability-and-integration.md) | 30 |
-| Core platform | [10-core-platform.md](10-core-platform.md) | 27 |
+| Core platform | [10-core-platform.md](10-core-platform.md) | 28 |
 | Distribution and onboarding | [11-distribution-and-onboarding.md](11-distribution-and-onboarding.md) | 14 |
 | Non-functional requirements | [12-non-functional.md](12-non-functional.md) | 18 |
 
@@ -179,6 +179,7 @@ Priorities in this document mean:
 | [FR-128](06-monitoring-and-operations.md) | P1 | Monitoring and operations |
 | [FR-129](05-deployment.md) | P1 | Deployment |
 | [FR-130](05-deployment.md) | P0 | Deployment |
+| [FR-131](10-core-platform.md) | P0 | Core platform |
 | [NFR-001](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-002](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-003](12-non-functional.md) | — | Non-functional requirements |

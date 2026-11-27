@@ -156,5 +156,6 @@ Notes on how the new tools fit together:
 - **GoAlert:** on-call rotations (daily, weekly, hourly), temporary overrides and escalation policies; pages by phone call or SMS. Its API allows UnityStack to manage rotations later.
 - **Kiwi TCMS:** test cases, test plans, test runs per build or release, and reports such as requirements without tests. Test cases are authored in Git (by AI, reviewed by PR); Kiwi keeps run history so every release has a permanent record of what was tested and what passed.
 - **OpenFeature with Unleash:** Unleash is the flag server and dashboard; OpenFeature is the standard SDK the code calls. An organisation with its own flag system writes an OpenFeature provider and plugs it in without UnityStack code changes.
+- **Viewing design artifacts in UnityStack (TD-13):** Excalidraw files render read-only in the preview pane straight from Git, Penpot designs appear as exports or an embedded prototype, and OpenAPI contracts are written in UnityStack and displayed with Swagger UI. Editing opens the tool through its adapter.
 
 **Important:** an available provider does not imply full integration, SSO or feature parity. Each adapter documents its supported operations, versions, licensing and limitations.
