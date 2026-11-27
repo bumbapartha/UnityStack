@@ -132,7 +132,7 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 | Capability | Default (open source) | Alternatives | MVP |
 |---|---|---|---|
 | Architecture diagrams | Mermaid (library) | — | Yes |
-| Technical documentation | MkDocs | Confluence (P2) | P1 |
+| Technical documentation | MkDocs | Confluence (P2) | Yes |
 | API documentation | Swagger UI | — | Yes |
 | Code quality | SonarQube Community Build | — | P1 |
 | Initial wireframes | Excalidraw | — | Yes |

@@ -11,6 +11,7 @@ Features UnityStack gives its users for the architecture and design phase of *th
 | ID | Priority | Requirement |
 |---|---|---|
 | FR-038 | P0 | Generate the HLD (architecture decisions as ADRs, including monolith or microservices, frontend/backend split, stack and how each non-functional requirement is met), the LLD and Mermaid diagrams, including sequence diagrams, through human-reviewed PRs. *(Was P1.)* |
-| FR-039 | P0 | Publish OpenAPI specifications (API contracts) through Swagger UI, and Markdown documentation through MkDocs. *(Was P2; API contracts are in the MVP, MkDocs publishing may follow.)* |
+| FR-039 | P0 | Publish the architecture documents (HLD, LLD, ADRs as Markdown with Mermaid diagrams, kept in Git) as a documentation website with MkDocs, giving a shareable URL for reading and review, and publish OpenAPI specifications (API contracts) through Swagger UI. No separate Word or Google documents. *(Was P2.)* |
+| FR-132 | P0 | **New.** Serve each managed project's published docs site, and a preview build for every PR, from S3-compatible storage through UnityStack, readable only by signed-in users with access to that project ([TD-14](../decisions.md#td-14)). |
 | FR-037 | P0 | Generate and review Excalidraw wireframes and Penpot designs with Git-backed artifacts, after the requirements are approved and before planning. *(Was P2.)* |
 | FR-040 | P2 | Register software components in Backstage using Git-versioned catalogue descriptors. *(Was P1.)* |
