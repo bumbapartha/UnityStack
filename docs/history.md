@@ -13,6 +13,7 @@
 | 2.1 | 27 Nov 2026 | PD-4 thin loop first, PD-5 open-source defaults with swappable adapters; AD-1 Java with portable AI module, AD-2 Docker then AWS, AD-3 Keycloak now; default tools for identity, CI/CD, registry, security scanning, testing, observability, on-call, feature flags and notifications; AI meeting assistant as a future capability; new FR-117 to FR-129 and NFR-015 to NFR-017; OpenTelemetry, Grafana alerting rules in Git and local rebuild workflow; §15.3 runtime environments; AD-4 Git provider adapter (GitHub first; Gitea, GitLab, Bitbucket, Azure DevOps later). |
 | 2.2 | 27 Nov 2026 | Split into topic files under `docs/`: requirements grouped by SDLC phase with cross-links to tools and decisions; all decisions in one table; dogfooding plan merged into the roadmap. No requirement content changed. |
 | 2.3 | 27 Nov 2026 | AD-5: code organised by feature module in backend and frontend, with boundary rules and Spring Modulith; NFR-018 modularity; roadmap Phase 0 restructure step. |
+| 2.4 | 27 Nov 2026 | Coding guidelines (`CLAUDE.md` in root, backend, frontend); TD-12 data access with Spring Data JPA and PostgreSQL JSONB. |
 
 ## Where PRD v2.1 sections went
 

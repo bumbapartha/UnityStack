@@ -2,7 +2,7 @@
 
 UnityStack — Enterprise AI Software Factory. *From requirements to production. Powered by AI. Governed by humans.*
 
-**Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.3 (27 November 2026)
+**Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.4 (27 November 2026)
 
 This folder replaces the single `Requirements.md` (v2.1) and the dogfooding development plan.
 
@@ -19,6 +19,10 @@ This folder replaces the single `Requirements.md` (v2.1) and the dogfooding deve
 | [Open questions and risks](open-questions.md) | Undecided items and risks |
 | [Development setup](dev-setup.md) | Docker Compose profiles, local rebuilds, move to AWS |
 | [Document history](history.md) | Version history and where old sections went |
+
+## Coding guidelines
+
+The rules that people and AI assistants follow when writing code are in [`CLAUDE.md`](../CLAUDE.md) (whole repository), [`backend/CLAUDE.md`](../backend/CLAUDE.md) and [`frontend/CLAUDE.md`](../frontend/CLAUDE.md). Claude Code reads the file for the folder it is working in.
 
 ## Linking conventions
 
