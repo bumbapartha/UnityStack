@@ -18,13 +18,14 @@ Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If 
 ## Working rules
 
 1. **Branch and PR only.** Never commit to `main` directly. One logical change per PR.
-2. **Reference IDs.** Commit messages and PR descriptions name the requirement and decision IDs they implement (for example `FR-105`, `AD-5`). Once the Change ID scheme exists (open question D-4), carry it in branch names, commits and PRs too.
-3. **Adapters everywhere (PD-2, PD-5).** Never call a tool's API directly from workflow or agent code. Add or use an adapter in the module that owns the capability. Swapping a provider must only touch its adapter and configuration.
-4. **Feature modules (AD-5).** Code is grouped by feature module (requirements, design, development, testing, deployment, monitoring, security, communication, traceability) plus a small `core`. Never group code by file type across the app.
-5. **AI proposes, humans govern.** AI output is validated by trusted code before any action. AI never merges, deploys to production or creates tracker items without the required human action.
-6. **Secrets.** Real keys live only in `.env` (git-ignored). `.env.example` holds placeholders only. Never log, commit or send secrets to a model.
-7. **Open source first.** Default dependencies and tools must be open source. Flag any licence that is not (for example AGPL or source-available) in the PR.
-8. **Keep docs in step.** If a change alters behaviour, a decision or the module layout, update the matching file under `docs/` in the same PR.
+2. **Small PRs: at most 200 changed lines.** Additions plus deletions, as GitHub counts them, must not exceed 200 per PR. If a request needs more, say so **before starting**: give an estimate and propose how to split it into a series of small PRs, each reviewable and working on its own. Then wait for agreement. Never open one large PR. Write generated files compactly; for example, Excalidraw files use one element per line.
+3. **Reference IDs.** Commit messages and PR descriptions name the requirement and decision IDs they implement (for example `FR-105`, `AD-5`). Once the Change ID scheme exists (open question D-4), carry it in branch names, commits and PRs too.
+4. **Adapters everywhere (PD-2, PD-5).** Never call a tool's API directly from workflow or agent code. Add or use an adapter in the module that owns the capability. Swapping a provider must only touch its adapter and configuration.
+5. **Feature modules (AD-5).** Code is grouped by feature module (requirements, design, development, testing, deployment, monitoring, security, communication, traceability) plus a small `core`. Never group code by file type across the app.
+6. **AI proposes, humans govern.** AI output is validated by trusted code before any action. AI never merges, deploys to production or creates tracker items without the required human action.
+7. **Secrets.** Real keys live only in `.env` (git-ignored). `.env.example` holds placeholders only. Never log, commit or send secrets to a model.
+8. **Open source first.** Default dependencies and tools must be open source. Flag any licence that is not (for example AGPL or source-available) in the PR.
+9. **Keep docs in step.** If a change alters behaviour, a decision or the module layout, update the matching file under `docs/` in the same PR.
 
 ## Local development (TD-10)
 
