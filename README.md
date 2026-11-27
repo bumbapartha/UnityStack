@@ -82,6 +82,22 @@ The initial selected tool stack is:
 | Browser IDE | [Eclipse Theia](https://github.com/eclipse-theia/theia) |
 | Code quality | [SonarQube Community Build](https://github.com/SonarSource/sonarqube) |
 
+The default set also covers the rest of the SDLC, all open source:
+
+| Capability | Tool |
+| --- | --- |
+| Identity | Keycloak |
+| CI/CD | GitHub Actions |
+| Container registry | GitHub Container Registry from the AWS move (Amazon ECR, Harbor later) |
+| Security scanning | Semgrep (code), Trivy (dependencies, images, secrets), OWASP ZAP (black-box) |
+| Testing | JUnit, Vitest, Playwright; Kiwi TCMS for test management |
+| Observability | OpenTelemetry, Grafana, Loki, Prometheus |
+| On-call | GoAlert |
+| Feature flags | OpenFeature with Unleash |
+| Notifications | Mattermost |
+
+Every tool, and the AI model, sits behind an adapter, so any of them can be replaced (for example Jira instead of OpenProject). See [Requirements §8.3](Requirements.md) for the full list and alternatives.
+
 These tools have different deployment and integration models. Availability in the platform does not imply every tool is fully AI-integrated on day one.
 
 ## Packaging and deployment
@@ -94,7 +110,7 @@ The target is a **versioned Enterprise AI Software Factory in a Box** distributi
 - A single-tenant installation per organisation for the initial architecture, supporting multiple teams, projects and repositories.
 - A future enterprise onboarding mode for connecting existing systems instead of provisioning replacements.
 
-The MVP may use EC2 and Docker Compose to reduce initial complexity; an enterprise-grade Kubernetes deployment is a future option. Capacity must be validated for the complete tool stack.
+Development runs in local Docker Compose until the thin closed loop works end to end, then moves to AWS on EC2 with Docker Compose; an enterprise-grade Kubernetes deployment is a future option. Capacity must be validated for the complete tool stack.
 
 ## MVP focus
 
