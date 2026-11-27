@@ -19,6 +19,7 @@ When a question is settled, add a row to [Decisions](decisions.md) and remove it
 | D-13 | Scale, SLOs, RTO and RPO | After baseline measurement. |
 | D-17 | MCP servers for tools | Community MCP servers exist for some tools (for example the security scanners); check maturity before adapters depend on them. |
 | D-19 | Order of further Git providers | Proposed: Gitea first (keeps a fully open-source option), then GitLab and Bitbucket. |
+| D-20 | Where the MkDocs site for a managed project is hosted | Options: GitHub Pages, or the project's own AWS (for example S3 behind CloudFront). Access control for private designs to be decided. |
 | D-18 | Meeting platform for the AI meeting assistant | Later (P2); candidates Jitsi Meet or Mattermost calls, with Zoom and Teams adapters. |
 
 ## Implementation proposals to validate

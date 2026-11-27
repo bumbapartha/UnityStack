@@ -47,7 +47,7 @@ Priorities in this document mean:
 
 - Project Inception ([Requirements phase](requirements/01-requirements.md)) — **built**.
 - Requirements workspace: AI edits a Markdown requirements document read from GitHub, with preview, diff, revisions, finalise → PR.
-- Architecture and design: AI drafts the HLD with ADRs (monolith or microservices, frontend/backend split, stack, how each NFR is met), the LLD with Mermaid sequence diagrams, and OpenAPI contracts shown in Swagger UI; a design review PR comes before development (FR-038, FR-039).
+- Architecture and design: AI drafts the HLD with ADRs (monolith or microservices, frontend/backend split, stack, how each NFR is met), the LLD with Mermaid sequence diagrams (all Markdown in Git, published with MkDocs as a shareable docs site), and OpenAPI contracts shown in Swagger UI; a design review PR comes before development (FR-038, FR-039).
 - Design of screens: AI drafts Excalidraw wireframes from the approved requirements, then Penpot UX designs and a clickable prototype; both are saved in Git through a PR (FR-037).
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
@@ -155,7 +155,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Build:**
 - AI proposes epics, stories and acceptance criteria according to scope; hierarchical preview with change indicators.
 - Finalisation → Git PR for canonical YAML/Markdown work definitions → review/merge.
-- Architecture and design workspace before development: HLD with ADRs, LLD with Mermaid sequence diagrams, OpenAPI contracts in Swagger UI, design review PR (FR-038, FR-039).
+- Architecture and design workspace before development: HLD with ADRs, LLD with Mermaid sequence diagrams (published with MkDocs), OpenAPI contracts in Swagger UI, design review PR (FR-038, FR-039).
 - OpenProject adapter (Compose profile `pm`) publishes approved items after merge, with stable external IDs, idempotent retry and the Change ID.
 
 **Dogfooding demonstration:** Decompose a real UnityStack requirement into stories and publish them to OpenProject.
