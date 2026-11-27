@@ -1,37 +1,18 @@
-# UnityStack — Dogfooding Development Idea & Execution Plan
+# Scope and roadmap
 
-> **Enterprise AI Software Factory**  
-> **From Requirements to Production. Powered by AI. Governed by Humans.**
+[← Documentation index](README.md)
 
-**Document:** Development strategy and phased implementation plan  
-**Version:** 1.1 (draft, aligned with PRD v2.1)  
-**Date:** 27 November 2026  
-**Status:** Proposed; milestones and estimates require validation
+What is built when, and how UnityStack is built with UnityStack. This file merges the former PRD scope and acceptance sections with the dogfooding development plan.
 
----
+## Dogfooding idea
 
-## 1. Executive idea
-
-**Build UnityStack using UnityStack.** Start by creating the smallest UnityStack shell with conventional engineering tools, running locally in Docker. Add a usable AI Requirements workspace. Then use that workspace to propose changes to UnityStack's own requirements document through GitHub pull requests (PRs). Build the whole loop thin from end to end first (requirements → stories → code and tests → PR → deploy → logs → AI analysis → bug), using each new stage to help build the next one. Then move to AWS and deepen each stage (PRD PD-4, AD-2).
+**Build UnityStack using UnityStack.** Start by creating the smallest UnityStack shell with conventional engineering tools, running locally in Docker. Add a usable AI Requirements workspace. Then use that workspace to propose changes to UnityStack's own requirements document through GitHub pull requests (PRs). Build the whole loop thin from end to end first (requirements → stories → code and tests → PR → deploy → logs → AI analysis → bug), using each new stage to help build the next one. Then move to AWS and deepen each stage ([PD-4](decisions/PD-4-thin-loop-first.md), [AD-2](decisions/AD-2-docker-then-aws.md)).
 
 This is **dogfooding**: UnityStack becomes its first real customer. The product grows through its own governed delivery loop, while ordinary GitHub/IDE/CI/CD development remains fully supported.
 
 **First product-defining success:** UnityStack reads its own approved requirements Markdown from GitHub; a user discusses a change with AI; the right pane shows a revised document and diff; the user finalises; UnityStack creates a PR; a reviewer or permitted policy merges it; UnityStack recognises the merge and shows the new approved version.
 
-## 2. Product principles
-
-1. **AI-first, not AI-only.** Creation and modification in the UnityStack MVP happen through conversation. Users may independently develop and submit PRs directly in GitHub at any time.
-2. **Two-pane workspace.** Left: AI chat. Right: live, read-only artifact preview, revision history, and changes. Review/finalise actions are allowed; direct inline artifact editing is not an MVP requirement.
-3. **Human-governed changes.** AI proposes; users inspect and finalise; GitHub PR and organisation policy determine reviews, checks, merge and deployment permissions.
-4. **The Git provider owns Git state.** The connected Git provider (GitHub first, behind an adapter) is authoritative for repositories, branches, commits, PRs, reviews and merged Git artifacts. UnityStack owns conversations, drafts, assignments, workflow and traceability state.
-5. **Traditional SDLC remains independent.** Teams can create tickets, write code, review PRs and deploy entirely outside UnityStack. UnityStack observes and reconciles supported external activity.
-6. **Walking skeleton and continuous delivery.** Deploy Hello World through an automated pipeline on day one (locally first, then AWS); grow functionality through small reviewed changes.
-7. **Everything durable and reviewable as code where appropriate.** Requirements, ADRs, Mermaid diagrams, OpenAPI, code, tests and infrastructure configurations are Git artifacts. Runtime state, credentials, and native tool databases are not Git artifacts.
-8. **One reusable workspace, many modules.** Reuse chat, preview, diff, revision, finalisation and PR capabilities; vary agents and renderers by SDLC role.
-9. **Pluggable tool architecture.** Start with GitHub and the selected default tools. Later support existing enterprise tools and alternative providers without replacing the UnityStack user experience.
-10. **End-to-end provenance.** Associate business changes with requirements, design, stories, PRs, tests, deployments, incidents and operational telemetry; distinguish verified from AI-inferred links.
-
-## 3. Dogfooding loop
+## Dogfooding loop
 
 ```mermaid
 flowchart TD
@@ -52,74 +33,97 @@ flowchart TD
 
 **Practical limitation:** UnityStack cannot bootstrap itself from nothing. Initial source repositories, CI/CD, cloud infrastructure, application shell and first AI integration are created with Codex, IDEs and normal engineering practices.
 
-## 4. Delivery architecture (initial target)
+## Scope and priorities
 
-Every tool below sits behind a UnityStack adapter; changing one means changing its adapter and configuration only (PRD §8).
+Priorities in this document mean:
 
-| Area | Initial implementation | Evolution |
-|---|---|---|
-| Frontend | Vue 3 + Vite, responsive two-pane workspace | Module-specific previews, richer collaboration |
-| Control plane | Java 21 + Spring Boot | Policies, assignments, tool adapters, orchestration |
-| AI | Java, in its own framework-free module behind interfaces with plain data objects (AD-1) | More agents; can be lifted into a Python service later if needed |
-| Model access | Provider-neutral LLM adapter (mock, OpenAI) | Routing gateway, budgets and fallback |
-| Identity | Keycloak (OIDC) from the start (AD-3) | Federation with organisation identity providers |
-| Operational state | PostgreSQL | Scalable workflow/event processing and search |
-| Artifact storage | GitHub repositories, behind the Git provider adapter | Gitea, GitLab, Bitbucket, Azure DevOps adapters; multi-repo registry and cross-repo change sets |
-| Preview | Markdown renderer + textual diff | Mermaid, stories, code, tests, deployment previews |
-| Streaming | SSE for chat/proposed revisions | More granular streaming, collaboration |
-| CI/CD | GitHub Actions | Jenkins, Argo CD adapters |
-| Security scanning | Semgrep (SAST) and Trivy (dependencies, images, IaC, secrets) in CI | OWASP ZAP (DAST) after deploy |
-| Tests | JUnit, Vitest, Playwright; results in Kiwi TCMS | Release test reports, coverage by requirement |
-| Container registry | Local image builds | GitHub Container Registry and Amazon ECR with the AWS move; Harbor later |
-| Project management | OpenProject | Jira adapter |
-| Observability | OpenTelemetry (Java agent + Collector) → Loki (logs), Prometheus (metrics), Grafana | Elasticsearch/OpenSearch log adapters, AI evaluation, release correlation |
-| Alerting and on-call | — | Grafana alerting (rules in Git) → GoAlert, plus AI incident summaries |
-| Notifications | — | Mattermost; Slack and Teams adapters |
-| Feature flags | — | OpenFeature with Unleash |
-| Runtime | Local Docker Compose with profiles; AI rebuilds with `docker compose up --build`, `docker compose watch` for manual edits | AWS: Terraform + EC2 + Docker Compose as soon as the thin loop works, with per-PR preview and main environments; EKS when justified |
+| Priority | Meaning |
+|---|---|
+| **P0 — MVP** | Needed for the thin closed loop, used by the sole user ([PD-1](decisions/PD-1-primary-user.md), [PD-3](decisions/PD-3-closed-loop.md)). |
+| **P1 — Next** | Deepens the loop while dogfooding and prepares for a small group of demo users. |
+| **P2 — Later** | Enterprise distribution and adoption: installer, full default-tool bundle, BYOT selection, SSO, HA, large-scale ingestion. |
 
-**Logical services:** Vue UI → Spring Boot trusted control plane (with the AI module inside it) → adapters to GitHub, OpenProject, CI, registry, test management and observability; PostgreSQL for state; Keycloak for identity. AI returns structured proposed changes; trusted code validates and applies them to a draft, and only trusted code creates branches/PRs after user finalisation.
+### MVP (P0) — the thin closed loop
 
-## 5. Workspace and artifact contract
+- [Project Inception](requirements/inception.md) — **built**.
+- Requirements workspace: AI edits a Markdown requirements document read from GitHub, with preview, diff, revisions, finalise → PR.
+- Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
+- Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
+- Review and merge through GitHub, with UnityStack reflecting PR status.
+- Checks: GitHub Actions runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy) on every PR. It does not deploy during local development.
+- Local delivery: the managed application (starting with Hello World) is rebuilt and restarted in local Docker Compose after changes ([Development setup](dev-setup.md)).
+- Testing: end-to-end tests with Playwright; test cases kept in Git and each run's results recorded in Kiwi TCMS, linked to requirements, release and Change ID.
+- Observe: the deployed application's logs (Loki) and metrics (Prometheus) are collected and viewable in Grafana and from UnityStack; the user can ask AI to analyse them.
+- Feedback: AI can propose a bug from log evidence; once the user accepts it, the bug is created in the tracker, linked to the Change ID, and enters the loop again.
+- Sign-in and roles through Keycloak ([AD-3](decisions/AD-3-keycloak-now.md)).
+- Adapters for every tool used above, plus the LLM adapter with a mock provider.
+- Change ID created at the start and carried through every stage.
+- Everything runs locally in Docker Compose, using profiles ([AD-2](decisions/AD-2-docker-then-aws.md)).
 
-**Common workspace:**
+### Next (P1)
 
-- Left pane: conversation, questions, clarifications, AI progress and references.
-- Right pane: approved baseline, proposed revision, preview/diff/history tabs, validation feedback, finalise/create PR.
-- Context: organisation, project, role/module, current work item, Git repo/path/ref, source artifact version and related change ID.
-- Draft lifecycle: `OPEN → PROPOSED → USER_ACCEPTED → PR_OPEN → MERGED` (or `REVISE / REJECT / CLOSED`). PR and merge states are read from GitHub, not guessed from chat.
-- Every proposed revision records source baseline, author/agent run, timestamp, diff and validation results. Drafts live in UnityStack storage; approved Git artifacts live in GitHub.
-- MVP preview is **read-only**. Future: button to open artifacts in a supported web or local editor; no need to build that in the MVP.
+- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS ([AD-2](decisions/AD-2-docker-then-aws.md)). CI/CD then builds images, publishes them to the container registry (GitHub Container Registry, then Amazon ECR), deploys each PR to a preview environment and deploys merges to main to the main (production) environment.
+- Black-box security testing of the deployed application with OWASP ZAP.
+- Alerting and on-call: Grafana alerts page the on-call developer through GoAlert; at the same time AI investigates logs and metrics and adds a summary to the incident.
+- Notifications (review requests, alerts, incident summaries) through Mattermost.
+- Feature flags through OpenFeature, with Unleash as the provider.
+- Second provider behind an existing adapter (Jira for project management) to prove swappability.
+- Architecture workspace (HLD, ADRs, Mermaid) and richer previews.
+- Passive observation of work done outside UnityStack, webhook reconciliation and bounded history import.
+- My Work queues, workflow orchestration with parallel work and dependencies.
+- Multi-user roles and resource permissions ready for demo users.
+- Model routing, budgets, RAG over project documents, agent evaluation.
 
-| Module | Right-hand preview | First relevant capability |
-|---|---|---|
-| Requirements | BRD/PRD Markdown, inline changes | AI edits an existing Git Markdown document |
-| Architecture | HLD/LLD, ADR, rendered Mermaid and source diff | Generate/revise UnityStack architecture |
-| Planning | Epic/story/bug hierarchy, acceptance criteria and changes | Decompose approved requirements into proposed work |
-| Development | Changed files, code diff, build/test feedback | AI proposes code PRs with bounded execution |
-| Testing | Test scenarios, test code, result summary | Generate tests and review coverage |
-| Delivery | Build/release/deployment state and links | Track release to environment and feature |
-| Intelligence | Cross-tool timeline and traceability graph | Explain past work even when done outside UnityStack |
+### Later (P2)
 
-## 6. Phased implementation plan
+- Versioned, installable distribution with Terraform-provisioned AWS, the full default tool profile, upgrade, backup and restore.
+- Bring Your Own Tool: the organisation picks the provider for each capability at install time (for example GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams).
+- **AI meeting assistant:** an AI participant in requirement meetings that listens, asks questions, suggests solutions, summarises on request and later proposes requirement updates as PRs ([AI meeting assistant](requirements/meeting-assistant.md)).
+- Enterprise onboarding: connect existing tools, historical backfill, relationship reconstruction, completeness reports.
+- Full SSO across all tools, HA, Kubernetes, multi-cloud, cross-repository change sets.
 
-The phases follow the thin loop (PRD PD-4): Phases 0–4 build every stage of the loop in a basic form; Phase 4 completes the MVP (PRD §17). Each phase uses what the earlier phases built.
+### Explicit exclusions from the MVP
+
+Manual artifact editors inside UnityStack; installing all default tools; cloud deployment (comes straight after, in P1); enterprise installer; SSO across every third-party tool; high availability; multi-tenant SaaS; multi-cloud; autonomous production deployment; atomic cross-repository merges; advanced visual diagram diffs; large-scale historical ingestion.
+
+## MVP acceptance — the thin loop
+
+The MVP is accepted when the sole user can do the following on a demo application (Hello World first), with every step linked by one Change ID:
+
+1. Create a project through Inception and link its GitHub repository; the charter is proposed to Git via PR.
+2. Discuss a requirement change with AI, inspect the diff, finalise a revision and get a PR in the mapped repository.
+3. After merge, have AI propose epics and stories; after their PR merges, they are published once to the tracker, even if events are replayed.
+4. Pick a story; AI proposes code and tests together on a branch; the PR carries the Change ID.
+5. On the PR, CI runs unit tests, Semgrep and Trivy; a failing scan or test blocks the merge according to policy. After merge, the application is rebuilt and restarted in local Docker Compose.
+6. Playwright end-to-end tests run against the deployed version, and the run's results are recorded in Kiwi TCMS against the release, linked to the requirement and Change ID.
+7. See the deployed version's logs, tagged with the Change ID, from UnityStack.
+8. Ask AI whether things work as expected; AI answers with cited log evidence.
+9. Accept an AI-proposed bug; it appears in the tracker linked to the Change ID, deployment and log evidence, and can start the next change.
+10. View one timeline for the Change ID from requirement to test report to bug; missing links show as gaps.
+11. Switch the LLM provider or model by configuration mid-project and continue working without losing context.
+12. A PR created directly in GitHub, outside UnityStack, is detected and shown with its source status.
+13. No AI action merges, deploys to production or creates a tracker item without the required human action.
+14. All of the above works with the user signed in through Keycloak, and an action the user's role does not permit is refused.
+
+## Phased plan
+
+The phases follow the thin loop ([PD-4](decisions/PD-4-thin-loop-first.md)): Phases 0–4 build every stage of the loop in a basic form; Phase 4 completes the MVP ([Scope and roadmap](#)). Each phase uses what the earlier phases built.
 
 ### Phase 0 — Local foundation and walking skeleton (v0.0.x)
 
 **Goal:** A repeatable local stack, signed-in access and an automated pipeline for a Hello World application.
 
-**Already built:** Project Inception (PRD §10) with Vue, Spring Boot, PostgreSQL and the mock/OpenAI LLM adapter in Docker Compose.
+**Already built:** [Project Inception](requirements/inception.md) with Vue, Spring Boot, PostgreSQL and the mock/OpenAI LLM adapter in Docker Compose.
 
 **Build:**
 - Docker Compose profiles (`core`, `pm`, `test`, `monitoring`, …) so only the needed tools start.
 - Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
-- Move the AI code into its own framework-free module behind interfaces (AD-1).
+- Move the AI code into its own framework-free module behind interfaces ([AD-1](decisions/AD-1-java-portable-ai-module.md)).
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
-- Change ID scheme (PRD D-4) and generation at the start of a change.
+- Change ID scheme ([D-4](open-questions.md)) and generation at the start of a change.
 - GitHub Actions for UnityStack itself on every PR: build, JUnit and Vitest, Semgrep, Trivy (no deployment).
 - `unitystack-demo-app` repository with a Hello World service and the same checks; runs in local Docker Compose.
-- Local rebuild workflow: AI runs `docker compose up --build -d <service>` after a batch of edits; `docker compose watch` for manual edits (PRD §15.3).
+- Local rebuild workflow: AI runs `docker compose up --build -d <service>` after a batch of edits; `docker compose watch` for manual edits ([Development setup](dev-setup.md)).
 - Secrets only in `.env` locally; placeholders in `.env.example`.
 
 **Dogfooding demonstration:** A conventional PR to the demo app changes the Hello World text; CI tests and scans it; after merge, a local rebuild runs the new version.
@@ -131,7 +135,7 @@ The phases follow the thin loop (PRD PD-4): Phases 0–4 build every stage of th
 **Goal:** Use UnityStack to update its own requirements document.
 
 **Build:**
-- Project/repository/artifact configuration for the UnityStack PRD path; charter proposed to Git via PR when a repository is linked (FR-108).
+- Project/repository/artifact configuration for the UnityStack PRD path; charter proposed to Git via PR when a repository is linked ([FR-108](requirements/inception.md)).
 - Two-pane UI with chat, Markdown preview, baseline/proposed diff, revision history and finalise action.
 - AI requirements flow: retrieve approved Markdown from GitHub; discuss change; produce a structured patch or revised document; validate document shape and identifiers; save draft revision with its Change ID.
 - Trusted GitHub integration: create branch, commit proposed Markdown, open PR; show PR URL/status.
@@ -182,11 +186,11 @@ The phases follow the thin loop (PRD PD-4): Phases 0–4 build every stage of th
 
 **Dogfooding demonstration:** Introduce a small fault in the demo app; AI finds it in the logs, proposes a bug, the bug goes to OpenProject, and the fix goes through the loop again.
 
-**Exit criteria:** PRD §17 MVP acceptance passes.
+**Exit criteria:** [Scope and roadmap](#) MVP acceptance passes.
 
 ### Phase 5 — Move to AWS (v0.5)
 
-**Goal:** Run the working loop in AWS as soon as possible after the MVP (AD-2).
+**Goal:** Run the working loop in AWS as soon as possible after the MVP ([AD-2](decisions/AD-2-docker-then-aws.md)).
 
 **Build:**
 - Terraform for EC2, networking, storage and secrets (Secrets Manager or SSM); S3 remote state with locking.
@@ -226,11 +230,11 @@ The phases follow the thin loop (PRD PD-4): Phases 0–4 build every stage of th
 - Install-time choice of provider per capability (for example GitHub, Gitea, GitLab or Bitbucket; GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams), with the default open-source set as the full profile.
 - Organisation configuration, identity federation, domain/TLS, secrets and tool health.
 - Greenfield install or connect-existing onboarding; historical ingestion plus ongoing synchronisation.
-- Future: AI meeting assistant that joins requirement meetings, summarises them and proposes requirement updates (PRD FR-126).
+- Future: AI meeting assistant that joins requirement meetings, summarises them and proposes requirement updates ([FR-126](requirements/meeting-assistant.md)).
 
 **Exit criteria:** Repeatable fresh install, upgrade and restore tested; onboarding report identifies imported records, gaps and integration health.
 
-## 7. MVP scope boundaries
+## MVP scope boundaries
 
 **MVP (v0.4, thin loop) includes:** Inception; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy (no CI deployment); local rebuilds in Docker Compose; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
 
@@ -238,33 +242,7 @@ The phases follow the thin loop (PRD PD-4): Phases 0–4 build every stage of th
 
 **Full enterprise vision remains:** installable AI Software Factory, tool-provider choices per capability, independent SDLC observation, historical ingestion, workflow intelligence and end-to-end delivery traceability.
 
-## 8. Git and repository organisation
-
-Current and planned repositories:
-
-```text
-UnityStack/                    # this repository (monorepo for now)
-  frontend/
-  backend/                     # control plane; AI in its own module (AD-1)
-  docs/
-    plans/
-    architecture/              # later
-    adr/                       # later
-  Requirements.md
-  docker-compose.yml           # with profiles
-  .github/workflows/
-
-unitystack-demo-app/           # Phase 0: the managed Hello World application
-  src/
-  tests/
-  .github/workflows/
-
-infrastructure (Phase 5)       # Terraform for AWS; folder or separate repository
-```
-
-UnityStack must eventually support monorepo, multi-repo and hybrid arrangements. For cross-repo changes, group linked PRs into a change set; do not assume atomic merging across repositories.
-
-## 9. Work items and prioritisation
+## Work items and prioritisation
 
 **Immediate implementation order:**
 
@@ -305,21 +283,7 @@ UnityStack must eventually support monorepo, multi-repo and hybrid arrangements.
 | FB-01 | Accepted bug to OpenProject | Bug linked to Change ID, deployment and logs |
 | TRACE-01 | Change ID timeline | Requirement → bug timeline, gaps shown |
 
-## 10. Data, provenance and safety rules
-
-- Store organisation/project/repo/artifact identity and exact baseline commit SHA for every draft.
-- If upstream baseline changes, show conflict/rebase options; never silently overwrite.
-- Treat repository content, tool responses and retrieved documents as untrusted inputs to agents; prevent prompt injection from becoming executable authority.
-- Use least-privilege GitHub App permissions and short-lived credentials; secret storage in AWS Secrets Manager/SSM.
-- Separate human actor, agent run and trusted execution service identities in audit records.
-- Validate AI-generated patches against schemas, path constraints and repository policies before writing.
-- Make sync jobs idempotent; use source-specific stable IDs, event deduplication and checkpoints.
-- Source tools remain authoritative for their operational records; UnityStack maintains derived records and relationships.
-- Retain source evidence for trace links; mark inferred links with confidence and verification status.
-- Do not promise perfect historical reconstruction: deleted, inaccessible or never-recorded source data may be unrecoverable.
-- Protect production with branch/environment rules, tests, security gates and optional release approvals.
-
-## 11. Measuring success
+## Measuring success
 
 | Milestone | Demonstrable outcome |
 |---|---|
@@ -335,54 +299,7 @@ UnityStack must eventually support monorepo, multi-repo and hybrid arrangements.
 
 Track practical engineering measures: PR success rate, AI revision acceptance rate, escaped defects, time from proposal to merge, deployment frequency, change failure rate, recovery time, sync lag, ingestion coverage and cost per AI task. Establish baselines before setting numerical targets.
 
-## 12. Risks and mitigation
-
-| Risk | Mitigation |
-|---|---|
-| Attempting all tools deeply at once | Thin loop first with one provider per capability; deepen and package later |
-| Laptop memory with many containers | Compose profiles; move heavy tools to one EC2 host early if needed |
-| AI corrupts approved docs | Baseline SHA, schema checks, read-only preview, user finalisation and Git PR |
-| Agents receive excessive permissions | Trusted execution layer, least privilege, sandbox, human governance |
-| GitHub and UnityStack drift | Webhooks plus periodic reconciliation; GitHub remains authoritative |
-| External SDLC records lack links | Preserve provenance; infer cautiously; show unresolved relationships |
-| AWS cost rises | Small initial footprint, resource budgets, stop nonessential services |
-| CI/CD deploys faulty changes | Tests, protected branches, health checks, rollback and feature flags |
-| Circular dependency on unfinished modules | Bootstrap each module conventionally, then use it to design the next |
-| Tool licensing or SSO limitations | Validate deployment rights and edition-specific capabilities before packaging |
-
-## 13. Decision register
-
-**Confirmed product decisions:**
-- Name and positioning: **UnityStack — Enterprise AI Software Factory**.
-- Sole user (the founder) for the next 6–12 months, dogfooding (PRD PD-1).
-- Every tool and the LLM behind adapters; open-source defaults; tool choice per capability at install time later (PD-2, PD-5).
-- The product core is the closed loop joined by one Change ID (PD-3); build it thin end to end first (PD-4).
-- AI-first two-pane workspace; preview read-only in MVP.
-- Direct human edits via external editors are a future capability.
-- Conventional external SDLC must continue unrestricted.
-- The connected Git provider (GitHub first) is authoritative for Git/PR state; UnityStack for orchestration state.
-- Webhooks and reconciliation observe external work.
-- Single-organisation install initially.
-- Continuous delivery starts with a walking skeleton.
-- Enterprise onboarding and historical ingestion are strategic product capabilities.
-
-**Confirmed architecture and tool decisions (27 November 2026):**
-- Java only; AI in its own framework-free module so it can move to Python later (AD-1).
-- Local Docker Compose with profiles until the thin loop works, then AWS as soon as possible (AD-2).
-- Keycloak from the start (AD-3).
-- Git provider behind an adapter: GitHub first; Gitea, GitLab, Bitbucket and Azure DevOps later (AD-4).
-- GitHub Actions (checks only while local); Semgrep, Trivy, OWASP ZAP; JUnit, Vitest, Playwright, Kiwi TCMS; GitHub Container Registry from the AWS move (ECR, Harbor later); OpenTelemetry with Grafana, Loki, Prometheus; Grafana alerting with rules in Git; GoAlert; OpenFeature with Unleash; Mattermost.
-- Local development: no CI deployment; AI rebuilds with `docker compose up --build` after a batch of edits, `docker compose watch` for manual edits.
-- AI meeting assistant is a future feature.
-
-**Implementation proposals to validate:**
-- PostgreSQL and SSE.
-- Terraform + EC2/Docker Compose as the first AWS deployment mechanism.
-- Change ID format (PRD D-4).
-- Specific release numbering, scope and sequencing.
-- Event broker, model router and operational SLOs.
-
-## 14. First sprint: definition of done
+## First sprint: definition of done
 
 The first sprint is complete when a developer can clone the repositories, run `docker compose --profile core up`, sign in through Keycloak, submit a PR to the demo app that passes unit tests, Semgrep and Trivy, merge it with the required review, rebuild it locally with `docker compose up --build -d`, and see the healthy new Hello World version running. Document the start, rebuild and recovery commands. Then begin Phase 1 with the approved UnityStack requirements document in GitHub.
 

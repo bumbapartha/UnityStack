@@ -96,7 +96,7 @@ The default set also covers the rest of the SDLC, all open source:
 | Feature flags | OpenFeature with Unleash |
 | Notifications | Mattermost |
 
-Every tool, and the AI model, sits behind an adapter, so any of them can be replaced (for example Jira instead of OpenProject). See [Requirements §8.3](Requirements.md) for the full list and alternatives.
+Every tool, and the AI model, sits behind an adapter, so any of them can be replaced (for example Jira instead of OpenProject). See [Tools and adapters](docs/tools-and-adapters.md) for the full list and alternatives.
 
 These tools have different deployment and integration models. Availability in the platform does not imply every tool is fully AI-integrated on day one.
 
@@ -136,7 +136,7 @@ This business change ID is distinct from an application runtime distributed-trac
 
 ## Run locally (first slice: Project Inception)
 
-The first implemented step is **Project Inception** ([Requirements §10](Requirements.md)): click **New Project**, answer the AI's questions, watch the Project Charter build up on the right, then confirm to create the project.
+The first implemented step is **Project Inception** ([docs/requirements/inception.md](docs/requirements/inception.md)): click **New Project**, answer the AI's questions, watch the Project Charter build up on the right, then confirm to create the project.
 
 Requirements: Docker Desktop.
 
@@ -166,6 +166,8 @@ PostgreSQL is reachable from your machine at `localhost:5433` (database/user/pas
 ## Project status
 
 **Status: Planning / requirements definition.** The architecture and tool choices described here represent the intended product direction; the full installable platform and integrations are not claimed to be implemented yet.
+
+**Documentation:** requirements, roadmap, tools, architecture and decisions are in [`docs/`](docs/README.md).
 
 ## Vision
 
