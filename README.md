@@ -147,6 +147,8 @@ docker compose up --build
 
 Open http://localhost:8080.
 
+**Recommended VS Code extension:** the wireframes in `docs/wireframes/` are Excalidraw files. Install the Excalidraw extension (`pomdtr.excalidraw-editor`; VS Code suggests it when you open the repo) to view and edit them locally. See [docs/wireframes](docs/wireframes/README.md).
+
 To use a real model, set in `.env`:
 
 ```bash

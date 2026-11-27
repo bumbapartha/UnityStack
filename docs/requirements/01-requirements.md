@@ -4,6 +4,8 @@
 
 Capturing what to build: project inception, requirements, epics and stories. The AI workspace used here is described in [Core platform](10-core-platform.md#ai-workspace).
 
+**Wireframes:** [01-requirements.excalidraw](../wireframes/01-requirements.excalidraw) (six screens, example project TaskFlow)
+
 **Tools:** [AI models](../tools-and-adapters.md#ai-models), [Source control](../tools-and-adapters.md#source-control), [Project management](../tools-and-adapters.md#project-management)
 
 ## Project Inception (built)

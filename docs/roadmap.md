@@ -50,8 +50,8 @@ Priorities in this document mean:
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
 - Review and merge through GitHub, with UnityStack reflecting PR status.
-- Checks: GitHub Actions runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy) on every PR. It does not deploy during local development.
-- Local delivery: the managed application (starting with Hello World) is rebuilt and restarted in local Docker Compose after changes ([Development setup](dev-setup.md)).
+- Checks: GitHub Actions runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy) on every PR. (UnityStack's own code is not deployed by CI while it runs locally; the managed project's pipeline does deploy, see below.)
+- Delivery of the managed project: UnityStack deploys the demo application it manages (Hello World first, then a to-do app) through the project's pipeline to **staging and production on AWS**. When the project first reaches deployment, UnityStack asks for the target (cloud, account connection, region, environments) and keeps credentials in a secrets store, never in Git (FR-130). UnityStack itself runs locally during the MVP ([AD-2](decisions.md#ad-2)); the projects it manages deploy to real environments ([AD-6](decisions.md#ad-6)).
 - Testing: end-to-end tests with Playwright; test cases kept in Git and each run's results recorded in Kiwi TCMS, linked to requirements, release and Change ID.
 - Observe: the deployed application's logs (Loki) and metrics (Prometheus) are collected and viewable in Grafana and from UnityStack; the user can ask AI to analyse them.
 - Feedback: AI can propose a bug from log evidence; once the user accepts it, the bug is created in the tracker, linked to the Change ID, and enters the loop again.
@@ -62,7 +62,7 @@ Priorities in this document mean:
 
 ### Next (P1)
 
-- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS ([AD-2](decisions.md#ad-2)). CI/CD then builds images, publishes them to the container registry (GitHub Container Registry, then Amazon ECR), deploys each PR to a preview environment and deploys merges to main to the main (production) environment.
+- **Move UnityStack itself to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS ([AD-2](decisions.md#ad-2)). CI/CD then builds images, publishes them to the container registry (GitHub Container Registry, then Amazon ECR), deploys each PR to a preview environment and deploys merges to main to the main (production) environment.
 - Black-box security testing of the deployed application with OWASP ZAP.
 - Alerting and on-call: Grafana alerts page the on-call developer through GoAlert; at the same time AI investigates logs and metrics and adds a summary to the incident.
 - Notifications (review requests, alerts, incident summaries) through Mattermost.
@@ -84,7 +84,7 @@ Priorities in this document mean:
 
 ### Explicit exclusions from the MVP
 
-Manual artifact editors inside UnityStack; installing all default tools; cloud deployment (comes straight after, in P1); enterprise installer; SSO across every third-party tool; high availability; multi-tenant SaaS; multi-cloud; autonomous production deployment; atomic cross-repository merges; advanced visual diagram diffs; large-scale historical ingestion.
+Manual artifact editors inside UnityStack; installing all default tools; hosting UnityStack itself in the cloud (comes straight after, in P1); enterprise installer; SSO across every third-party tool; high availability; multi-tenant SaaS; multi-cloud; autonomous production deployment; atomic cross-repository merges; advanced visual diagram diffs; large-scale historical ingestion.
 
 ## MVP acceptance — the thin loop
 
@@ -94,7 +94,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 2. Discuss a requirement change with AI, inspect the diff, finalise a revision and get a PR in the mapped repository.
 3. After merge, have AI propose epics and stories; after their PR merges, they are published once to the tracker, even if events are replayed.
 4. Pick a story; AI proposes code and tests together on a branch; the PR carries the Change ID.
-5. On the PR, CI runs unit tests, Semgrep and Trivy; a failing scan or test blocks the merge according to policy. After merge, the application is rebuilt and restarted in local Docker Compose.
+5. On the PR, CI runs unit tests, Semgrep and Trivy; a failing scan or test blocks the merge according to policy. After merge, the pipeline builds the image, publishes it to the registry and deploys it to staging on AWS; after the user approves, it deploys the release to production.
 6. Playwright end-to-end tests run against the deployed version, and the run's results are recorded in Kiwi TCMS against the release, linked to the requirement and Change ID.
 7. See the deployed version's logs, tagged with the Change ID, from UnityStack.
 8. Ask AI whether things work as expected; AI answers with cited log evidence.
@@ -122,11 +122,11 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
 - Change ID scheme ([D-4](open-questions.md)) and generation at the start of a change.
 - GitHub Actions for UnityStack itself on every PR: build, JUnit and Vitest, Semgrep, Trivy (no deployment).
-- `unitystack-demo-app` repository with a Hello World service and the same checks; runs in local Docker Compose.
+- `unitystack-demo-app` repository with a Hello World service and the same checks, deployed by its own GitHub Actions pipeline to a small AWS staging and production setup (set up conventionally at first; configured through UnityStack from Phase 3, FR-130).
 - Local rebuild workflow: AI runs `docker compose up --build -d <service>` after a batch of edits; `docker compose watch` for manual edits ([Development setup](dev-setup.md)).
 - Secrets only in `.env` locally; placeholders in `.env.example`.
 
-**Dogfooding demonstration:** A conventional PR to the demo app changes the Hello World text; CI tests and scans it; after merge, a local rebuild runs the new version.
+**Dogfooding demonstration:** A conventional PR to the demo app changes the Hello World text; CI tests and scans it; after merge, the pipeline deploys the new version to AWS.
 
 **Exit criteria:** Clean repeatable local start; sign-in works; scans and tests run on every PR; no secrets committed.
 
@@ -166,7 +166,8 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Build:**
 - Developer agent reads the linked requirement, story, ADRs, repository context and conventions; proposes code **and** tests in a bounded, isolated workspace; file allowlist; lint and test execution; code diff preview.
 - Branch/commit/PR via trusted service after finalisation; PR carries the Change ID; never direct merge or production credentials.
-- CI on the PR: unit tests, Semgrep, Trivy. After merge, the demo app is rebuilt and restarted locally, labelled with version, commit SHA and Change ID.
+- CI on the PR: unit tests, Semgrep, Trivy. After merge, the pipeline builds the demo app's image (GitHub Container Registry), deploys it to staging and, after approval, to production on AWS, labelled with version, commit SHA and Change ID.
+- Deployment target set-up in UnityStack: when the project first deploys, UnityStack asks for cloud, account connection, region and environments, and stores credentials in a secrets store (FR-130).
 - Playwright end-to-end tests against the deployed version; test cases in Git; run results recorded in Kiwi TCMS (Compose profile `test`) against the release, with a per-release test report.
 
 **Dogfooding demonstration:** AI implements a small demo-app story with tests; the PR is reviewed and merged; CI deploys it; the Kiwi report shows which tests ran and passed for that release.
@@ -188,14 +189,15 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 **Exit criteria:** [Scope and roadmap](#) MVP acceptance passes.
 
-### Phase 5 — Move to AWS (v0.5)
+### Phase 5 — Move UnityStack itself to AWS (v0.5)
 
-**Goal:** Run the working loop in AWS as soon as possible after the MVP ([AD-2](decisions.md#ad-2)).
+**Goal:** Run UnityStack itself in AWS as soon as possible after the MVP ([AD-2](decisions.md#ad-2)). Managed projects already deploy to AWS from the MVP ([AD-6](decisions.md#ad-6)).
 
 **Build:**
 - Terraform for EC2, networking, storage and secrets (Secrets Manager or SSM); S3 remote state with locking.
 - The same Docker Compose files on EC2; HTTPS; Keycloak behind TLS.
-- CI/CD starts deploying: images to GitHub Container Registry (Amazon ECR adapter alongside); each PR to its own preview environment; merges to main to the main (production) environment; GitHub Actions uses OIDC with least-privilege roles.
+- UnityStack's own CI/CD starts deploying UnityStack: images to GitHub Container Registry (Amazon ECR adapter alongside); merges to main to its environment; GitHub Actions uses OIDC with least-privilege roles.
+- Managed projects gain a preview environment per PR (FR-129).
 - Optional middle step: move heavy tools (monitoring, test management, chat) to one EC2 host first while the app runs locally.
 - Cost controls: stop the instance when not in use; spending alerts.
 
@@ -236,9 +238,9 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 ## MVP scope boundaries
 
-**MVP (v0.4, thin loop) includes:** Inception; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy (no CI deployment); local rebuilds in Docker Compose; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
+**MVP (v0.4, thin loop) includes:** Inception; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy; deployment target set up in UnityStack; release, image in GitHub Container Registry, deployment to staging and (after approval) production on AWS; monitoring of staging and production; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
 
-**Not required for the MVP:** AWS, image registry and CI deployment (come next, in Phase 5); OWASP ZAP; alerting and on-call; Mattermost; feature flags; Jira; architecture workspace; manual artifact editors; full multi-agent autonomy; Penpot editing; multi-cloud; enterprise historical ingestion; sophisticated visual diagram diffs; production-grade HA.
+**Not required for the MVP:** hosting UnityStack itself on AWS (Phase 5); preview environment per PR; OWASP ZAP; alerting and on-call; Mattermost; feature flags; Jira; architecture workspace; manual artifact editors; full multi-agent autonomy; Penpot editing; multi-cloud; enterprise historical ingestion; sophisticated visual diagram diffs; production-grade HA.
 
 **Full enterprise vision remains:** installable AI Software Factory, tool-provider choices per capability, independent SDLC observation, historical ingestion, workflow intelligence and end-to-end delivery traceability.
 
@@ -250,7 +252,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 2. Restructure backend and frontend into feature modules, with the Spring Modulith boundary test.
 3. Change ID scheme and generation.
 4. GitHub Actions with unit tests, Semgrep and Trivy on every PR.
-5. `unitystack-demo-app` Hello World with the local rebuild workflow.
+5. `unitystack-demo-app` Hello World deployed by its pipeline to AWS staging and production.
 6. GitHub read of the approved PRD; chat and structured AI proposal endpoint.
 7. Preview, revision persistence and diff; finalisation, branch/commit/PR and error handling.
 8. Webhook status updates and periodic PR reconciliation; dogfood one real requirements change end to end.
@@ -261,7 +263,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 | ID | Story | Evidence of completion |
 |---|---|---|
 | PRJ-01 | Create a project via AI inception | Done: project + charter revision 1 stored after explicit confirmation |
-| BOOT-01 | Deploy Hello World | Local URL serves the demo app; smoke test passes |
+| BOOT-01 | Deploy Hello World | Demo app reachable on its AWS production URL; smoke test passes |
 | BOOT-02 | Sign in through Keycloak | Only signed-in users reach UnityStack; roles visible |
 | BOOT-03 | Scan and test every PR | Unit tests, Semgrep and Trivy run in CI; failures block per policy |
 | CHG-01 | Create a Change ID | Every new change gets an ID carried into branch, PR and build |
@@ -287,7 +289,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 | Milestone | Demonstrable outcome |
 |---|---|
-| v0.0.x | A conventional PR to the demo app is tested and scanned, then rebuilt and running locally; sign-in through Keycloak |
+| v0.0.x | A conventional PR to the demo app is tested, scanned and deployed to AWS by its pipeline; sign-in through Keycloak |
 | v0.1 | UnityStack updates its own PRD via AI preview and GitHub PR |
 | v0.2 | UnityStack generates approved stories and publishes them to OpenProject |
 | v0.3 | UnityStack proposes code and tests in one PR; CI deploys it; Kiwi shows the release's test results |
@@ -301,7 +303,7 @@ Track practical engineering measures: PR success rate, AI revision acceptance ra
 
 ## First sprint: definition of done
 
-The first sprint is complete when a developer can clone the repositories, run `docker compose --profile core up`, sign in through Keycloak, submit a PR to the demo app that passes unit tests, Semgrep and Trivy, merge it with the required review, rebuild it locally with `docker compose up --build -d`, and see the healthy new Hello World version running. Document the start, rebuild and recovery commands. Then begin Phase 1 with the approved UnityStack requirements document in GitHub.
+The first sprint is complete when a developer can clone the repositories, run `docker compose --profile core up`, sign in through Keycloak, submit a PR to the demo app that passes unit tests, Semgrep and Trivy, merge it with the required review, and see the pipeline deploy the healthy new Hello World version to AWS. Document the start, deployment and recovery commands. Then begin Phase 1 with the approved UnityStack requirements document in GitHub.
 
 ---
 

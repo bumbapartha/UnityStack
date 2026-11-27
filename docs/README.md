@@ -2,7 +2,7 @@
 
 UnityStack — Enterprise AI Software Factory. *From requirements to production. Powered by AI. Governed by humans.*
 
-**Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.4 (27 November 2026)
+**Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.5 (27 November 2026)
 
 This folder replaces the single `Requirements.md` (v2.1) and the dogfooding development plan.
 
@@ -18,6 +18,7 @@ This folder replaces the single `Requirements.md` (v2.1) and the dogfooding deve
 | [Decisions](decisions.md) | Every settled decision in one table |
 | [Open questions and risks](open-questions.md) | Undecided items and risks |
 | [Development setup](dev-setup.md) | Docker Compose profiles, local rebuilds, move to AWS |
+| [Wireframes](wireframes/README.md) | Excalidraw wireframes of UnityStack's screens, starting with the whole journey |
 | [Document history](history.md) | Version history and where old sections went |
 
 ## Coding guidelines
