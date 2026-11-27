@@ -47,6 +47,7 @@ Priorities in this document mean:
 
 - Project Inception ([Requirements phase](requirements/01-requirements.md)) — **built**.
 - Requirements workspace: AI edits a Markdown requirements document read from GitHub, with preview, diff, revisions, finalise → PR.
+- Design of screens: AI drafts Excalidraw wireframes from the approved requirements, then Penpot UX designs and a clickable prototype; both are saved in Git through a PR (FR-037).
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
 - Review and merge through GitHub, with UnityStack reflecting PR status.
@@ -238,9 +239,9 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 ## MVP scope boundaries
 
-**MVP (v0.4, thin loop) includes:** Inception; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy; deployment target set up in UnityStack; release, image in GitHub Container Registry, deployment to staging and (after approval) production on AWS; monitoring of staging and production; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
+**MVP (v0.4, thin loop) includes:** Inception; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; Excalidraw wireframes and Penpot UX designs through PRs; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy; deployment target set up in UnityStack; release, image in GitHub Container Registry, deployment to staging and (after approval) production on AWS; monitoring of staging and production; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
 
-**Not required for the MVP:** hosting UnityStack itself on AWS (Phase 5); preview environment per PR; OWASP ZAP; alerting and on-call; Mattermost; feature flags; Jira; architecture workspace; manual artifact editors; full multi-agent autonomy; Penpot editing; multi-cloud; enterprise historical ingestion; sophisticated visual diagram diffs; production-grade HA.
+**Not required for the MVP:** hosting UnityStack itself on AWS (Phase 5); preview environment per PR; OWASP ZAP; alerting and on-call; Mattermost; feature flags; Jira; architecture workspace; manual artifact editors; full multi-agent autonomy; multi-cloud; enterprise historical ingestion; sophisticated visual diagram diffs; production-grade HA.
 
 **Full enterprise vision remains:** installable AI Software Factory, tool-provider choices per capability, independent SDLC observation, historical ingestion, workflow intelligence and end-to-end delivery traceability.
 

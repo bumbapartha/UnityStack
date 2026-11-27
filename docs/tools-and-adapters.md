@@ -135,8 +135,8 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 | Technical documentation | MkDocs | Confluence (P2) | P1 |
 | API documentation | Swagger UI | — | P1 |
 | Code quality | SonarQube Community Build | — | P1 |
-| Initial wireframes | Excalidraw | — | P2 |
-| UX/UI design | Penpot | — | P2 |
+| Initial wireframes | Excalidraw | — | Yes |
+| UX/UI design | Penpot | — | Yes |
 | Software catalogue | Backstage | — | P2 |
 | Web IDE | Eclipse Theia | Local IDE (always) | P2 |
 
