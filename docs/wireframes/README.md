@@ -17,7 +17,7 @@ Nothing needs uploading to a website.
 
 | File | Shows | Requirements |
 |---|---|---|
-| [00-journey-overview.excalidraw](00-journey-overview.excalidraw) | The whole MVP thin loop on one page: every screen and system step from New Project to a bug going back round the loop, with who decides at each step and the requirement IDs | [All phases](../requirements/README.md) |
+| [00-journey-overview.excalidraw](00-journey-overview.excalidraw) | The whole journey on one page in five lanes — requirements; development and testing; deployment and release (local run now, release → image → preview/staging → production after the MVP); monitoring and feedback (bug back round the loop); and the Change ID traceability strip — with who decides at each step and the requirement IDs | [All phases](../requirements/README.md) |
 
 Planned per-phase files, numbered to match the [requirement files](../requirements/README.md): `01-requirements.excalidraw`, `03-development.excalidraw`, `04-testing.excalidraw`, `05-deployment.excalidraw`, `06-monitoring.excalidraw`, and a `10-core-platform.excalidraw` for the shared two-pane workspace.
 
