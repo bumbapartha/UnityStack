@@ -141,7 +141,7 @@ Each frontend module registers its own routes and talks to its backend module's 
 2. **Events between phases.** Phase hand-offs use events (for example `RequirementApproved` → development, `DeploymentCompleted` → monitoring) rather than direct calls, so modules stay loosely coupled.
 3. **No cycles.** Module dependencies form a one-way graph; `core` depends on no feature module.
 4. **Adapters live with their owner.** Each tool adapter belongs to the module that owns that capability (for example Kiwi TCMS in `testing`, Loki in `monitoring`). Other modules use it through the owner's public interface.
-5. **Own your data.** Each module owns its tables (for example a table-name prefix per module and its own migrations). No module reads another module's tables.
+5. **Own your data.** Each module owns its tables (for example a table-name prefix per module and its own migrations). No module reads another module's tables. Data access uses Spring Data JPA with flexible content in PostgreSQL JSONB ([TD-12](decisions.md#td-12)).
 6. **AI stays portable.** Agents and prompts live in their feature module but use only `core/ai` interfaces and plain data objects, so the AI parts can be moved to another language later without touching the rest ([AD-1](decisions.md#ad-1)).
 7. **Checked automatically.** A Spring Modulith test (`ApplicationModules.of(...).verify()`) fails the build if a module reaches into another module's internals or creates a cycle. Spring Modulith can also generate module diagrams for this document. On the frontend, a lint rule (for example `eslint-plugin-boundaries`) blocks imports from another module's internals.
 

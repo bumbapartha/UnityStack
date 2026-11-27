@@ -4,7 +4,7 @@ Read the root `CLAUDE.md` first. This file covers the Spring Boot control plane.
 
 ## Stack
 
-Java 21, Spring Boot 3.3, Gradle (Kotlin DSL), PostgreSQL, Flyway migrations, `JdbcClient` for data access (no JPA), JUnit 5 with AssertJ.
+Java 21, Spring Boot 3.3, Gradle (Kotlin DSL), PostgreSQL, Flyway migrations, Spring Data JPA (Hibernate) for data access (TD-12), JUnit 5 with AssertJ.
 
 ## Module layout (AD-5)
 
@@ -53,7 +53,14 @@ src/main/java/io/unitystack/platform/
 
 ## Data and migrations
 
-- Use `JdbcClient` with named parameters and Java records for rows. Never concatenate SQL strings with user input.
+- **Spring Data JPA (TD-12).** Entities and Spring Data repositories live in the module's `persistence/` package and are internal to the module. Never expose an entity outside its module. Map entities to records or DTOs in `api/`.
+- **Flyway owns the schema.** Every schema change is a Flyway migration. Set `spring.jpa.hibernate.ddl-auto=validate`, so Hibernate never creates or changes tables itself.
+- **Stable data in columns, flexible content in JSONB.** Projects, Change IDs, statuses, actors, timestamps and links go in normal columns. Artifact content that changes shape (charters, requirement drafts, AI proposals) goes in a PostgreSQL `jsonb` column, mapped with `@JdbcTypeCode(SqlTypes.JSON)` to a record or `Map`. Adding a field to that content needs no migration.
+- **Revisions are new rows.** Never update an artifact revision in place; insert a new revision row that points to its parent. This keeps history and audit intact.
+- **No relationships across modules.** Reference another module's data by ID only, never through `@ManyToOne` or `@OneToMany` to its entities. Within a module, prefer `LAZY` fetching and explicit fetch joins or projections for reads, and watch for N+1 queries.
+- **Transactions** belong on application services (`@Transactional`), not controllers or repositories.
+- For complex reads, use JPQL or Spring Data projections; use native SQL only where JSONB operators are needed, always with bound parameters. Never concatenate SQL strings with user input.
+- The existing inception repository uses `JdbcClient`. Move it to JPA during the Phase 0 restructure; do not mix both in new code.
 - Migrations go in `src/main/resources/db/migration`, named `V<n>__<module>_<description>.sql`, with versions numbered globally. Never edit a migration that has already been merged; add a new one.
 
 ## Errors and API
