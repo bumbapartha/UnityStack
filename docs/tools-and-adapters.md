@@ -131,12 +131,12 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 
 | Capability | Default (open source) | Alternatives | MVP |
 |---|---|---|---|
-| Architecture diagrams | Mermaid (library) | — | P1 |
+| Architecture diagrams | Mermaid (library) | — | Yes |
 | Technical documentation | MkDocs | Confluence (P2) | P1 |
-| API documentation | Swagger UI | — | P1 |
+| API documentation | Swagger UI | — | Yes |
 | Code quality | SonarQube Community Build | — | P1 |
-| Initial wireframes | Excalidraw | — | P2 |
-| UX/UI design | Penpot | — | P2 |
+| Initial wireframes | Excalidraw | — | Yes |
+| UX/UI design | Penpot | — | Yes |
 | Software catalogue | Backstage | — | P2 |
 | Web IDE | Eclipse Theia | Local IDE (always) | P2 |
 

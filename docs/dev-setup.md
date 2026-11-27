@@ -19,6 +19,7 @@ This page is about running **UnityStack itself**. The projects UnityStack manage
 | `oncall` | GoAlert |
 | `chat` | Mattermost |
 | `flags` | Unleash |
+| `design` | Penpot (Excalidraw files open in VS Code or the Excalidraw container) |
 
 `docker compose --profile core up` starts the everyday stack; adding `--profile monitoring` and others brings in the rest. Memory use is the main constraint on a laptop.
 

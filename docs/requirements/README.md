@@ -85,9 +85,9 @@ Priorities in this document mean:
 | [FR-034](10-core-platform.md) | P1 | Core platform |
 | [FR-035](11-distribution-and-onboarding.md) | P2 | Distribution and onboarding |
 | [FR-036](01-requirements.md) | P0 | Requirements |
-| [FR-037](02-architecture-and-design.md) | P2 | Architecture and design |
-| [FR-038](02-architecture-and-design.md) | P1 | Architecture and design |
-| [FR-039](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-037](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-038](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-039](02-architecture-and-design.md) | P0 | Architecture and design |
 | [FR-040](02-architecture-and-design.md) | P2 | Architecture and design |
 | [FR-041](04-testing.md) | P1 | Testing |
 | [FR-042](10-core-platform.md) | P0 | Core platform |
