@@ -50,6 +50,8 @@ Priorities in this document mean:
 - Architecture and design: AI drafts the HLD with ADRs (monolith or microservices, frontend/backend split, stack, how each NFR is met), the LLD with Mermaid sequence diagrams (all Markdown in Git, published with MkDocs as a shareable docs site), and OpenAPI contracts shown in Swagger UI; a design review PR comes before development (FR-038, FR-039).
 - Design of screens: AI drafts Excalidraw wireframes from the approved requirements, then Penpot UX designs and a clickable prototype; both are saved in Git through a PR (FR-037).
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
+- Sprint planning: the AI proposes the next sprint from the stories (priority, dependencies, capacity); after approval the sprint is created in OpenProject, and development picks stories from the current sprint (FR-133).
+- Testing and quality as its own stage after merge: test plan and cases (Kiwi), Playwright end-to-end runs, triage of Semgrep and Trivy findings, and a test report with QA sign-off before deployment (FR-117, FR-120).
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
 - Review and merge through GitHub, with UnityStack reflecting PR status.
 - Checks: GitHub Actions runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy) on every PR. (UnityStack's own code is not deployed by CI while it runs locally; the managed project's pipeline does deploy, see below.)
