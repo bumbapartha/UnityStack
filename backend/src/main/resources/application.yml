@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: unitystack-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/unitystack}
+    username: ${DB_USER:unitystack}
+    password: ${DB_PASSWORD:unitystack}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+unitystack:
+  # Single built-in local user until identity is implemented.
+  local-user: ${UNITYSTACK_LOCAL_USER:local-user}
+  ai:
+    provider: ${UNITYSTACK_AI_PROVIDER:mock}
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      model: ${OPENAI_MODEL:gpt-4.1-mini}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}

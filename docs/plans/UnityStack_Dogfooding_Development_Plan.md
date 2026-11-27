@@ -114,6 +114,7 @@ flowchart TD
 
 **Build:**
 - Project/repository/artifact configuration for the UnityStack PRD path.
+- Project Inception (PRD §22): AI-led New Project conversation with live charter preview; dogfood by creating the UnityStack project itself.
 - Two-pane UI with chat, Markdown preview, baseline/proposed diff, revision history and finalise action.
 - AI requirements flow: retrieve approved Markdown from GitHub; discuss change; produce a **structured patch or revised document**; validate document shape and identifiers; save draft revision.
 - Trusted GitHub integration: create branch, commit proposed Markdown, open PR; show PR URL/status.
@@ -274,6 +275,7 @@ Use an additional `unitystack-demo-app` repository later to validate managing a 
 | ID | Story | Evidence of completion |
 |---|---|---|
 | BOOT-01 | Deploy Hello World | Production-designated URL + passing smoke test |
+| PRJ-01 | Create a project via AI inception | Project + charter revision 1 stored after explicit confirmation |
 | REQ-01 | Load PRD from GitHub | Correct repo/path/ref and SHA shown |
 | REQ-02 | Discuss a requirement change | AI returns validated proposed revision |
 | REQ-03 | Show preview and diff | Exact additions/deletions visible |

@@ -118,6 +118,35 @@ A stable business change identifier can connect:
 
 This business change ID is distinct from an application runtime distributed-tracing ID. Missing relationships can be proposed by AI but should remain labelled as inferred until verified.
 
+## Run locally (first slice: Project Inception)
+
+The first implemented step is **Project Inception** ([Requirements §22](Requirements.md)): click **New Project**, answer the AI's questions, watch the Project Charter build up on the right, then confirm to create the project.
+
+Requirements: Docker Desktop.
+
+```bash
+cp .env.example .env          # optional; defaults to the scripted mock AI
+docker compose up --build
+```
+
+Open http://localhost:8080.
+
+To use a real model, set in `.env`:
+
+```bash
+UNITYSTACK_AI_PROVIDER=openai
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4.1-mini
+```
+
+| Path | Contents |
+| --- | --- |
+| `frontend/` | Vue 3 + Vite workspace (served by nginx in Docker) |
+| `backend/` | Spring Boot control plane, AI adapter (mock/OpenAI), Flyway migrations |
+| `docker-compose.yml` | PostgreSQL + backend + frontend |
+
+PostgreSQL is reachable from your machine at `localhost:5433` (database/user/password `unitystack`; change the port with `UNITYSTACK_DB_PORT`). Data persists in the `pgdata` Docker volume; `docker compose down -v` deletes it.
+
 ## Project status
 
 **Status: Planning / requirements definition.** The architecture and tool choices described here represent the intended product direction; the full installable platform and integrations are not claimed to be implemented yet.

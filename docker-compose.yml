@@ -1,0 +1,41 @@
+name: unitystack
+
+services:
+  db:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: unitystack
+      POSTGRES_USER: unitystack
+      POSTGRES_PASSWORD: unitystack
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${UNITYSTACK_DB_PORT:-5433}:5432"   # host 5433 avoids clashing with other local Postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U unitystack -d unitystack"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/unitystack
+      DB_USER: unitystack
+      DB_PASSWORD: unitystack
+      UNITYSTACK_AI_PROVIDER: ${UNITYSTACK_AI_PROVIDER:-mock}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
