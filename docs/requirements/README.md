@@ -12,7 +12,7 @@ Requirements are grouped by SDLC phase, in the order work flows through the loop
 | 2 | Architecture and design | [02-architecture-and-design.md](02-architecture-and-design.md) | 4 |
 | 3 | Development | [03-development.md](03-development.md) | 11 |
 | 4 | Testing | [04-testing.md](04-testing.md) | 2 |
-| 5 | Deployment | [05-deployment.md](05-deployment.md) | 7 |
+| 5 | Deployment | [05-deployment.md](05-deployment.md) | 8 |
 | 6 | Monitoring and operations | [06-monitoring-and-operations.md](06-monitoring-and-operations.md) | 7 |
 
 ## Cross-cutting areas
@@ -146,7 +146,7 @@ Priorities in this document mean:
 | [FR-095](09-traceability-and-integration.md) | P1 | Traceability and integration |
 | [FR-096](09-traceability-and-integration.md) | P1 | Traceability and integration |
 | [FR-097](05-deployment.md) | P0 | Deployment |
-| [FR-098](05-deployment.md) | P1 | Deployment |
+| [FR-098](05-deployment.md) | P0 | Deployment |
 | [FR-099](09-traceability-and-integration.md) | P0 | Traceability and integration |
 | [FR-100](09-traceability-and-integration.md) | P0 | Traceability and integration |
 | [FR-101](09-traceability-and-integration.md) | P1 | Traceability and integration |
@@ -167,7 +167,7 @@ Priorities in this document mean:
 | [FR-116](03-development.md) | P0 | Development |
 | [FR-117](07-security.md) | P0 | Security |
 | [FR-118](07-security.md) | P1 | Security |
-| [FR-119](05-deployment.md) | P1 | Deployment |
+| [FR-119](05-deployment.md) | P0 | Deployment |
 | [FR-120](04-testing.md) | P0 | Testing |
 | [FR-121](05-deployment.md) | P1 | Deployment |
 | [FR-122](06-monitoring-and-operations.md) | P1 | Monitoring and operations |
@@ -178,6 +178,7 @@ Priorities in this document mean:
 | [FR-127](10-core-platform.md) | P2 | Core platform |
 | [FR-128](06-monitoring-and-operations.md) | P1 | Monitoring and operations |
 | [FR-129](05-deployment.md) | P1 | Deployment |
+| [FR-130](05-deployment.md) | P0 | Deployment |
 | [NFR-001](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-002](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-003](12-non-functional.md) | — | Non-functional requirements |

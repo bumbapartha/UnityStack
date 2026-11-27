@@ -2,7 +2,7 @@
 
 [← Documentation index](../README.md)
 
-Wireframes for UnityStack's own screens, drawn with [Excalidraw](https://github.com/excalidraw/excalidraw) (open source). Each file is plain JSON, so changes are reviewed in pull requests like any other document.
+Wireframes for UnityStack's screens and the journey of the projects it manages, drawn with [Excalidraw](https://github.com/excalidraw/excalidraw) (open source). Each file is plain JSON, so changes are reviewed in pull requests like any other document.
 
 ## Opening the files locally
 
@@ -17,7 +17,7 @@ Nothing needs uploading to a website.
 
 | File | Shows | Requirements |
 |---|---|---|
-| [00-journey-overview.excalidraw](00-journey-overview.excalidraw) | The whole journey on one page in five lanes — requirements; development and testing; deployment and release (local run now, release → image → preview/staging → production after the MVP); monitoring and feedback (bug back round the loop); and the Change ID traceability strip — with who decides at each step and the requirement IDs | [All phases](../requirements/README.md) |
+| [00-journey-overview.excalidraw](00-journey-overview.excalidraw) | The journey of a project that UnityStack manages (example: a demo to-do app), on one page in five lanes: requirements; development and testing; deployment and release (deployment target set-up, release, image, staging and production on AWS); monitoring and feedback from staging and production, with the bug going back round the loop; and the Change ID traceability strip. Shows who decides at each step and the requirement IDs. | [All phases](../requirements/README.md) |
 
 Planned per-phase files, numbered to match the [requirement files](../requirements/README.md): `01-requirements.excalidraw`, `03-development.excalidraw`, `04-testing.excalidraw`, `05-deployment.excalidraw`, `06-monitoring.excalidraw`, and a `10-core-platform.excalidraw` for the shared two-pane workspace.
 

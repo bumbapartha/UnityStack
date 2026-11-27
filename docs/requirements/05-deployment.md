@@ -12,10 +12,11 @@ Builds, environments, images and releases.
 
 | ID | Priority | Requirement |
 |---|---|---|
-| FR-097 | P0 | Run a Hello World walking skeleton that is rebuilt and redeployed automatically: locally by Docker Compose during the thin loop, and through a CI/CD pipeline to AWS environments after the move. |
-| FR-129 | P1 | **New.** After the AWS move, deploy each PR to its own preview environment for testing, and deploy merges to main to the main (production) environment, with environment protection. |
+| FR-097 | P0 | Deploy the managed project's walking skeleton (Hello World first) automatically through its CI/CD pipeline to staging and production environments on AWS from the start. UnityStack itself may run locally ([AD-6](../decisions.md#ad-6)). |
+| FR-130 | P0 | **New.** When a managed project first reaches deployment, ask the user for its deployment target (cloud provider, account connection, region, environments such as staging and production) through the AI workspace; keep credentials in a secrets store, never in Git or prompts; reach the cloud through a deployment adapter (AWS first) with least-privilege access. |
+| FR-129 | P1 | **New.** Deploy each PR of a managed project to its own preview environment for testing, in addition to staging and production. |
 | FR-044 | P0 | Version tests, CI/CD pipelines, deployment configuration and monitoring configuration in Git. *(Was P1.)* |
 | FR-045 | P0 | Run validation and deployment through trusted pipelines with environment protection. *(Was P1.)* |
-| FR-119 | P1 | **New.** Publish built images to the artifact registry through its adapter, tagged with version, commit SHA and Change ID. Needed from the AWS move; local development builds images locally. |
+| FR-119 | P0 | **New.** Publish built images of managed projects to the artifact registry through its adapter, tagged with version, commit SHA and Change ID. *(Was P1.)* |
 | FR-121 | P1 | **New.** Control feature exposure through feature flags reached via the OpenFeature SDK, with per-environment settings; flag changes are audited. |
-| FR-098 | P1 | Support configured automatic delivery or human production release approval with quality gates. |
+| FR-098 | P0 | Support configured automatic delivery or human production release approval with quality gates. *(Was P1; production approval is part of the MVP loop.)* |

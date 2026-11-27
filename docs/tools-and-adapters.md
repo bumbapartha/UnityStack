@@ -52,7 +52,7 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 
 | Capability | Default (open source) | Alternatives | MVP |
 |---|---|---|---|
-| Artifact (container) registry | GitHub Container Registry | Amazon ECR (with the AWS move), Harbor (P2) | P1 (with the AWS move) |
+| Artifact (container) registry | GitHub Container Registry | Amazon ECR, Harbor (P2) | Yes (managed projects) |
 
 **Requirements:** [Deployment phase](requirements/05-deployment.md)  
 **Decisions:** [TD-04](decisions.md#td-04)

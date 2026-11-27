@@ -14,7 +14,7 @@
 | 2.2 | 27 Nov 2026 | Split into topic files under `docs/`: requirements grouped by SDLC phase with cross-links to tools and decisions; all decisions in one table; dogfooding plan merged into the roadmap. No requirement content changed. |
 | 2.3 | 27 Nov 2026 | AD-5: code organised by feature module in backend and frontend, with boundary rules and Spring Modulith; NFR-018 modularity; roadmap Phase 0 restructure step. |
 | 2.4 | 27 Nov 2026 | Coding guidelines (`CLAUDE.md` in root, backend, frontend); TD-12 data access with Spring Data JPA and PostgreSQL JSONB. |
-| 2.5 | 27 Nov 2026 | Wireframes folder with the journey overview (`docs/wireframes/00-journey-overview.excalidraw`); VS Code Excalidraw extension recommended. |
+| 2.5 | 27 Nov 2026 | Wireframes folder with the journey overview (`docs/wireframes/00-journey-overview.excalidraw`); VS Code Excalidraw extension recommended. Journey overview shows a managed project going to production; AD-6 managed projects deploy to AWS from the MVP; FR-130 deployment target set-up; FR-098 and FR-119 to P0. |
 
 ## Where PRD v2.1 sections went
 
