@@ -80,6 +80,81 @@ flowchart TB
 - **Data plane:** the Git provider (GitHub first) for canonical artifacts; PostgreSQL for application and workflow data; tool databases for tool data; the observability provider for logs and metrics.
 - **Deployment plane:** CI/CD deploys the managed application; infrastructure as code provisions environments.
 
+## Code organisation: feature modules
+
+Decided in [AD-5](decisions.md#ad-5). The code is split by **feature module**, not by file type: there is no single `controller` or `service` package for the whole application. Each module contains everything for its area — API, services, domain, agents, prompts, adapters, persistence and UI — and the module list follows the SDLC phases used in the [requirements](requirements/README.md).
+
+### Backend (Spring Boot)
+
+```text
+backend/src/main/java/io/unitystack/platform/
+  core/                      shared, used by every module
+    ai/                      LLM adapter interface, providers (mock, OpenAI), agent runtime — framework-free (AD-1)
+    adapters/                capability registry and base adapter interfaces
+    workspace/               drafts, revisions, diff, finalise → PR flow
+    scm/                     Git provider adapters (GitHub first, AD-4)
+    identity/                Keycloak integration, roles, resource permissions
+    changeid/                Change ID generation and propagation
+    common/                  errors, shared types
+  requirements/              inception, projects, requirements and planning
+    api/  application/  domain/  agents/  adapters/openproject/  persistence/
+  design/                    architecture and design phase features (diagrams, ADRs, docs)
+  development/               developer agent, code + tests proposals, PR handling
+  testing/                   test agents, test runs and reports
+    adapters/playwright/  adapters/kiwi/
+  deployment/                builds, environments, images, feature flags
+    adapters/githubactions/  adapters/ghcr/  adapters/unleash/
+  monitoring/                log and metric queries, AI analysis, alerts, on-call, bugs
+    adapters/loki/  adapters/prometheus/  adapters/grafana/  adapters/goalert/
+  security/                  security scanning results and policies
+    adapters/semgrep/  adapters/trivy/  adapters/zap/
+  communication/             notifications, later the meeting assistant
+    adapters/mattermost/
+  traceability/              trace links, timelines, external sync and reconciliation
+```
+
+Inside a module the same layout repeats: `api/` (REST controllers, the module's public interfaces and events), `application/` (services, use cases), `domain/` (entities and rules), `agents/` (the module's AI agents and prompts), `adapters/<tool>/` (adapters for the tools this module owns) and `persistence/` (repositories).
+
+### Frontend (Vue)
+
+```text
+frontend/src/
+  core/                      app shell, router, auth, HTTP client, design system
+    workspace/               the shared two-pane chat + preview components
+  modules/
+    requirements/            views, components, api, store for inception and planning
+    design/
+    development/
+    testing/
+    deployment/
+    monitoring/
+    security/
+    communication/
+    traceability/
+```
+
+Each frontend module registers its own routes and talks to its backend module's API only.
+
+### Rules
+
+1. **Public surface only.** A module may use another module's `api/` package (interfaces, DTOs, events) and nothing else. Internal packages are private.
+2. **Events between phases.** Phase hand-offs use events (for example `RequirementApproved` → development, `DeploymentCompleted` → monitoring) rather than direct calls, so modules stay loosely coupled.
+3. **No cycles.** Module dependencies form a one-way graph; `core` depends on no feature module.
+4. **Adapters live with their owner.** Each tool adapter belongs to the module that owns that capability (for example Kiwi TCMS in `testing`, Loki in `monitoring`). Other modules use it through the owner's public interface.
+5. **Own your data.** Each module owns its tables (for example a table-name prefix per module and its own migrations). No module reads another module's tables.
+6. **AI stays portable.** Agents and prompts live in their feature module but use only `core/ai` interfaces and plain data objects, so the AI parts can be moved to another language later without touching the rest ([AD-1](decisions.md#ad-1)).
+7. **Checked automatically.** A Spring Modulith test (`ApplicationModules.of(...).verify()`) fails the build if a module reaches into another module's internals or creates a cycle. Spring Modulith can also generate module diagrams for this document. On the frontend, a lint rule (for example `eslint-plugin-boundaries`) blocks imports from another module's internals.
+
+### Mapping the current code
+
+| Today | Moves to |
+|---|---|
+| `inception/`, `project/` | `requirements/` |
+| `ai/` (InceptionAgent, mock and OpenAI implementations, prompts) | LLM interface and providers → `core/ai/`; inception agent and prompts → `requirements/agents/` |
+| `common/` | `core/common/` |
+| `frontend/src/views/*`, `components/CharterPreview.vue` | `frontend/src/modules/requirements/` |
+| `frontend/src/api.js` | HTTP client → `core/`; inception calls → `modules/requirements/api` |
+
 ## Delivery architecture
 
 Every tool below sits behind a UnityStack adapter; changing one means changing its adapter and configuration only ([Core platform](requirements/10-core-platform.md)).

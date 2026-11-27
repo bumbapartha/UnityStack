@@ -25,5 +25,6 @@ Cross-cutting quality requirements.
 | NFR-015 | Replaceability | **New.** Changing the provider of any capability touches only that capability's adapter and configuration files. |
 | NFR-016 | AI module portability | **New.** The AI module has no framework dependencies and exchanges only plain data objects, so it can be moved to a separate service in another language without changes elsewhere ([AD-1](../decisions.md#ad-1)). |
 | NFR-017 | Resource footprint | **New.** Local services are grouped in Compose profiles; the everyday `core` profile runs comfortably on a developer laptop. |
+| NFR-018 | Modularity | **New.** Code is organised by feature module in backend and frontend ([AD-5](../decisions.md#ad-5)); modules use only each other's public interfaces or events, have no cyclic dependencies and own their data; an automated test fails the build on a boundary violation. |
 
 Quantitative targets (install time, cloud spend, SLOs, RTO, RPO) are deliberately TBD until measured.

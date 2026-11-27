@@ -2,7 +2,7 @@
 
 UnityStack — Enterprise AI Software Factory. *From requirements to production. Powered by AI. Governed by humans.*
 
-**Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.2 (27 November 2026)
+**Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.3 (27 November 2026)
 
 This folder replaces the single `Requirements.md` (v2.1) and the dogfooding development plan.
 

@@ -24,7 +24,7 @@ Requirements are grouped by SDLC phase, in the order work flows through the loop
 | Traceability and integration | [09-traceability-and-integration.md](09-traceability-and-integration.md) | 30 |
 | Core platform | [10-core-platform.md](10-core-platform.md) | 27 |
 | Distribution and onboarding | [11-distribution-and-onboarding.md](11-distribution-and-onboarding.md) | 14 |
-| Non-functional requirements | [12-non-functional.md](12-non-functional.md) | 17 |
+| Non-functional requirements | [12-non-functional.md](12-non-functional.md) | 18 |
 
 ## How to read the requirements
 
@@ -195,3 +195,4 @@ Priorities in this document mean:
 | [NFR-015](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-016](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-017](12-non-functional.md) | — | Non-functional requirements |
+| [NFR-018](12-non-functional.md) | — | Non-functional requirements |
