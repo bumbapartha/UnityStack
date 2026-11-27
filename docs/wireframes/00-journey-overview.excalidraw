@@ -80,7 +80,7 @@
       "type": "rectangle",
       "x": 30,
       "y": 130,
-      "width": 2220,
+      "width": 2560,
       "height": 210,
       "angle": 0,
       "strokeColor": "#ced4da",
@@ -179,7 +179,7 @@
       "type": "rectangle",
       "x": 30,
       "y": 410,
-      "width": 2220,
+      "width": 2560,
       "height": 210,
       "angle": 0,
       "strokeColor": "#ced4da",
@@ -278,7 +278,7 @@
       "type": "rectangle",
       "x": 30,
       "y": 690,
-      "width": 2220,
+      "width": 2560,
       "height": 210,
       "angle": 0,
       "strokeColor": "#ced4da",
@@ -377,7 +377,7 @@
       "type": "rectangle",
       "x": 30,
       "y": 970,
-      "width": 2220,
+      "width": 2560,
       "height": 210,
       "angle": 0,
       "strokeColor": "#ced4da",
@@ -476,7 +476,7 @@
       "type": "rectangle",
       "x": 30,
       "y": 1250,
-      "width": 2220,
+      "width": 2560,
       "height": 210,
       "angle": 0,
       "strokeColor": "#ced4da",
@@ -1238,7 +1238,7 @@
     {
       "id": "re40",
       "type": "rectangle",
-      "x": 1620,
+      "x": 1960,
       "y": 150,
       "width": 270,
       "height": 170,
@@ -1268,7 +1268,7 @@
         },
         {
           "type": "arrow",
-          "id": "wf-excalidraw-8"
+          "id": "wf-penpot-7"
         }
       ],
       "updated": 1764273600000,
@@ -1278,7 +1278,7 @@
     {
       "id": "te41",
       "type": "text",
-      "x": 1634,
+      "x": 1974,
       "y": 162,
       "width": 242,
       "height": 23.75,
@@ -1316,7 +1316,7 @@
     {
       "id": "te42",
       "type": "text",
-      "x": 1634,
+      "x": 1974,
       "y": 198,
       "width": 242,
       "height": 52.5,
@@ -1354,7 +1354,7 @@
     {
       "id": "te43",
       "type": "text",
-      "x": 1634,
+      "x": 1974,
       "y": 294,
       "width": 66.0,
       "height": 15.0,
@@ -1392,7 +1392,7 @@
     {
       "id": "re44",
       "type": "rectangle",
-      "x": 1772.0,
+      "x": 2112.0,
       "y": 288,
       "width": 108.0,
       "height": 24,
@@ -1423,7 +1423,7 @@
     {
       "id": "te45",
       "type": "text",
-      "x": 1781.0,
+      "x": 2121.0,
       "y": 291,
       "width": 85.80000000000001,
       "height": 16.25,
@@ -1461,7 +1461,7 @@
     {
       "id": "re47",
       "type": "rectangle",
-      "x": 1960,
+      "x": 2300,
       "y": 150,
       "width": 270,
       "height": 170,
@@ -1501,7 +1501,7 @@
     {
       "id": "te48",
       "type": "text",
-      "x": 1974,
+      "x": 2314,
       "y": 162,
       "width": 242,
       "height": 23.75,
@@ -1539,7 +1539,7 @@
     {
       "id": "te49",
       "type": "text",
-      "x": 1974,
+      "x": 2314,
       "y": 198,
       "width": 242,
       "height": 52.5,
@@ -1577,7 +1577,7 @@
     {
       "id": "te50",
       "type": "text",
-      "x": 1974,
+      "x": 2314,
       "y": 294,
       "width": 66.0,
       "height": 15.0,
@@ -1774,7 +1774,7 @@
     {
       "id": "ar54",
       "type": "arrow",
-      "x": 1890,
+      "x": 2230,
       "y": 235.0,
       "width": 70,
       "height": 0,
@@ -2739,9 +2739,9 @@
     {
       "id": "ar84",
       "type": "arrow",
-      "x": 2095.0,
+      "x": 2435.0,
       "y": 320,
-      "width": 1700.0,
+      "width": 2040.0,
       "height": 110,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -2772,11 +2772,11 @@
           50
         ],
         [
-          -1700.0,
+          -2040.0,
           50
         ],
         [
-          -1700.0,
+          -2040.0,
           110
         ]
       ],
@@ -6656,6 +6656,282 @@
       "lastCommittedPoint": null,
       "startBinding": {
         "elementId": "wf-excalidraw-1",
+        "focus": 0,
+        "gap": 4
+      },
+      "endBinding": {
+        "elementId": "wf-penpot-1",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "wf-penpot-1",
+      "type": "rectangle",
+      "x": 1620,
+      "y": 150,
+      "width": 270,
+      "height": 170,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "wf-penpot-g"
+      ],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 994300728,
+      "version": 1,
+      "versionNonce": 1316869688,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "arrow",
+          "id": "wf-excalidraw-8"
+        },
+        {
+          "type": "arrow",
+          "id": "wf-penpot-7"
+        }
+      ],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "wf-penpot-2",
+      "type": "text",
+      "x": 1634,
+      "y": 162,
+      "width": 242,
+      "height": 23.75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "wf-penpot-g"
+      ],
+      "frameId": null,
+      "roundness": null,
+      "seed": 801681273,
+      "version": 1,
+      "versionNonce": 573666815,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false,
+      "text": "UX design (Penpot)",
+      "originalText": "UX design (Penpot)",
+      "fontSize": 19,
+      "fontFamily": 2,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "lineHeight": 1.25,
+      "autoResize": true
+    },
+    {
+      "id": "wf-penpot-3",
+      "type": "text",
+      "x": 1634,
+      "y": 198,
+      "width": 242,
+      "height": 52.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "wf-penpot-g"
+      ],
+      "frameId": null,
+      "roundness": null,
+      "seed": 297511126,
+      "version": 1,
+      "versionNonce": 399743236,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false,
+      "text": "• Designs built on the wireframes\n• Design tokens + exports in Git\n• Clickable prototype to review",
+      "originalText": "• Designs built on the wireframes\n• Design tokens + exports in Git\n• Clickable prototype to review",
+      "fontSize": 14,
+      "fontFamily": 2,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "lineHeight": 1.25,
+      "autoResize": true
+    },
+    {
+      "id": "wf-penpot-4",
+      "type": "text",
+      "x": 1634,
+      "y": 294,
+      "width": 118.80000000000001,
+      "height": 15.0,
+      "angle": 0,
+      "strokeColor": "#495057",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "wf-penpot-g"
+      ],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1860927403,
+      "version": 1,
+      "versionNonce": 1453081008,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false,
+      "text": "FR-037 (after MVP)",
+      "originalText": "FR-037 (after MVP)",
+      "fontSize": 12,
+      "fontFamily": 2,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "lineHeight": 1.25,
+      "autoResize": true
+    },
+    {
+      "id": "wf-penpot-5",
+      "type": "rectangle",
+      "x": 1787.0,
+      "y": 288,
+      "width": 93.0,
+      "height": 24,
+      "angle": 0,
+      "strokeColor": "#d9480f",
+      "backgroundColor": "#ffa94d",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "wf-penpot-g"
+      ],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 13819177,
+      "version": 1,
+      "versionNonce": 726548508,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "wf-penpot-6",
+      "type": "text",
+      "x": 1796.0,
+      "y": 291,
+      "width": 71.5,
+      "height": 16.25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "wf-penpot-g"
+      ],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1079716292,
+      "version": 1,
+      "versionNonce": 995834409,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false,
+      "text": "You review",
+      "originalText": "You review",
+      "fontSize": 13,
+      "fontFamily": 2,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "lineHeight": 1.25,
+      "autoResize": true
+    },
+    {
+      "id": "wf-penpot-7",
+      "type": "arrow",
+      "x": 1890,
+      "y": 235.0,
+      "width": 70,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1929080207,
+      "version": 1,
+      "versionNonce": 1298580839,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1764284400000,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "wf-penpot-1",
         "focus": 0,
         "gap": 4
       },
