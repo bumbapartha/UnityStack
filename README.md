@@ -120,7 +120,7 @@ This business change ID is distinct from an application runtime distributed-trac
 
 ## Run locally (first slice: Project Inception)
 
-The first implemented step is **Project Inception** ([Requirements §22](Requirements.md)): click **New Project**, answer the AI's questions, watch the Project Charter build up on the right, then confirm to create the project.
+The first implemented step is **Project Inception** ([Requirements §10](Requirements.md)): click **New Project**, answer the AI's questions, watch the Project Charter build up on the right, then confirm to create the project.
 
 Requirements: Docker Desktop.
 
