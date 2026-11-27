@@ -64,7 +64,7 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 | FR-087 | P2 | Support large-scale resumable incremental historical ingestion and backfill. |
 | FR-088 | P2 | Connect existing enterprise providers (for example Jira, Jenkins, Confluence) through supported adapters. |
 | FR-090 | P2 | Produce ingestion coverage, exceptions, provenance and reconciliation reports. |
-| FR-085 | P2 | Support existing-organisation adoption alongside greenfield installations. *(Was P0; the adapter design in [Architecture and design phase](02-architecture-and-design.md) keeps this possible.)* |
+| FR-085 | P2 | Support existing-organisation adoption alongside greenfield installations. *(Was P0; the adapter design in [Core platform](10-core-platform.md) keeps this possible.)* |
 
 ## Workflow orchestration
 

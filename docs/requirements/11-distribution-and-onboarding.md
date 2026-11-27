@@ -1,4 +1,4 @@
-# Platform and distribution
+# Distribution and onboarding
 
 [← Requirements](README.md)
 

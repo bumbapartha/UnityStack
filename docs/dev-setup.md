@@ -28,4 +28,4 @@ How to run UnityStack locally today is in the [root README](../README.md#run-loc
 
 **Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. From here CI/CD deploys: each PR to a preview environment, merges to main to the main (production) environment ([FR-129](requirements/05-deployment.md)). Images go to GitHub Container Registry, with the ECR adapter added alongside.
 
-**Later — enterprise.** See [Platform and distribution](requirements/10-platform-and-distribution.md).
+**Later — enterprise.** See [Distribution and onboarding](requirements/11-distribution-and-onboarding.md).

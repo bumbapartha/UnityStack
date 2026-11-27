@@ -2,7 +2,7 @@
 
 [← Documentation index](README.md)
 
-Every capability is reached through an adapter ([Architecture and design phase](requirements/02-architecture-and-design.md#adapters-and-capability-registry)). The default provider is open source; alternatives can be added as further adapters. **MVP** column: Yes = MVP thin loop; P1 = straight after; P2 = later.
+Every capability is reached through an adapter ([Core platform](requirements/10-core-platform.md#adapters-and-capability-registry)). The default provider is open source; alternatives can be added as further adapters. **MVP** column: Yes = MVP thin loop; P1 = straight after; P2 = later.
 
 ## Source control
 
@@ -19,7 +19,7 @@ Every capability is reached through an adapter ([Architecture and design phase](
 |---|---|---|---|
 | LLM | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
 
-**Requirements:** [Architecture and design phase](requirements/02-architecture-and-design.md)  
+**Requirements:** [Core platform](requirements/10-core-platform.md)  
 **Decisions:** [PD-2](decisions.md#pd-2), [AD-1](decisions.md#ad-1)
 
 ## Identity and access

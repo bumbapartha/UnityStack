@@ -82,7 +82,7 @@ flowchart TB
 
 ## Delivery architecture
 
-Every tool below sits behind a UnityStack adapter; changing one means changing its adapter and configuration only ([Architecture and design phase](requirements/02-architecture-and-design.md)).
+Every tool below sits behind a UnityStack adapter; changing one means changing its adapter and configuration only ([Core platform](requirements/10-core-platform.md)).
 
 | Area | Initial implementation | Evolution |
 |---|---|---|

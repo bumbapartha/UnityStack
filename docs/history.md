@@ -25,16 +25,16 @@
 | §5 Users and roles | [vision.md](vision.md) |
 | §6 Scope and releases | [roadmap.md](roadmap.md) |
 | §7 The closed loop | [architecture.md](architecture.md) |
-| §8.1 Capabilities and adapters | [requirements/02-architecture-and-design.md](requirements/02-architecture-and-design.md) |
-| §8.2 LLM adapter and model-independent context | [requirements/02-architecture-and-design.md](requirements/02-architecture-and-design.md) |
+| §8.1 Capabilities and adapters | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
+| §8.2 LLM adapter and model-independent context | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
 | §8.3 Capabilities and default providers | [tools-and-adapters.md](tools-and-adapters.md) |
-| §9 AI workspace model | [requirements/01-requirements.md](requirements/01-requirements.md) |
+| §9 AI workspace model | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
 | §10 Project Inception — AI-led project creation (built) | [requirements/01-requirements.md](requirements/01-requirements.md) |
 | §11 Source authority, sync and coexistence | [requirements/09-traceability-and-integration.md](requirements/09-traceability-and-integration.md) |
 | §12 Traceability and Change ID | [requirements/09-traceability-and-integration.md](requirements/09-traceability-and-integration.md) |
-| §13.1 Adapters and capability registry | [requirements/02-architecture-and-design.md](requirements/02-architecture-and-design.md) |
-| §13.2 LLM adapter and AI control plane | [requirements/02-architecture-and-design.md](requirements/02-architecture-and-design.md) |
-| §13.3 AI workspaces and revisions | [requirements/01-requirements.md](requirements/01-requirements.md) |
+| §13.1 Adapters and capability registry | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
+| §13.2 LLM adapter and AI control plane | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
+| §13.3 AI workspaces and revisions | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
 | §13.4 Requirements and planning | [requirements/01-requirements.md](requirements/01-requirements.md) |
 | §13.5 Development, tests and Git lifecycle | [requirements/03-development.md](requirements/03-development.md) |
 | §13.6 Delivery | [requirements/05-deployment.md](requirements/05-deployment.md) (FR-117/118 in [Security](requirements/07-security.md), FR-120/041 in [Testing](requirements/04-testing.md)) |
@@ -45,15 +45,15 @@
 | §13.11 Projects, repositories and Inception | [requirements/01-requirements.md](requirements/01-requirements.md) |
 | §13.12 Identity and security | [requirements/07-security.md](requirements/07-security.md) |
 | §13.13 Design and documentation tools | [requirements/02-architecture-and-design.md](requirements/02-architecture-and-design.md) |
-| §13.14 Distribution and platform operations (Later) | [requirements/10-platform-and-distribution.md](requirements/10-platform-and-distribution.md) |
+| §13.14 Distribution and platform operations (Later) | [requirements/11-distribution-and-onboarding.md](requirements/11-distribution-and-onboarding.md) |
 | §13.15 Future: AI meeting assistant | [requirements/08-communication.md](requirements/08-communication.md) |
 | §14 Security, identity and governance | [requirements/07-security.md](requirements/07-security.md) |
 | §15.1 Current implementation (as of 27 November 2026) | [architecture.md](architecture.md) |
 | §15.2 Target logical architecture | [architecture.md](architecture.md) |
 | §15.3 Runtime environments (AD-2) | [dev-setup.md](dev-setup.md) |
 | §15.4 Artifact types and repository flexibility | [architecture.md](architecture.md) |
-| §15.5 Later: enterprise distribution and onboarding (P2) | [requirements/10-platform-and-distribution.md](requirements/10-platform-and-distribution.md) |
-| §16 Non-functional requirements | [requirements/11-non-functional.md](requirements/11-non-functional.md) |
+| §15.5 Later: enterprise distribution and onboarding (P2) | [requirements/11-distribution-and-onboarding.md](requirements/11-distribution-and-onboarding.md) |
+| §16 Non-functional requirements | [requirements/12-non-functional.md](requirements/12-non-functional.md) |
 | §17 MVP acceptance — the thin loop | [roadmap.md](roadmap.md) |
 | §18.1 Resolved on 27 November 2026 | [decisions.md](decisions.md) |
 | §18.2 Still open | [open-questions.md](open-questions.md) |
@@ -72,7 +72,7 @@ Plan §2 (product principles) duplicated the PRD principles and is covered by th
 | §2 Product principles | [vision.md](vision.md) |
 | §3 Dogfooding loop | [roadmap.md](roadmap.md) |
 | §4 Delivery architecture (initial target) | [architecture.md](architecture.md) |
-| §5 Workspace and artifact contract | [requirements/01-requirements.md](requirements/01-requirements.md) |
+| §5 Workspace and artifact contract | [requirements/10-core-platform.md](requirements/10-core-platform.md) |
 | §6 Phased implementation plan | [roadmap.md](roadmap.md) |
 | §7 MVP scope boundaries | [roadmap.md](roadmap.md) |
 | §8 Git and repository organisation | [architecture.md](architecture.md) |
