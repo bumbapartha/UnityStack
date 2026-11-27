@@ -25,6 +25,7 @@ Planned per-phase files, numbered to match the [requirement files](../requiremen
 ## Conventions
 
 - One file per phase, plus the overview. Small files open quickly and keep PR reviews short.
+- A PR that changes only `.excalidraw` files may have up to 1,000 changed lines; code and other PRs stay at 500 (see `CLAUDE.md`, rule 2).
 - Each box names the requirement IDs it covers. Each requirement file links back to its wireframe once one exists.
 - Colours follow the legend in the overview: blue requirements, green development, yellow testing, orange deployment, red monitoring, purple traceability, grey for external tools reached through adapters.
 - An orange tag marks a point where a person decides (confirm, finalise, review, accept). Dashed boxes are after the MVP.
