@@ -15,6 +15,7 @@ This version replaces the stacked v1.1, v1.2 and v1.3 drafts with one current-st
 
 - **Requirement IDs are stable.** Every FR-001 to FR-108 ID from earlier versions is kept, so existing references stay valid. New requirements start at FR-109. IDs are grouped by area in §13 rather than by the version that introduced them.
 - **Priorities have been reset** to match the product decisions in §3 (see §6 for what P0, P1 and P2 now mean).
+- **"GitHub" means the connected Git provider.** GitHub is the first Git provider adapter (AD-4). Where this document says GitHub, PR or GitHub App, read the equivalent in the connected provider (for example a GitLab merge request) unless it names a GitHub-only feature.
 - **Detailed design** (C4 diagrams, API schemas, Terraform modules, threat models) belongs in separate HLD and ADR documents, linked from Git.
 - Inception (§10) is the only area currently specified at the slice level. Other areas will gain slice-level detail as they are built.
 
@@ -45,12 +46,13 @@ Every external tool, and the AI model itself, sits behind an adapter, so any of 
 | AD-1 | **Java only for now.** AI logic stays in Java (Spring Boot application), not a separate Python service. It lives in its own module behind clean interfaces, with plain data objects in and out and no Spring-specific code inside, so that it can later be moved to a Python service (with AI help) without touching the rest. |
 | AD-2 | **Local Docker until the thin loop works, then AWS as soon as possible.** All tools run in Docker Compose, grouped by Compose profiles so only what is needed is started. Once the loop works end to end, move to AWS (Terraform, EC2 + Docker Compose). Moving only the heavy tools to one EC2 host first is an allowed middle step. |
 | AD-3 | **Keycloak from the start.** Keycloak handles sign-in, users, groups and broad roles; UnityStack checks project-level permissions. No temporary built-in login. |
+| AD-4 | **Git provider behind an adapter.** Source control, branches and pull requests are a capability like any other. GitHub is the first adapter; Bitbucket, GitLab, Azure DevOps Repos and the fully open-source Gitea follow as further adapters. With Gitea, an organisation can run the whole stack on open source. |
 
 ## 4. Product principles
 
 1. **AI-first, not AI-only.** UnityStack-native artifacts are created and revised through AI conversation; there are no manual authoring forms in the MVP. Editing in external tools, IDEs and GitHub is always allowed.
 2. **AI proposes, humans govern.** The user explicitly finalises every AI proposal. GitHub branch protection, required checks and policy decide what merges and deploys. A successful AI response or test run is never a substitute for required human approval.
-3. **GitHub owns Git state.** GitHub is authoritative for repositories, branches, commits, PRs, reviews and merged artifacts. Each connected tool is authoritative for its own native records. UnityStack owns conversations, drafts, orchestration state, indexes and trace links.
+3. **The Git provider owns Git state.** The connected Git provider (GitHub first) is authoritative for repositories, branches, commits, PRs, reviews and merged artifacts. Each connected tool is authoritative for its own native records. UnityStack owns conversations, drafts, orchestration state, indexes and trace links.
 4. **Adapters everywhere.** Workflows and agents call logical capabilities (for example `projectManagement.createStory`), never a provider's API directly. The LLM is a capability like any other.
 5. **Your data stays yours.** Context lives in UnityStack's store, Git and the connected tools — never only inside a model provider. Switching model means the new model is fed the same context from those stores.
 6. **One ID through the loop.** A stable Change ID links requirement, story, ADR, branch, commit, PR, test, build, deployment, log evidence and bug.
@@ -188,7 +190,7 @@ flowchart LR
 
 | Capability | Default (open source) | Alternatives to support later | Needed for MVP loop |
 |---|---|---|---|
-| Source control and PRs | GitHub | Other Git providers (P2) | Yes |
+| Source control and PRs | GitHub (first adapter) | Gitea (open source), GitLab, Bitbucket, Azure DevOps Repos (P2) | Yes |
 | LLM | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
 | Identity and access | Keycloak | Azure AD / Entra ID, Okta through Keycloak federation or own adapter (P2) | Yes |
 | Project management (epics, stories, bugs) | OpenProject | Jira (P1), Plane (P2) | Yes |
@@ -284,7 +286,7 @@ The requirements for this slice are FR-102 to FR-108 in §13.11.
 ## 11. Source authority, sync and coexistence
 
 - **UnityStack is never a mandatory gateway.** A team can create stories in the tracker, code in a local IDE, open and merge PRs in GitHub, run CI/CD and deploy without opening UnityStack.
-- **Authority:** GitHub owns repository, branch, commit, PR, review and merge truth. The tracker owns ticket and status records. CI/CD owns build and deployment execution. The monitoring system owns logs and metrics. UnityStack owns orchestration state, AI drafts, indexes, correlations and inferred links.
+- **Authority:** the connected Git provider (GitHub first) owns repository, branch, commit, PR, review and merge truth. The tracker owns ticket and status records. CI/CD owns build and deployment execution. The monitoring system owns logs and metrics. UnityStack owns orchestration state, AI drafts, indexes, correlations and inferred links.
 - **Artifact mapping record:** stable artifact ID, type, owning repository/path/branch, canonical format, originating tool, sync direction, last synced commit, tool revision and sync status.
 - **Canonical lifecycle:** Draft → Validate → Proposed PR → Review → Merge → Synchronise connected tools → Verify.
 - **Field-level ownership:** native tool edits are allowed. Operational fields (for example tracker status) belong to the tool; Git-approved fields (for example acceptance criteria) belong to Git. Drift is reported, never silently overwritten; conflicts show both versions and a resolution path.
@@ -314,6 +316,7 @@ IDs are stable (see §1). "Was" shows the earlier priority where it changed.
 | FR-042 | P0 | Provide a capability registry and stable provider-independent interfaces for every capability used in the MVP loop. |
 | FR-050 | P0 | The registry maps logical operations to installed or connected provider adapters, with endpoint, credential reference, supported operations and health. |
 | FR-005 | P0 | Show each configured tool in the UnityStack portal with endpoint, connection mode and health. *(Was: show all nine installed tools.)* |
+| FR-127 | P2 | **New.** Support further Git providers behind the source-control adapter (Gitea, GitLab, Bitbucket, Azure DevOps Repos), mapping branches, commits, pull/merge requests, reviews, branch protection and webhooks; operations a provider lacks return an explicit unsupported-operation error. |
 | FR-112 | P1 | **New.** Add Jira as a second project-management provider behind the same adapter, proving that the provider can be swapped without workflow changes. |
 | FR-043 | P2 | Allow each capability to use a UnityStack-provisioned default, an existing customer instance, or a supported alternative provider, chosen by the customer. |
 | FR-060 | P2 | Allow users to select an alternative provider, connect an existing enterprise instance, or provision a supported alternative per capability (BYOT) through the UI. |
@@ -566,7 +569,7 @@ flowchart TB
 - **Control plane:** portal, API, registry, identity and policy, workflow state.
 - **AI plane:** agents and the LLM adapter, in a separate framework-free Java module (AD-1); models hold no direct infrastructure permissions.
 - **Integration plane:** capability adapters, optionally exposed via MCP behind trusted execution.
-- **Data plane:** GitHub for canonical artifacts; PostgreSQL for application and workflow data; tool databases for tool data; the observability provider for logs and metrics.
+- **Data plane:** the Git provider (GitHub first) for canonical artifacts; PostgreSQL for application and workflow data; tool databases for tool data; the observability provider for logs and metrics.
 - **Deployment plane:** CI/CD deploys the managed application; infrastructure as code provisions environments.
 
 ### 15.3 Runtime environments (AD-2)
@@ -694,7 +697,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | D-2 | Local Docker until the thin loop works, then AWS as soon as possible (AD-2). |
 | D-3 | Grafana, Loki and Prometheus for observability (§8.3). |
 | D-6 | GitHub Actions for CI/CD; Jenkins and Argo CD as future adapters. |
-| — | Thin loop first (PD-4); Keycloak now (AD-3); Semgrep, Trivy, OWASP ZAP; JUnit, Vitest, Playwright, Kiwi TCMS; GitHub Container Registry (ECR with AWS, Harbor later); GoAlert; OpenFeature with Unleash; Mattermost; AI meeting assistant as a future feature. |
+| — | Thin loop first (PD-4); Git provider adapter with GitHub first (AD-4); Keycloak now (AD-3); Semgrep, Trivy, OWASP ZAP; JUnit, Vitest, Playwright, Kiwi TCMS; GitHub Container Registry (ECR with AWS, Harbor later); GoAlert; OpenFeature with Unleash; Mattermost; AI meeting assistant as a future feature. |
 
 ### 18.2 Still open
 
@@ -713,6 +716,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | D-15 | Instrumentation standard | Proposed: OpenTelemetry for logs, metrics and traces from the managed application. |
 | D-16 | How CI deploys to the local environment during the thin loop | For example, the local environment pulls the new image from GitHub Container Registry after CI succeeds. |
 | D-17 | MCP servers for tools | Community MCP servers exist for some tools (for example the security scanners); check maturity before adapters depend on them. |
+| D-19 | Order of further Git providers | Proposed: Gitea first (keeps a fully open-source option), then GitLab and Bitbucket. |
 | D-18 | Meeting platform for the AI meeting assistant | Later (P2); candidates Jitsi Meet or Mattermost calls, with Zoom and Teams adapters. |
 
 ## 19. Risks
@@ -741,7 +745,7 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 | 1.2 | 21 Nov 2026 | AI-first two-pane UX, coexistence, Change ID, enterprise adoption (§17–21, FR-061 to FR-101). |
 | 1.3 | Nov 2026 | Project Inception (§22, FR-102 to FR-108). |
 | 2.0 | 27 Nov 2026 | Consolidated into one current-state document; product decisions PD-1 to PD-3; priorities reset; adapter architecture and closed loop made central; new FR-109 to FR-116 and NFR-013/014; observability added as a capability. |
-| 2.1 | 27 Nov 2026 | PD-4 thin loop first, PD-5 open-source defaults with swappable adapters; AD-1 Java with portable AI module, AD-2 Docker then AWS, AD-3 Keycloak now; default tools for identity, CI/CD, registry, security scanning, testing, observability, on-call, feature flags and notifications; AI meeting assistant as a future capability; new FR-117 to FR-126 and NFR-015 to NFR-017; §15.3 runtime environments. |
+| 2.1 | 27 Nov 2026 | PD-4 thin loop first, PD-5 open-source defaults with swappable adapters; AD-1 Java with portable AI module, AD-2 Docker then AWS, AD-3 Keycloak now; default tools for identity, CI/CD, registry, security scanning, testing, observability, on-call, feature flags and notifications; AI meeting assistant as a future capability; new FR-117 to FR-127 and NFR-015 to NFR-017; §15.3 runtime environments; AD-4 Git provider adapter (GitHub first; Gitea, GitLab, Bitbucket, Azure DevOps later). |
 
 | Old section | New section |
 |---|---|

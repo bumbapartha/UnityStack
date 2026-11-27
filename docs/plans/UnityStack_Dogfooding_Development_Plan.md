@@ -23,7 +23,7 @@ This is **dogfooding**: UnityStack becomes its first real customer. The product 
 1. **AI-first, not AI-only.** Creation and modification in the UnityStack MVP happen through conversation. Users may independently develop and submit PRs directly in GitHub at any time.
 2. **Two-pane workspace.** Left: AI chat. Right: live, read-only artifact preview, revision history, and changes. Review/finalise actions are allowed; direct inline artifact editing is not an MVP requirement.
 3. **Human-governed changes.** AI proposes; users inspect and finalise; GitHub PR and organisation policy determine reviews, checks, merge and deployment permissions.
-4. **GitHub owns Git state.** GitHub is authoritative for repositories, branches, commits, PRs, reviews and merged Git artifacts. UnityStack owns conversations, drafts, assignments, workflow and traceability state.
+4. **The Git provider owns Git state.** The connected Git provider (GitHub first, behind an adapter) is authoritative for repositories, branches, commits, PRs, reviews and merged Git artifacts. UnityStack owns conversations, drafts, assignments, workflow and traceability state.
 5. **Traditional SDLC remains independent.** Teams can create tickets, write code, review PRs and deploy entirely outside UnityStack. UnityStack observes and reconciles supported external activity.
 6. **Walking skeleton and continuous delivery.** Deploy Hello World through an automated pipeline on day one (locally first, then AWS); grow functionality through small reviewed changes.
 7. **Everything durable and reviewable as code where appropriate.** Requirements, ADRs, Mermaid diagrams, OpenAPI, code, tests and infrastructure configurations are Git artifacts. Runtime state, credentials, and native tool databases are not Git artifacts.
@@ -64,7 +64,7 @@ Every tool below sits behind a UnityStack adapter; changing one means changing i
 | Model access | Provider-neutral LLM adapter (mock, OpenAI) | Routing gateway, budgets and fallback |
 | Identity | Keycloak (OIDC) from the start (AD-3) | Federation with organisation identity providers |
 | Operational state | PostgreSQL | Scalable workflow/event processing and search |
-| Artifact storage | GitHub repositories | Multi-repo registry and cross-repo change sets |
+| Artifact storage | GitHub repositories, behind the Git provider adapter | Gitea, GitLab, Bitbucket, Azure DevOps adapters; multi-repo registry and cross-repo change sets |
 | Preview | Markdown renderer + textual diff | Mermaid, stories, code, tests, deployment previews |
 | Streaming | SSE for chat/proposed revisions | More granular streaming, collaboration |
 | CI/CD | GitHub Actions | Jenkins, Argo CD adapters |
@@ -222,7 +222,7 @@ The phases follow the thin loop (PRD PD-4): Phases 0–4 build every stage of th
 
 **Build:**
 - Versioned AWS installer and manifests; installation profiles, preflight checks, health validation, upgrade/rollback, backup/restore.
-- Install-time choice of provider per capability (for example GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams), with the default open-source set as the full profile.
+- Install-time choice of provider per capability (for example GitHub, Gitea, GitLab or Bitbucket; GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams), with the default open-source set as the full profile.
 - Organisation configuration, identity federation, domain/TLS, secrets and tool health.
 - Greenfield install or connect-existing onboarding; historical ingestion plus ongoing synchronisation.
 - Future: AI meeting assistant that joins requirement meetings, summarises them and proposes requirement updates (PRD FR-126).
@@ -360,7 +360,7 @@ Track practical engineering measures: PR success rate, AI revision acceptance ra
 - AI-first two-pane workspace; preview read-only in MVP.
 - Direct human edits via external editors are a future capability.
 - Conventional external SDLC must continue unrestricted.
-- GitHub is authoritative for Git/PR state; UnityStack for orchestration state.
+- The connected Git provider (GitHub first) is authoritative for Git/PR state; UnityStack for orchestration state.
 - Webhooks and reconciliation observe external work.
 - Single-organisation install initially.
 - Continuous delivery starts with a walking skeleton.
@@ -370,6 +370,7 @@ Track practical engineering measures: PR success rate, AI revision acceptance ra
 - Java only; AI in its own framework-free module so it can move to Python later (AD-1).
 - Local Docker Compose with profiles until the thin loop works, then AWS as soon as possible (AD-2).
 - Keycloak from the start (AD-3).
+- Git provider behind an adapter: GitHub first; Gitea, GitLab, Bitbucket and Azure DevOps later (AD-4).
 - GitHub Actions; Semgrep, Trivy, OWASP ZAP; JUnit, Vitest, Playwright, Kiwi TCMS; GitHub Container Registry (ECR, Harbor later); Grafana, Loki, Prometheus; GoAlert; OpenFeature with Unleash; Mattermost.
 - AI meeting assistant is a future feature.
 
