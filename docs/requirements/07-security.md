@@ -1,12 +1,12 @@
-# Identity and security
+# Security
 
-[← Documentation index](../README.md)
+[← Requirements](README.md)
 
-Identity, permissions, agent safety and secrets.
+Cross-cutting: identity, permissions, security scanning, agent safety and secrets.
 
 **Tools:** [Identity and access](../tools-and-adapters.md#identity-and-access), [Security scanning](../tools-and-adapters.md#security-scanning)
 
-**Decisions:** [AD-3](../decisions/AD-3-keycloak-now.md), [TD-02](../decisions/TD-02-security-scanning.md)
+**Decisions:** [AD-3](../decisions.md#ad-3), [TD-02](../decisions.md#td-02)
 
 ## Security, identity and governance
 
@@ -37,10 +37,17 @@ Identity, permissions, agent safety and secrets.
 - Do not promise perfect historical reconstruction: deleted, inaccessible or never-recorded source data may be unrecoverable.
 - Protect production with branch/environment rules, tests, security gates and optional release approvals.
 
-## Requirements
+## Identity and access requirements
 
 | ID | Priority | Requirement |
 |---|---|---|
 | FR-052 | P0 | All agent action requests pass through a trusted policy, authorisation and execution layer with scoped credentials and approval checks. |
-| FR-049 | P0 | Provide central identity, session management and platform roles through the identity provider (Keycloak, [AD-3](../decisions/AD-3-keycloak-now.md)); map platform identities to tool access where supported and document exceptions. |
+| FR-049 | P0 | Provide central identity, session management and platform roles through the identity provider (Keycloak, [AD-3](../decisions.md#ad-3)); map platform identities to tool access where supported and document exceptions. |
 | FR-125 | P0 | **New.** Enforce resource-level permissions: which user or role may perform which operation (for example view, edit, finalise, approve, deploy) on which resource (for example a project, artifact, PR or environment). The identity provider supplies identity, groups and broad roles; UnityStack evaluates project-level rules. |
+
+## Security scanning requirements
+
+| ID | Priority | Requirement |
+|---|---|---|
+| FR-117 | P0 | **New.** Run static code security scanning (SAST) and dependency, image, infrastructure and secret scanning (SCA) in CI on every PR; link findings to the PR and Change ID; failing scans block merge according to policy. |
+| FR-118 | P1 | **New.** Run dynamic black-box security testing (DAST) against the deployed application after deployment; link findings to the deployment and Change ID, and let AI propose bugs from them ([FR-115](06-monitoring-and-operations.md)). |

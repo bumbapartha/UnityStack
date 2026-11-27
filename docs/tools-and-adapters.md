@@ -2,7 +2,7 @@
 
 [← Documentation index](README.md)
 
-Every capability is reached through an adapter ([Adapters and capability registry](requirements/adapters.md)). The default provider is open source; alternatives can be added as further adapters. The **MVP** column says when the capability is needed (Yes = MVP thin loop; P1 = straight after; P2 = later).
+Every capability is reached through an adapter ([Architecture and design phase](requirements/02-architecture-and-design.md#adapters-and-capability-registry)). The default provider is open source; alternatives can be added as further adapters. **MVP** column: Yes = MVP thin loop; P1 = straight after; P2 = later.
 
 ## Source control
 
@@ -10,8 +10,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Source control and PRs | GitHub (first adapter) | Gitea (open source), GitLab, Bitbucket, Azure DevOps Repos (P2) | Yes |
 
-**Requirements:** [Development and Git](requirements/development-and-git.md), [Coexistence and sync](requirements/coexistence-and-sync.md)  
-**Decisions:** [AD-4](decisions/AD-4-git-provider-adapter.md)
+**Requirements:** [Development phase](requirements/03-development.md), [Traceability and integration](requirements/09-traceability-and-integration.md)  
+**Decisions:** [AD-4](decisions.md#ad-4)
 
 ## AI models
 
@@ -19,8 +19,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | LLM | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
 
-**Requirements:** [AI and LLM](requirements/ai-and-llm.md)  
-**Decisions:** [PD-2](decisions/PD-2-adapters-everywhere.md), [AD-1](decisions/AD-1-java-portable-ai-module.md)
+**Requirements:** [Architecture and design phase](requirements/02-architecture-and-design.md)  
+**Decisions:** [PD-2](decisions.md#pd-2), [AD-1](decisions.md#ad-1)
 
 ## Identity and access
 
@@ -28,8 +28,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Identity and access | Keycloak | Azure AD / Entra ID, Okta through Keycloak federation or own adapter (P2) | Yes |
 
-**Requirements:** [Identity and security](requirements/identity-and-security.md)  
-**Decisions:** [AD-3](decisions/AD-3-keycloak-now.md)
+**Requirements:** [Security](requirements/07-security.md)  
+**Decisions:** [AD-3](decisions.md#ad-3)
 
 ## Project management
 
@@ -37,7 +37,7 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Project management (epics, stories, bugs) | OpenProject | Jira (P1), Plane (P2) | Yes |
 
-**Requirements:** [Requirements and planning](requirements/requirements-and-planning.md), [Observability and feedback](requirements/observability-and-feedback.md), [Coexistence and sync](requirements/coexistence-and-sync.md)
+**Requirements:** [Requirements phase](requirements/01-requirements.md), [Monitoring and operations phase](requirements/06-monitoring-and-operations.md), [Traceability and integration](requirements/09-traceability-and-integration.md)
 
 ## CI/CD
 
@@ -45,8 +45,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | CI/CD | GitHub Actions | Jenkins, Argo CD (P2) | Yes |
 
-**Requirements:** [Delivery and testing](requirements/delivery-and-testing.md)  
-**Decisions:** [TD-01](decisions/TD-01-ci-cd-github-actions.md), [TD-10](decisions/TD-10-local-rebuild-workflow.md)
+**Requirements:** [Deployment phase](requirements/05-deployment.md)  
+**Decisions:** [TD-01](decisions.md#td-01), [TD-10](decisions.md#td-10)
 
 ## Container registry
 
@@ -54,8 +54,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Artifact (container) registry | GitHub Container Registry | Amazon ECR (with the AWS move), Harbor (P2) | P1 (with the AWS move) |
 
-**Requirements:** [Delivery and testing](requirements/delivery-and-testing.md)  
-**Decisions:** [TD-04](decisions/TD-04-container-registry.md)
+**Requirements:** [Deployment phase](requirements/05-deployment.md)  
+**Decisions:** [TD-04](decisions.md#td-04)
 
 ## Security scanning
 
@@ -65,8 +65,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 | Dependency, image, IaC and secret scanning (SCA) | Trivy | OWASP Dependency-Check, GitHub scanning (P2) | Yes |
 | Dynamic / black-box security testing (DAST) | OWASP ZAP | — | P1 |
 
-**Requirements:** [Delivery and testing](requirements/delivery-and-testing.md), [Identity and security](requirements/identity-and-security.md)  
-**Decisions:** [TD-02](decisions/TD-02-security-scanning.md)
+**Requirements:** [Security](requirements/07-security.md)  
+**Decisions:** [TD-02](decisions.md#td-02)
 
 ## Testing
 
@@ -76,8 +76,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 | End-to-end tests | Playwright | — | Yes |
 | Test management (cases, runs, reports) | Kiwi TCMS | — | Yes |
 
-**Requirements:** [Delivery and testing](requirements/delivery-and-testing.md), [Development and Git](requirements/development-and-git.md)  
-**Decisions:** [TD-03](decisions/TD-03-testing-tools.md)
+**Requirements:** [Testing phase](requirements/04-testing.md), [Development phase](requirements/03-development.md)  
+**Decisions:** [TD-03](decisions.md#td-03)
 
 ## Observability
 
@@ -88,8 +88,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 | Metrics | Prometheus | — | Yes |
 | Dashboards and alert rules | Grafana (Grafana alerting) | Prometheus Alertmanager (P2) | Yes (dashboards); P1 (alerts) |
 
-**Requirements:** [Observability and feedback](requirements/observability-and-feedback.md), [Traceability and orchestration](requirements/traceability.md)  
-**Decisions:** [TD-05](decisions/TD-05-observability.md), [TD-06](decisions/TD-06-alert-rules-in-git.md)
+**Requirements:** [Monitoring and operations phase](requirements/06-monitoring-and-operations.md), [Traceability and integration](requirements/09-traceability-and-integration.md)  
+**Decisions:** [TD-05](decisions.md#td-05), [TD-06](decisions.md#td-06)
 
 ## Alerting and on-call
 
@@ -97,8 +97,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | On-call paging and escalation | GoAlert | Opsgenie, PagerDuty, OneUptime (P2) | P1 |
 
-**Requirements:** [Observability and feedback](requirements/observability-and-feedback.md)  
-**Decisions:** [TD-06](decisions/TD-06-alert-rules-in-git.md), [TD-07](decisions/TD-07-on-call-goalert.md)
+**Requirements:** [Monitoring and operations phase](requirements/06-monitoring-and-operations.md)  
+**Decisions:** [TD-06](decisions.md#td-06), [TD-07](decisions.md#td-07)
 
 ## Feature flags
 
@@ -106,8 +106,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Feature flags | OpenFeature with Unleash | Flagsmith or an organisation's own provider via OpenFeature (P2) | P1 |
 
-**Requirements:** [Delivery and testing](requirements/delivery-and-testing.md)  
-**Decisions:** [TD-08](decisions/TD-08-feature-flags.md)
+**Requirements:** [Deployment phase](requirements/05-deployment.md)  
+**Decisions:** [TD-08](decisions.md#td-08)
 
 ## Notifications
 
@@ -115,8 +115,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Notifications and team chat | Mattermost | Slack, Microsoft Teams (P2) | P1 |
 
-**Requirements:** [Observability and feedback](requirements/observability-and-feedback.md)  
-**Decisions:** [TD-09](decisions/TD-09-notifications.md)
+**Requirements:** [Communication](requirements/08-communication.md)  
+**Decisions:** [TD-09](decisions.md#td-09)
 
 ## Meetings
 
@@ -124,8 +124,8 @@ Every capability is reached through an adapter ([Adapters and capability registr
 |---|---|---|---|
 | Meetings (AI meeting assistant) | *To be selected, for example Jitsi Meet or Mattermost calls* | Zoom, Teams (P2) | P2 |
 
-**Requirements:** [AI meeting assistant](requirements/meeting-assistant.md)  
-**Decisions:** [TD-11](decisions/TD-11-meeting-assistant-later.md)
+**Requirements:** [Communication](requirements/08-communication.md)  
+**Decisions:** [TD-11](decisions.md#td-11)
 
 ## Design, documentation and developer tools
 
@@ -140,7 +140,7 @@ Every capability is reached through an adapter ([Adapters and capability registr
 | Software catalogue | Backstage | — | P2 |
 | Web IDE | Eclipse Theia | Local IDE (always) | P2 |
 
-**Requirements:** [Design and documentation tools](requirements/design-and-documentation.md), [Delivery and testing](requirements/delivery-and-testing.md)
+**Requirements:** [Architecture and design phase](requirements/02-architecture-and-design.md), [Testing phase](requirements/04-testing.md)
 
 ## Notes
 
@@ -152,7 +152,7 @@ Notes on how the new tools fit together:
 - **OpenTelemetry:** the open standard for logs, metrics and traces. The Java agent instruments Spring Boot requests, database and HTTP calls without code changes; custom spans can be added where needed. Existing logging (Logback, Log4j) keeps working: the agent adds the trace ID to each log line and sends logs on. Every signal carries `service.name`, `service.version` (release) and the Change ID. All telemetry goes through the **OpenTelemetry Collector**, so the backends behind it can change without touching application code.
 - **Grafana, Loki, Prometheus:** Loki stores logs (indexing labels only, so it is light), Prometheus stores metrics, Grafana shows both, links a log line to its trace, and evaluates alert rules.
 - **Changing the log store later (for example to Elasticsearch/Kibana or OpenSearch):** add or connect the new store; change the Collector configuration to send logs there (alongside Loki or instead of it); add a UnityStack log adapter for its query language; move log alert rules. Application code does not change, and Grafana can read Elasticsearch too.
-- **Alert rules as code:** Grafana alerting rules are files in Git and are provisioned into Grafana at start-up, which makes them read-only in the Grafana UI; a change is a PR. As a safety net, a UnityStack sync job exports rules through Grafana's API and opens a PR if they have drifted ([FR-024](requirements/development-and-git.md)).
+- **Alert rules as code:** Grafana alerting rules are files in Git and are provisioned into Grafana at start-up, which makes them read-only in the Grafana UI; a change is a PR. As a safety net, a UnityStack sync job exports rules through Grafana's API and opens a PR if they have drifted ([FR-024](requirements/03-development.md)).
 - **GoAlert:** on-call rotations (daily, weekly, hourly), temporary overrides and escalation policies; pages by phone call or SMS. Its API allows UnityStack to manage rotations later.
 - **Kiwi TCMS:** test cases, test plans, test runs per build or release, and reports such as requirements without tests. Test cases are authored in Git (by AI, reviewed by PR); Kiwi keeps run history so every release has a permanent record of what was tested and what passed.
 - **OpenFeature with Unleash:** Unleash is the flag server and dashboard; OpenFeature is the standard SDK the code calls. An organisation with its own flag system writes an OpenFeature provider and plugs it in without UnityStack code changes.

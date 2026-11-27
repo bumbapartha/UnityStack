@@ -1,12 +1,12 @@
-# Observability and feedback
+# Monitoring and operations phase
 
-[← Documentation index](../README.md)
+[← Requirements](README.md)
 
 Logs, metrics, AI analysis, alerts, on-call and the bug feedback loop.
 
-**Tools:** [Project management](../tools-and-adapters.md#project-management), [Observability](../tools-and-adapters.md#observability), [Alerting and on-call](../tools-and-adapters.md#alerting-and-on-call), [Notifications](../tools-and-adapters.md#notifications)
+**Tools:** [Project management](../tools-and-adapters.md#project-management), [Observability](../tools-and-adapters.md#observability), [Alerting and on-call](../tools-and-adapters.md#alerting-and-on-call)
 
-**Decisions:** [PD-3](../decisions/PD-3-closed-loop.md), [TD-05](../decisions/TD-05-observability.md), [TD-06](../decisions/TD-06-alert-rules-in-git.md), [TD-07](../decisions/TD-07-on-call-goalert.md), [TD-09](../decisions/TD-09-notifications.md)
+**Decisions:** [PD-3](../decisions.md#pd-3), [TD-05](../decisions.md#td-05), [TD-06](../decisions.md#td-06), [TD-07](../decisions.md#td-07)
 
 ## Requirements
 
@@ -19,4 +19,3 @@ Logs, metrics, AI analysis, alerts, on-call and the bug feedback loop.
 | FR-046 | P0 | Connect production signals to incident or improvement proposals that re-enter the governed loop. *(Was P1.)* |
 | FR-122 | P1 | **New.** Route alerts from alert rules to the on-call tool, which pages the on-call developer (phone, SMS, app) using rotations, overrides and escalation policies. |
 | FR-123 | P1 | **New.** When an alert fires, notify UnityStack as well; AI investigates the related logs and metrics and attaches a summary with cited evidence to the incident while the developer is being paged. Any resulting bug still needs a person to accept it (FR-115). |
-| FR-124 | P1 | **New.** Send notifications (review requests, PR status, alerts, incident summaries, publication failures) through a notification adapter. |

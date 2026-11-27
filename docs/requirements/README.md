@@ -2,13 +2,36 @@
 
 [← Documentation index](../README.md)
 
+Requirements are grouped by SDLC phase, in the order work flows through the loop, followed by areas that cut across every phase.
+
+## SDLC phases
+
+| # | SDLC phase | File | Requirements |
+|---|---|---|---|
+| 1 | Requirements | [01-requirements.md](01-requirements.md) | 28 |
+| 2 | Architecture and design | [02-architecture-and-design.md](02-architecture-and-design.md) | 23 |
+| 3 | Development | [03-development.md](03-development.md) | 11 |
+| 4 | Testing | [04-testing.md](04-testing.md) | 2 |
+| 5 | Deployment | [05-deployment.md](05-deployment.md) | 7 |
+| 6 | Monitoring and operations | [06-monitoring-and-operations.md](06-monitoring-and-operations.md) | 7 |
+
+## Cross-cutting areas
+
+| Area | File | Requirements |
+|---|---|---|
+| Security | [07-security.md](07-security.md) | 5 |
+| Communication | [08-communication.md](08-communication.md) | 2 |
+| Traceability and integration | [09-traceability-and-integration.md](09-traceability-and-integration.md) | 30 |
+| Platform and distribution | [10-platform-and-distribution.md](10-platform-and-distribution.md) | 14 |
+| Non-functional requirements | [11-non-functional.md](11-non-functional.md) | 17 |
+
 ## How to read the requirements
 
-- **Requirement IDs are stable.** Every [FR-001](distribution.md) to [FR-108](inception.md) ID from earlier versions is kept, so existing references stay valid. New requirements start at [FR-109](adapters.md). IDs are grouped by area, one file per area, rather than by the version that introduced them.
-- **Priorities have been reset** to match the product decisions in [Decisions](../decisions/README.md) (see [Scope and roadmap](../roadmap.md) for what P0, P1 and P2 now mean).
-- **"GitHub" means the connected Git provider.** GitHub is the first Git provider adapter ([AD-4](../decisions/AD-4-git-provider-adapter.md)). Where this document says GitHub, PR or GitHub App, read the equivalent in the connected provider (for example a GitLab merge request) unless it names a GitHub-only feature.
+- **Requirement IDs are stable.** Every [FR-001](10-platform-and-distribution.md) to [FR-108](01-requirements.md) ID from earlier versions is kept, so existing references stay valid. New requirements start at [FR-109](02-architecture-and-design.md). IDs are grouped by SDLC phase, one file per phase, rather than by the version that introduced them.
+- **Priorities have been reset** to match the product decisions in [Decisions](../decisions.md) (see [Scope and roadmap](../roadmap.md) for what P0, P1 and P2 now mean).
+- **"GitHub" means the connected Git provider.** GitHub is the first Git provider adapter ([AD-4](../decisions.md#ad-4)). Where this document says GitHub, PR or GitHub App, read the equivalent in the connected provider (for example a GitLab merge request) unless it names a GitHub-only feature.
 - **Detailed design** (C4 diagrams, API schemas, Terraform modules, threat models) belongs in separate HLD and ADR documents, linked from Git.
-- [Inception](inception.md) is the only area currently specified at the slice level. Other areas will gain slice-level detail as they are built.
+- [Project Inception](01-requirements.md#project-inception-built) is the only area currently specified at the slice level. Other areas will gain slice-level detail as they are built.
 - Priorities marked *(Was …)* show the earlier priority where it changed.
 
 ### Priorities
@@ -17,177 +40,157 @@ Priorities in this document mean:
 
 | Priority | Meaning |
 |---|---|
-| **P0 — MVP** | Needed for the thin closed loop, used by the sole user ([PD-1](../decisions/PD-1-primary-user.md), [PD-3](../decisions/PD-3-closed-loop.md)). |
+| **P0 — MVP** | Needed for the thin closed loop, used by the sole user ([PD-1](../decisions.md#pd-1), [PD-3](../decisions.md#pd-3)). |
 | **P1 — Next** | Deepens the loop while dogfooding and prepares for a small group of demo users. |
 | **P2 — Later** | Enterprise distribution and adoption: installer, full default-tool bundle, BYOT selection, SSO, HA, large-scale ingestion. |
 
-## Areas
-
-| Area | File | IDs |
-|---|---|---|
-| Adapters and capability registry | [adapters.md](adapters.md) | 8 |
-| AI and LLM | [ai-and-llm.md](ai-and-llm.md) | 11 |
-| AI workspace | [workspace.md](workspace.md) | 8 |
-| Project Inception | [inception.md](inception.md) | 13 |
-| Requirements and planning | [requirements-and-planning.md](requirements-and-planning.md) | 7 |
-| Development and Git | [development-and-git.md](development-and-git.md) | 11 |
-| Delivery and testing | [delivery-and-testing.md](delivery-and-testing.md) | 11 |
-| Observability and feedback | [observability-and-feedback.md](observability-and-feedback.md) | 8 |
-| Traceability and orchestration | [traceability.md](traceability.md) | 12 |
-| Coexistence and sync | [coexistence-and-sync.md](coexistence-and-sync.md) | 18 |
-| Identity and security | [identity-and-security.md](identity-and-security.md) | 3 |
-| Design and documentation tools | [design-and-documentation.md](design-and-documentation.md) | 4 |
-| Distribution and operations | [distribution.md](distribution.md) | 14 |
-| AI meeting assistant | [meeting-assistant.md](meeting-assistant.md) | 1 |
-| Non-functional requirements | [non-functional.md](non-functional.md) | 17 |
-
 ## ID index
 
-| ID | Priority | Area |
+| ID | Priority | Phase or area |
 |---|---|---|
-| [FR-001](distribution.md) | P2 | Distribution and operations |
-| [FR-002](distribution.md) | P2 | Distribution and operations |
-| [FR-003](distribution.md) | P1 | Distribution and operations |
-| [FR-004](distribution.md) | P2 | Distribution and operations |
-| [FR-005](adapters.md) | P0 | Adapters and capability registry |
-| [FR-006](distribution.md) | P2 | Distribution and operations |
-| [FR-007](distribution.md) | P2 | Distribution and operations |
-| [FR-008](distribution.md) | P1 | Distribution and operations |
-| [FR-009](distribution.md) | P2 | Distribution and operations |
-| [FR-010](distribution.md) | P2 | Distribution and operations |
-| [FR-011](inception.md) | P0 | Project Inception |
-| [FR-012](inception.md) | P0 | Project Inception |
-| [FR-013](inception.md) | P1 | Project Inception |
-| [FR-014](inception.md) | P0 | Project Inception |
-| [FR-015](inception.md) | P1 | Project Inception |
-| [FR-016](inception.md) | P2 | Project Inception |
-| [FR-017](development-and-git.md) | P2 | Development and Git |
-| [FR-018](development-and-git.md) | P0 | Development and Git |
-| [FR-019](development-and-git.md) | P0 | Development and Git |
-| [FR-020](workspace.md) | P0 | AI workspace |
-| [FR-021](development-and-git.md) | P0 | Development and Git |
-| [FR-022](development-and-git.md) | P0 | Development and Git |
-| [FR-023](traceability.md) | P0 | Traceability and orchestration |
-| [FR-024](development-and-git.md) | P1 | Development and Git |
-| [FR-025](development-and-git.md) | P2 | Development and Git |
-| [FR-026](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-027](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-028](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-029](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-030](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-031](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-032](ai-and-llm.md) | P1 | AI and LLM |
-| [FR-033](ai-and-llm.md) | P1 | AI and LLM |
-| [FR-034](ai-and-llm.md) | P1 | AI and LLM |
-| [FR-035](distribution.md) | P2 | Distribution and operations |
-| [FR-036](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-037](design-and-documentation.md) | P2 | Design and documentation tools |
-| [FR-038](design-and-documentation.md) | P1 | Design and documentation tools |
-| [FR-039](design-and-documentation.md) | P2 | Design and documentation tools |
-| [FR-040](design-and-documentation.md) | P2 | Design and documentation tools |
-| [FR-041](delivery-and-testing.md) | P1 | Delivery and testing |
-| [FR-042](adapters.md) | P0 | Adapters and capability registry |
-| [FR-043](adapters.md) | P2 | Adapters and capability registry |
-| [FR-044](delivery-and-testing.md) | P0 | Delivery and testing |
-| [FR-045](delivery-and-testing.md) | P0 | Delivery and testing |
-| [FR-046](observability-and-feedback.md) | P0 | Observability and feedback |
-| [FR-047](traceability.md) | P0 | Traceability and orchestration |
-| [FR-048](distribution.md) | P2 | Distribution and operations |
-| [FR-049](identity-and-security.md) | P0 | Identity and security |
-| [FR-050](adapters.md) | P0 | Adapters and capability registry |
-| [FR-051](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-052](identity-and-security.md) | P0 | Identity and security |
-| [FR-053](traceability.md) | P0 | Traceability and orchestration |
-| [FR-054](distribution.md) | P2 | Distribution and operations |
-| [FR-055](coexistence-and-sync.md) | P1 | Coexistence and sync |
-| [FR-056](traceability.md) | P0 | Traceability and orchestration |
-| [FR-057](distribution.md) | P2 | Distribution and operations |
-| [FR-058](development-and-git.md) | P2 | Development and Git |
-| [FR-059](distribution.md) | P2 | Distribution and operations |
-| [FR-060](adapters.md) | P2 | Adapters and capability registry |
-| [FR-061](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-062](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-063](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-064](workspace.md) | P0 | AI workspace |
-| [FR-065](workspace.md) | P0 | AI workspace |
-| [FR-066](development-and-git.md) | P1 | Development and Git |
-| [FR-067](development-and-git.md) | P1 | Development and Git |
-| [FR-068](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-069](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-070](requirements-and-planning.md) | P0 | Requirements and planning |
-| [FR-071](workspace.md) | P0 | AI workspace |
-| [FR-072](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-073](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-074](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-075](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-076](coexistence-and-sync.md) | P1 | Coexistence and sync |
-| [FR-077](workspace.md) | P2 | AI workspace |
-| [FR-078](workspace.md) | P2 | AI workspace |
-| [FR-079](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-080](coexistence-and-sync.md) | P1 | Coexistence and sync |
-| [FR-081](coexistence-and-sync.md) | P2 | Coexistence and sync |
-| [FR-082](traceability.md) | P1 | Traceability and orchestration |
-| [FR-083](traceability.md) | P1 | Traceability and orchestration |
-| [FR-084](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-085](coexistence-and-sync.md) | P2 | Coexistence and sync |
-| [FR-086](coexistence-and-sync.md) | P2 | Coexistence and sync |
-| [FR-087](coexistence-and-sync.md) | P2 | Coexistence and sync |
-| [FR-088](coexistence-and-sync.md) | P2 | Coexistence and sync |
-| [FR-089](traceability.md) | P2 | Traceability and orchestration |
-| [FR-090](coexistence-and-sync.md) | P2 | Coexistence and sync |
-| [FR-091](coexistence-and-sync.md) | P1 | Coexistence and sync |
-| [FR-092](coexistence-and-sync.md) | P0 | Coexistence and sync |
-| [FR-093](workspace.md) | P0 | AI workspace |
-| [FR-094](workspace.md) | P0 | AI workspace |
-| [FR-095](traceability.md) | P1 | Traceability and orchestration |
-| [FR-096](traceability.md) | P1 | Traceability and orchestration |
-| [FR-097](delivery-and-testing.md) | P0 | Delivery and testing |
-| [FR-098](delivery-and-testing.md) | P1 | Delivery and testing |
-| [FR-099](traceability.md) | P0 | Traceability and orchestration |
-| [FR-100](traceability.md) | P0 | Traceability and orchestration |
-| [FR-101](traceability.md) | P1 | Traceability and orchestration |
-| [FR-102](inception.md) | P0 | Project Inception |
-| [FR-103](inception.md) | P0 | Project Inception |
-| [FR-104](inception.md) | P0 | Project Inception |
-| [FR-105](inception.md) | P0 | Project Inception |
-| [FR-106](inception.md) | P0 | Project Inception |
-| [FR-107](inception.md) | P0 | Project Inception |
-| [FR-108](inception.md) | P1 | Project Inception |
-| [FR-109](adapters.md) | P0 | Adapters and capability registry |
-| [FR-110](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-111](ai-and-llm.md) | P0 | AI and LLM |
-| [FR-112](adapters.md) | P1 | Adapters and capability registry |
-| [FR-113](observability-and-feedback.md) | P0 | Observability and feedback |
-| [FR-114](observability-and-feedback.md) | P0 | Observability and feedback |
-| [FR-115](observability-and-feedback.md) | P0 | Observability and feedback |
-| [FR-116](development-and-git.md) | P0 | Development and Git |
-| [FR-117](delivery-and-testing.md) | P0 | Delivery and testing |
-| [FR-118](delivery-and-testing.md) | P1 | Delivery and testing |
-| [FR-119](delivery-and-testing.md) | P1 | Delivery and testing |
-| [FR-120](delivery-and-testing.md) | P0 | Delivery and testing |
-| [FR-121](delivery-and-testing.md) | P1 | Delivery and testing |
-| [FR-122](observability-and-feedback.md) | P1 | Observability and feedback |
-| [FR-123](observability-and-feedback.md) | P1 | Observability and feedback |
-| [FR-124](observability-and-feedback.md) | P1 | Observability and feedback |
-| [FR-125](identity-and-security.md) | P0 | Identity and security |
-| [FR-126](meeting-assistant.md) | P2 | AI meeting assistant |
-| [FR-127](adapters.md) | P2 | Adapters and capability registry |
-| [FR-128](observability-and-feedback.md) | P1 | Observability and feedback |
-| [FR-129](delivery-and-testing.md) | P1 | Delivery and testing |
-| [NFR-001](non-functional.md) | — | Non-functional requirements |
-| [NFR-002](non-functional.md) | — | Non-functional requirements |
-| [NFR-003](non-functional.md) | — | Non-functional requirements |
-| [NFR-004](non-functional.md) | — | Non-functional requirements |
-| [NFR-005](non-functional.md) | — | Non-functional requirements |
-| [NFR-006](non-functional.md) | — | Non-functional requirements |
-| [NFR-007](non-functional.md) | — | Non-functional requirements |
-| [NFR-008](non-functional.md) | — | Non-functional requirements |
-| [NFR-009](non-functional.md) | — | Non-functional requirements |
-| [NFR-010](non-functional.md) | — | Non-functional requirements |
-| [NFR-011](non-functional.md) | — | Non-functional requirements |
-| [NFR-012](non-functional.md) | — | Non-functional requirements |
-| [NFR-013](non-functional.md) | — | Non-functional requirements |
-| [NFR-014](non-functional.md) | — | Non-functional requirements |
-| [NFR-015](non-functional.md) | — | Non-functional requirements |
-| [NFR-016](non-functional.md) | — | Non-functional requirements |
-| [NFR-017](non-functional.md) | — | Non-functional requirements |
+| [FR-001](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-002](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-003](10-platform-and-distribution.md) | P1 | Platform and distribution |
+| [FR-004](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-005](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-006](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-007](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-008](10-platform-and-distribution.md) | P1 | Platform and distribution |
+| [FR-009](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-010](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-011](01-requirements.md) | P0 | Requirements |
+| [FR-012](01-requirements.md) | P0 | Requirements |
+| [FR-013](01-requirements.md) | P1 | Requirements |
+| [FR-014](01-requirements.md) | P0 | Requirements |
+| [FR-015](01-requirements.md) | P1 | Requirements |
+| [FR-016](01-requirements.md) | P2 | Requirements |
+| [FR-017](03-development.md) | P2 | Development |
+| [FR-018](03-development.md) | P0 | Development |
+| [FR-019](03-development.md) | P0 | Development |
+| [FR-020](01-requirements.md) | P0 | Requirements |
+| [FR-021](03-development.md) | P0 | Development |
+| [FR-022](03-development.md) | P0 | Development |
+| [FR-023](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-024](03-development.md) | P1 | Development |
+| [FR-025](03-development.md) | P2 | Development |
+| [FR-026](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-027](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-028](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-029](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-030](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-031](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-032](02-architecture-and-design.md) | P1 | Architecture and design |
+| [FR-033](02-architecture-and-design.md) | P1 | Architecture and design |
+| [FR-034](02-architecture-and-design.md) | P1 | Architecture and design |
+| [FR-035](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-036](01-requirements.md) | P0 | Requirements |
+| [FR-037](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-038](02-architecture-and-design.md) | P1 | Architecture and design |
+| [FR-039](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-040](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-041](04-testing.md) | P1 | Testing |
+| [FR-042](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-043](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-044](05-deployment.md) | P0 | Deployment |
+| [FR-045](05-deployment.md) | P0 | Deployment |
+| [FR-046](06-monitoring-and-operations.md) | P0 | Monitoring and operations |
+| [FR-047](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-048](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-049](07-security.md) | P0 | Security |
+| [FR-050](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-051](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-052](07-security.md) | P0 | Security |
+| [FR-053](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-054](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-055](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-056](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-057](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-058](03-development.md) | P2 | Development |
+| [FR-059](10-platform-and-distribution.md) | P2 | Platform and distribution |
+| [FR-060](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-061](01-requirements.md) | P0 | Requirements |
+| [FR-062](01-requirements.md) | P0 | Requirements |
+| [FR-063](01-requirements.md) | P0 | Requirements |
+| [FR-064](01-requirements.md) | P0 | Requirements |
+| [FR-065](01-requirements.md) | P0 | Requirements |
+| [FR-066](03-development.md) | P1 | Development |
+| [FR-067](03-development.md) | P1 | Development |
+| [FR-068](01-requirements.md) | P0 | Requirements |
+| [FR-069](01-requirements.md) | P0 | Requirements |
+| [FR-070](01-requirements.md) | P0 | Requirements |
+| [FR-071](01-requirements.md) | P0 | Requirements |
+| [FR-072](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-073](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-074](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-075](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-076](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-077](01-requirements.md) | P2 | Requirements |
+| [FR-078](01-requirements.md) | P2 | Requirements |
+| [FR-079](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-080](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-081](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-082](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-083](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-084](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-085](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-086](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-087](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-088](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-089](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-090](09-traceability-and-integration.md) | P2 | Traceability and integration |
+| [FR-091](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-092](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-093](01-requirements.md) | P0 | Requirements |
+| [FR-094](01-requirements.md) | P0 | Requirements |
+| [FR-095](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-096](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-097](05-deployment.md) | P0 | Deployment |
+| [FR-098](05-deployment.md) | P1 | Deployment |
+| [FR-099](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-100](09-traceability-and-integration.md) | P0 | Traceability and integration |
+| [FR-101](09-traceability-and-integration.md) | P1 | Traceability and integration |
+| [FR-102](01-requirements.md) | P0 | Requirements |
+| [FR-103](01-requirements.md) | P0 | Requirements |
+| [FR-104](01-requirements.md) | P0 | Requirements |
+| [FR-105](01-requirements.md) | P0 | Requirements |
+| [FR-106](01-requirements.md) | P0 | Requirements |
+| [FR-107](01-requirements.md) | P0 | Requirements |
+| [FR-108](01-requirements.md) | P1 | Requirements |
+| [FR-109](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-110](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-111](02-architecture-and-design.md) | P0 | Architecture and design |
+| [FR-112](02-architecture-and-design.md) | P1 | Architecture and design |
+| [FR-113](06-monitoring-and-operations.md) | P0 | Monitoring and operations |
+| [FR-114](06-monitoring-and-operations.md) | P0 | Monitoring and operations |
+| [FR-115](06-monitoring-and-operations.md) | P0 | Monitoring and operations |
+| [FR-116](03-development.md) | P0 | Development |
+| [FR-117](07-security.md) | P0 | Security |
+| [FR-118](07-security.md) | P1 | Security |
+| [FR-119](05-deployment.md) | P1 | Deployment |
+| [FR-120](04-testing.md) | P0 | Testing |
+| [FR-121](05-deployment.md) | P1 | Deployment |
+| [FR-122](06-monitoring-and-operations.md) | P1 | Monitoring and operations |
+| [FR-123](06-monitoring-and-operations.md) | P1 | Monitoring and operations |
+| [FR-124](08-communication.md) | P1 | Communication |
+| [FR-125](07-security.md) | P0 | Security |
+| [FR-126](08-communication.md) | P2 | Communication |
+| [FR-127](02-architecture-and-design.md) | P2 | Architecture and design |
+| [FR-128](06-monitoring-and-operations.md) | P1 | Monitoring and operations |
+| [FR-129](05-deployment.md) | P1 | Deployment |
+| [NFR-001](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-002](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-003](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-004](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-005](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-006](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-007](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-008](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-009](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-010](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-011](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-012](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-013](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-014](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-015](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-016](11-non-functional.md) | — | Non-functional requirements |
+| [NFR-017](11-non-functional.md) | — | Non-functional requirements |

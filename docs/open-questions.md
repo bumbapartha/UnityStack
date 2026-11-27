@@ -2,7 +2,7 @@
 
 [← Documentation index](README.md)
 
-When a question is settled, add a decision file in [decisions](decisions/README.md) and remove the row here.
+When a question is settled, add a row to [Decisions](decisions.md) and remove it here.
 
 ## Open questions
 
@@ -11,11 +11,11 @@ When a question is settled, add a decision file in [decisions](decisions/README.
 | D-4 | Change ID format and how it is carried | For example `<PROJECTKEY>-CHG-001`, in branch names, commit trailers, PR labels, build metadata and log fields. |
 | D-5 | First project-management provider in the loop | OpenProject is the default; Jira follows as the second adapter. |
 | D-7 | Review policy for a sole user | GitHub does not let an author approve their own PR. Decide on self-merge rules for the sole-user phase. |
-| D-8 | OpenProject sync direction | Git-to-tool for approved definitions with field-level ownership ([Coexistence and sync](requirements/coexistence-and-sync.md)); controlled tool-to-PR proposals later. |
+| D-8 | OpenProject sync direction | Git-to-tool for approved definitions with field-level ownership ([Traceability and integration](requirements/09-traceability-and-integration.md)); controlled tool-to-PR proposals later. |
 | D-9 | Penpot export fidelity and authoritative design format | Later (P2). |
 | D-10 | Tool versions, licensing and distribution rights | Verify before packaging (P2). |
 | D-11 | Adapter, event envelope and schema contracts | Define in HLD; the event envelope includes `eventId`, `eventType`, `occurredAt`, `organisationId`, `projectId`, `correlationId`, `changeId`, `actor`, `artifactRefs`, `schemaVersion`. |
-| D-12 | SSO for third-party tools | Keycloak is decided for UnityStack ([AD-3](decisions/AD-3-keycloak-now.md)). Which tools join Keycloak SSO, and how (OIDC or SAML), is decided per tool. |
+| D-12 | SSO for third-party tools | Keycloak is decided for UnityStack ([AD-3](decisions.md#ad-3)). Which tools join Keycloak SSO, and how (OIDC or SAML), is decided per tool. |
 | D-13 | Scale, SLOs, RTO and RPO | After baseline measurement. |
 | D-17 | MCP servers for tools | Community MCP servers exist for some tools (for example the security scanners); check maturity before adapters depend on them. |
 | D-19 | Order of further Git providers | Proposed: Gitea first (keeps a fully open-source option), then GitLab and Bitbucket. |

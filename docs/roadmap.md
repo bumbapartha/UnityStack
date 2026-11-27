@@ -6,7 +6,7 @@ What is built when, and how UnityStack is built with UnityStack. This file merge
 
 ## Dogfooding idea
 
-**Build UnityStack using UnityStack.** Start by creating the smallest UnityStack shell with conventional engineering tools, running locally in Docker. Add a usable AI Requirements workspace. Then use that workspace to propose changes to UnityStack's own requirements document through GitHub pull requests (PRs). Build the whole loop thin from end to end first (requirements → stories → code and tests → PR → deploy → logs → AI analysis → bug), using each new stage to help build the next one. Then move to AWS and deepen each stage ([PD-4](decisions/PD-4-thin-loop-first.md), [AD-2](decisions/AD-2-docker-then-aws.md)).
+**Build UnityStack using UnityStack.** Start by creating the smallest UnityStack shell with conventional engineering tools, running locally in Docker. Add a usable AI Requirements workspace. Then use that workspace to propose changes to UnityStack's own requirements document through GitHub pull requests (PRs). Build the whole loop thin from end to end first (requirements → stories → code and tests → PR → deploy → logs → AI analysis → bug), using each new stage to help build the next one. Then move to AWS and deepen each stage ([PD-4](decisions.md#pd-4), [AD-2](decisions.md#ad-2)).
 
 This is **dogfooding**: UnityStack becomes its first real customer. The product grows through its own governed delivery loop, while ordinary GitHub/IDE/CI/CD development remains fully supported.
 
@@ -39,13 +39,13 @@ Priorities in this document mean:
 
 | Priority | Meaning |
 |---|---|
-| **P0 — MVP** | Needed for the thin closed loop, used by the sole user ([PD-1](decisions/PD-1-primary-user.md), [PD-3](decisions/PD-3-closed-loop.md)). |
+| **P0 — MVP** | Needed for the thin closed loop, used by the sole user ([PD-1](decisions.md#pd-1), [PD-3](decisions.md#pd-3)). |
 | **P1 — Next** | Deepens the loop while dogfooding and prepares for a small group of demo users. |
 | **P2 — Later** | Enterprise distribution and adoption: installer, full default-tool bundle, BYOT selection, SSO, HA, large-scale ingestion. |
 
 ### MVP (P0) — the thin closed loop
 
-- [Project Inception](requirements/inception.md) — **built**.
+- Project Inception ([Requirements phase](requirements/01-requirements.md)) — **built**.
 - Requirements workspace: AI edits a Markdown requirements document read from GitHub, with preview, diff, revisions, finalise → PR.
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
@@ -55,14 +55,14 @@ Priorities in this document mean:
 - Testing: end-to-end tests with Playwright; test cases kept in Git and each run's results recorded in Kiwi TCMS, linked to requirements, release and Change ID.
 - Observe: the deployed application's logs (Loki) and metrics (Prometheus) are collected and viewable in Grafana and from UnityStack; the user can ask AI to analyse them.
 - Feedback: AI can propose a bug from log evidence; once the user accepts it, the bug is created in the tracker, linked to the Change ID, and enters the loop again.
-- Sign-in and roles through Keycloak ([AD-3](decisions/AD-3-keycloak-now.md)).
+- Sign-in and roles through Keycloak ([AD-3](decisions.md#ad-3)).
 - Adapters for every tool used above, plus the LLM adapter with a mock provider.
 - Change ID created at the start and carried through every stage.
-- Everything runs locally in Docker Compose, using profiles ([AD-2](decisions/AD-2-docker-then-aws.md)).
+- Everything runs locally in Docker Compose, using profiles ([AD-2](decisions.md#ad-2)).
 
 ### Next (P1)
 
-- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS ([AD-2](decisions/AD-2-docker-then-aws.md)). CI/CD then builds images, publishes them to the container registry (GitHub Container Registry, then Amazon ECR), deploys each PR to a preview environment and deploys merges to main to the main (production) environment.
+- **Move to AWS** as soon as the thin loop works: Terraform, EC2 + Docker Compose, HTTPS ([AD-2](decisions.md#ad-2)). CI/CD then builds images, publishes them to the container registry (GitHub Container Registry, then Amazon ECR), deploys each PR to a preview environment and deploys merges to main to the main (production) environment.
 - Black-box security testing of the deployed application with OWASP ZAP.
 - Alerting and on-call: Grafana alerts page the on-call developer through GoAlert; at the same time AI investigates logs and metrics and adds a summary to the incident.
 - Notifications (review requests, alerts, incident summaries) through Mattermost.
@@ -78,7 +78,7 @@ Priorities in this document mean:
 
 - Versioned, installable distribution with Terraform-provisioned AWS, the full default tool profile, upgrade, backup and restore.
 - Bring Your Own Tool: the organisation picks the provider for each capability at install time (for example GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams).
-- **AI meeting assistant:** an AI participant in requirement meetings that listens, asks questions, suggests solutions, summarises on request and later proposes requirement updates as PRs ([AI meeting assistant](requirements/meeting-assistant.md)).
+- **AI meeting assistant:** an AI participant in requirement meetings that listens, asks questions, suggests solutions, summarises on request and later proposes requirement updates as PRs ([Communication](requirements/08-communication.md)).
 - Enterprise onboarding: connect existing tools, historical backfill, relationship reconstruction, completeness reports.
 - Full SSO across all tools, HA, Kubernetes, multi-cloud, cross-repository change sets.
 
@@ -107,18 +107,18 @@ The MVP is accepted when the sole user can do the following on a demo applicatio
 
 ## Phased plan
 
-The phases follow the thin loop ([PD-4](decisions/PD-4-thin-loop-first.md)): Phases 0–4 build every stage of the loop in a basic form; Phase 4 completes the MVP ([Scope and roadmap](#)). Each phase uses what the earlier phases built.
+The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build every stage of the loop in a basic form; Phase 4 completes the MVP ([Scope and roadmap](#)). Each phase uses what the earlier phases built.
 
 ### Phase 0 — Local foundation and walking skeleton (v0.0.x)
 
 **Goal:** A repeatable local stack, signed-in access and an automated pipeline for a Hello World application.
 
-**Already built:** [Project Inception](requirements/inception.md) with Vue, Spring Boot, PostgreSQL and the mock/OpenAI LLM adapter in Docker Compose.
+**Already built:** Project Inception ([Requirements phase](requirements/01-requirements.md)) with Vue, Spring Boot, PostgreSQL and the mock/OpenAI LLM adapter in Docker Compose.
 
 **Build:**
 - Docker Compose profiles (`core`, `pm`, `test`, `monitoring`, …) so only the needed tools start.
 - Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
-- Move the AI code into its own framework-free module behind interfaces ([AD-1](decisions/AD-1-java-portable-ai-module.md)).
+- Move the AI code into its own framework-free module behind interfaces ([AD-1](decisions.md#ad-1)).
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
 - Change ID scheme ([D-4](open-questions.md)) and generation at the start of a change.
 - GitHub Actions for UnityStack itself on every PR: build, JUnit and Vitest, Semgrep, Trivy (no deployment).
@@ -135,7 +135,7 @@ The phases follow the thin loop ([PD-4](decisions/PD-4-thin-loop-first.md)): Pha
 **Goal:** Use UnityStack to update its own requirements document.
 
 **Build:**
-- Project/repository/artifact configuration for the UnityStack PRD path; charter proposed to Git via PR when a repository is linked ([FR-108](requirements/inception.md)).
+- Project/repository/artifact configuration for the UnityStack PRD path; charter proposed to Git via PR when a repository is linked ([FR-108](requirements/01-requirements.md)).
 - Two-pane UI with chat, Markdown preview, baseline/proposed diff, revision history and finalise action.
 - AI requirements flow: retrieve approved Markdown from GitHub; discuss change; produce a structured patch or revised document; validate document shape and identifiers; save draft revision with its Change ID.
 - Trusted GitHub integration: create branch, commit proposed Markdown, open PR; show PR URL/status.
@@ -190,7 +190,7 @@ The phases follow the thin loop ([PD-4](decisions/PD-4-thin-loop-first.md)): Pha
 
 ### Phase 5 — Move to AWS (v0.5)
 
-**Goal:** Run the working loop in AWS as soon as possible after the MVP ([AD-2](decisions/AD-2-docker-then-aws.md)).
+**Goal:** Run the working loop in AWS as soon as possible after the MVP ([AD-2](decisions.md#ad-2)).
 
 **Build:**
 - Terraform for EC2, networking, storage and secrets (Secrets Manager or SSM); S3 remote state with locking.
@@ -230,7 +230,7 @@ The phases follow the thin loop ([PD-4](decisions/PD-4-thin-loop-first.md)): Pha
 - Install-time choice of provider per capability (for example GitHub, Gitea, GitLab or Bitbucket; GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams), with the default open-source set as the full profile.
 - Organisation configuration, identity federation, domain/TLS, secrets and tool health.
 - Greenfield install or connect-existing onboarding; historical ingestion plus ongoing synchronisation.
-- Future: AI meeting assistant that joins requirement meetings, summarises them and proposes requirement updates ([FR-126](requirements/meeting-assistant.md)).
+- Future: AI meeting assistant that joins requirement meetings, summarises them and proposes requirement updates ([FR-126](requirements/08-communication.md)).
 
 **Exit criteria:** Repeatable fresh install, upgrade and restore tested; onboarding report identifies imported records, gaps and integration health.
 

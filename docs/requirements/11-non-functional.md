@@ -1,8 +1,8 @@
 # Non-functional requirements
 
-[← Documentation index](../README.md)
+[← Requirements](README.md)
 
-**Decisions:** [PD-5](../decisions/PD-5-open-source-defaults.md), [AD-1](../decisions/AD-1-java-portable-ai-module.md)
+Cross-cutting quality requirements.
 
 ## Requirements
 
@@ -23,7 +23,7 @@
 | NFR-013 | Model independence | **New.** Switching LLM provider or model needs configuration only and loses no project context. |
 | NFR-014 | Local-first development | **New.** The whole MVP loop can run locally with Docker and the mock LLM, without cloud resources. |
 | NFR-015 | Replaceability | **New.** Changing the provider of any capability touches only that capability's adapter and configuration files. |
-| NFR-016 | AI module portability | **New.** The AI module has no framework dependencies and exchanges only plain data objects, so it can be moved to a separate service in another language without changes elsewhere ([AD-1](../decisions/AD-1-java-portable-ai-module.md)). |
+| NFR-016 | AI module portability | **New.** The AI module has no framework dependencies and exchanges only plain data objects, so it can be moved to a separate service in another language without changes elsewhere ([AD-1](../decisions.md#ad-1)). |
 | NFR-017 | Resource footprint | **New.** Local services are grouped in Compose profiles; the everyday `core` profile runs comfortably on a developer laptop. |
 
 Quantitative targets (install time, cloud spend, SLOs, RTO, RPO) are deliberately TBD until measured.

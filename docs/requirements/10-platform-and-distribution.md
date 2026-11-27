@@ -1,12 +1,12 @@
-# Distribution and operations
+# Platform and distribution
 
-[← Documentation index](../README.md)
+[← Requirements](README.md)
 
-Later (P2): installable distribution, platform operations and enterprise onboarding.
+Cross-cutting, later (P2): installable distribution, platform operations and enterprise onboarding.
 
 **Tools:** [Container registry](../tools-and-adapters.md#container-registry)
 
-**Decisions:** [PD-5](../decisions/PD-5-open-source-defaults.md)
+**Decisions:** [PD-5](../decisions.md#pd-5)
 
 ## Enterprise distribution and onboarding
 
@@ -22,7 +22,7 @@ Later (P2): installable distribution, platform operations and enterprise onboard
 |---|---|---|
 | FR-001 | P2 | Deliver a versioned UnityStack distribution with infrastructure modules, deployment definitions, configuration templates and installer scripts. *(Was P0.)* |
 | FR-002 | P2 | Accept organisation-specific cloud region, domain, GitHub organisation, AI provider and deployment profile settings. *(Was P0.)* |
-| FR-003 | P1 | Use Terraform to provision required AWS resources with repeatable plan and apply workflows. *(Was P0; needed as soon as the thin loop works, [AD-2](../decisions/AD-2-docker-then-aws.md).)* |
+| FR-003 | P1 | Use Terraform to provision required AWS resources with repeatable plan and apply workflows. *(Was P0; needed as soon as the thin loop works, [AD-2](../decisions.md#ad-2).)* |
 | FR-004 | P2 | A full installation profile deploys UnityStack and the default tool for every selected capability ([Tools and adapters](../tools-and-adapters.md)), with their dependencies. *(Was P0.)* |
 | FR-035 | P2 | Deploy and expose the default tools chosen at install time. *(Was P0.)* |
 | FR-006 | P2 | Make installation idempotent where practical; rerunning must not destroy persistent data. *(Was P0.)* |

@@ -14,13 +14,13 @@ Every external tool, and the AI model itself, sits behind an adapter, so any of 
 
 ## Product decisions
 
-- [PD-1 — Primary user: the founder, dogfooding](decisions/PD-1-primary-user.md)
-- [PD-2 — Adapters everywhere](decisions/PD-2-adapters-everywhere.md)
-- [PD-3 — Product core: the closed loop joined by one Change ID](decisions/PD-3-closed-loop.md)
-- [PD-4 — Thin loop first](decisions/PD-4-thin-loop-first.md)
-- [PD-5 — Open-source defaults, swappable by adapter](decisions/PD-5-open-source-defaults.md)
+- [PD-1](decisions.md#pd-1) Primary user
+- [PD-2](decisions.md#pd-2) Adapters everywhere
+- [PD-3](decisions.md#pd-3) Product core: the closed loop
+- [PD-4](decisions.md#pd-4) Thin loop first
+- [PD-5](decisions.md#pd-5) Open-source defaults
 
-All decisions: [Decisions](decisions/README.md).
+All decisions: [Decisions](decisions.md).
 
 ## Product principles
 

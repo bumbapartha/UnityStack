@@ -4,7 +4,7 @@ UnityStack — Enterprise AI Software Factory. *From requirements to production.
 
 **Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.2 (27 November 2026)
 
-This folder replaces the single `Requirements.md` (v2.1) and the dogfooding development plan. Each topic has its own short file so a change touches one file per PR.
+This folder replaces the single `Requirements.md` (v2.1) and the dogfooding development plan.
 
 ## Start here
 
@@ -12,20 +12,20 @@ This folder replaces the single `Requirements.md` (v2.1) and the dogfooding deve
 |---|---|
 | [Vision and principles](vision.md) | What UnityStack is, product decisions, principles, users |
 | [Scope and roadmap](roadmap.md) | MVP thin loop, what comes next, phases, backlog, acceptance |
-| [Architecture](architecture.md) | The closed loop, components, current implementation, repositories |
+| [Requirements](requirements/README.md) | Requirements by SDLC phase, with an ID index |
 | [Tools and adapters](tools-and-adapters.md) | Default tool per capability, alternatives, links to requirements |
-| [Requirements](requirements/README.md) | Functional and non-functional requirements, one file per area, with an ID index |
-| [Decisions](decisions/README.md) | One file per settled decision (PD, AD, TD) |
+| [Architecture](architecture.md) | The closed loop, components, current implementation, repositories |
+| [Decisions](decisions.md) | Every settled decision in one table |
 | [Open questions and risks](open-questions.md) | Undecided items and risks |
 | [Development setup](dev-setup.md) | Docker Compose profiles, local rebuilds, move to AWS |
 | [Document history](history.md) | Version history and where old sections went |
 
 ## Linking conventions
 
-- Requirement IDs (FR-, NFR-), decision IDs (PD-, AD-, TD-) and open-question IDs (D-) are stable and never reused. Links use them, so they survive renames.
-- Each requirement file lists the **tools** and **decisions** it depends on; each tool section lists the **requirements** and **decisions** that use it; each decision lists the files it affects.
-- New requirements get the next free FR number and are added to the area file and the ID index.
-- "GitHub" means the connected Git provider (GitHub is the first adapter, [AD-4](decisions/AD-4-git-provider-adapter.md)).
+- Requirement IDs (FR-, NFR-), decision IDs (PD-, AD-, TD-) and open-question IDs (D-) are stable and never reused; links use them.
+- Each requirement file lists the **tools** and **decisions** it depends on; each tool section lists the **requirements** and **decisions** that use it; each decision lists what it affects.
+- New requirements get the next free FR number and go into the file for their SDLC phase.
+- "GitHub" means the connected Git provider (GitHub is the first adapter, [AD-4](decisions.md#ad-4)).
 
 ## Next documents
 

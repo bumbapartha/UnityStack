@@ -1,12 +1,12 @@
-# Development and Git
+# Development phase
 
-[← Documentation index](../README.md)
+[← Requirements](README.md)
 
 AI-proposed code and tests, branches and pull requests.
 
 **Tools:** [Source control](../tools-and-adapters.md#source-control), [Testing](../tools-and-adapters.md#testing)
 
-**Decisions:** [AD-4](../decisions/AD-4-git-provider-adapter.md), [TD-03](../decisions/TD-03-testing-tools.md)
+**Decisions:** [AD-4](../decisions.md#ad-4)
 
 ## Requirements
 

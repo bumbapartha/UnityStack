@@ -26,6 +26,6 @@ How to run UnityStack locally today is in the [root README](../README.md#run-loc
 - **When editing by hand:** `docker compose watch` watches the source folders; it syncs frontend changes straight into the running container and rebuilds the backend only when backend files change.
 - GitHub Actions still runs tests and security scans on every PR, but does not deploy.
 
-**Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. From here CI/CD deploys: each PR to a preview environment, merges to main to the main (production) environment ([FR-129](requirements/delivery-and-testing.md)). Images go to GitHub Container Registry, with the ECR adapter added alongside.
+**Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. From here CI/CD deploys: each PR to a preview environment, merges to main to the main (production) environment ([FR-129](requirements/05-deployment.md)). Images go to GitHub Container Registry, with the ECR adapter added alongside.
 
-**Later — enterprise.** See [Distribution and operations](requirements/distribution.md).
+**Later — enterprise.** See [Platform and distribution](requirements/10-platform-and-distribution.md).
