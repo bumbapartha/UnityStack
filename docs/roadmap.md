@@ -118,7 +118,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Build:**
 - Docker Compose profiles (`core`, `pm`, `test`, `monitoring`, …) so only the needed tools start.
 - Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
-- Move the AI code into its own framework-free module behind interfaces ([AD-1](decisions.md#ad-1)).
+- Restructure the code into feature modules ([AD-5](decisions.md#ad-5)): move inception and projects into `requirements/`, the LLM interface and providers into `core/ai/` (framework-free, [AD-1](decisions.md#ad-1)), and the frontend views into `modules/requirements/`; add Spring Modulith and its boundary test.
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
 - Change ID scheme ([D-4](open-questions.md)) and generation at the start of a change.
 - GitHub Actions for UnityStack itself on every PR: build, JUnit and Vitest, Semgrep, Trivy (no deployment).
@@ -247,7 +247,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Immediate implementation order:**
 
 1. Docker Compose profiles and Keycloak sign-in.
-2. Move the AI code into its own framework-free module.
+2. Restructure backend and frontend into feature modules, with the Spring Modulith boundary test.
 3. Change ID scheme and generation.
 4. GitHub Actions with unit tests, Semgrep and Trivy on every PR.
 5. `unitystack-demo-app` Hello World with the local rebuild workflow.
