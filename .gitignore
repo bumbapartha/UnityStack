@@ -1,5 +1,8 @@
 .env
 node_modules/
+# Yarn (TD-15): keep frontend/.yarnrc.yml, ignore the local Yarn folder; npm lockfiles must not return.
+frontend/.yarn/
+package-lock.json
 dist/
 target/
 .DS_Store

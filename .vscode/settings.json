@@ -10,5 +10,6 @@
   "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[java]": { "editor.defaultFormatter": "richardwillis.vscode-spotless-gradle" },
   "spotlessGradle.format.enable": true,
-  "eslint.workingDirectories": ["frontend"]
+  "eslint.workingDirectories": ["frontend"],
+  "java.configuration.updateBuildConfiguration": "automatic"
 }

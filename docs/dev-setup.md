@@ -35,7 +35,7 @@ This page is about running **UnityStack itself**. The projects UnityStack manage
 # Backend, from backend/
 docker run --rm -v "$PWD":/src -v unitystack-gradle-cache:/home/gradle/.gradle -w /src gradle:8.10.2-jdk21 gradle spotlessApply
 # Frontend, from the repository root (Prettier reads the root .prettierrc.json)
-docker run --rm -v "$PWD":/repo -w /repo/frontend node:22.11-alpine sh -c "npm install && npm run format && npm run lint"
+docker run --rm -v "$PWD":/repo -w /repo/frontend node:22.11-alpine sh -c "corepack enable && yarn install && yarn format && yarn lint"
 ```
 
 **Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. From here CI/CD deploys: each PR to a preview environment, merges to main to the main (production) environment ([FR-129](requirements/05-deployment.md)). Images go to GitHub Container Registry, with the ECR adapter added alongside.
