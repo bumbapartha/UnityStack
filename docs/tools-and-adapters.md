@@ -11,7 +11,7 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 | Source control and PRs | GitHub (first adapter) | Gitea (open source), GitLab, Bitbucket, Azure DevOps Repos (P2) | Yes |
 
 **Requirements:** [Development phase](requirements/03-development.md), [Traceability and integration](requirements/09-traceability-and-integration.md)  
-**Decisions:** [AD-4](decisions.md#ad-4)
+**Decisions:** [AD-4](decisions.md#ad-4), [TD-17](decisions.md#td-17)
 
 ## AI models
 

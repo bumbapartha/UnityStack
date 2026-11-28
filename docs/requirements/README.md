@@ -8,7 +8,7 @@ Requirements are grouped by SDLC phase, in the order work flows through the loop
 
 | #   | SDLC phase                | File                                                               | Requirements |
 | --- | ------------------------- | ------------------------------------------------------------------ | ------------ |
-| 1   | Requirements              | [01-requirements.md](01-requirements.md)                           | 20           |
+| 1   | Requirements              | [01-requirements.md](01-requirements.md)                           | 21           |
 | 2   | Architecture and design   | [02-architecture-and-design.md](02-architecture-and-design.md)     | 5            |
 | 3   | Development               | [03-development.md](03-development.md)                             | 12           |
 | 4   | Testing                   | [04-testing.md](04-testing.md)                                     | 2            |
@@ -187,6 +187,7 @@ Priorities in this document mean:
 | [FR-136](09-traceability-and-integration.md) | P0       | Traceability and integration |
 | [FR-137](10-core-platform.md)                | P0       | Core platform                |
 | [FR-138](10-core-platform.md)                | P0       | Core platform                |
+| [FR-139](01-requirements.md)                 | P0       | Requirements                 |
 | [NFR-001](12-non-functional.md)              | —        | Non-functional requirements  |
 | [NFR-002](12-non-functional.md)              | —        | Non-functional requirements  |
 | [NFR-003](12-non-functional.md)              | —        | Non-functional requirements  |
