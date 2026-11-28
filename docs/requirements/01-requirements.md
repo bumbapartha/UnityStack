@@ -47,7 +47,8 @@ Capturing what to build: project inception, requirements, epics and stories. The
 - On confirmation, UnityStack stores in PostgreSQL: the project record (ID, short key, name, status, product type, creator, timestamps), the charter as structured data plus rendered Markdown, open questions, and the inception conversation with agent-run reference.
 - The charter is versioned: each change creates a new revision with parent revision, actor and agent-run reference.
 - Until a GitHub repository is linked, PostgreSQL is authoritative for the charter. When a repository is linked or created, UnityStack proposes the current charter to the mapped Git path through a PR; after merge, Git is authoritative and later changes follow the normal draft → finalise → PR flow.
-- After creation, charter content changes through AI conversation. Project name, key and status may also be changed in a simple project settings panel; those changes are audited.
+- The project key (prefix) is suggested from the project name, shown in the charter preview with a "change" option, and confirmed together with the charter summary ([Traceability](../traceability.md#2-prefixes-project-first-then-modules)).
+- After creation, charter content changes through AI conversation. Project name, key and status may also be changed in a simple project settings panel; those changes are audited. Changing the key affects only new items; existing items keep their keys.
 
 **Acceptance:** a user creates a project by answering only the mandatory questions; the project and charter revision 1 exist in PostgreSQL; abandoning a second inception leaves no project; renaming the project creates an audit record.
 
