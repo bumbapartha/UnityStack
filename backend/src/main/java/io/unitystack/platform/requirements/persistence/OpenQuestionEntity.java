@@ -29,8 +29,7 @@ public class OpenQuestionEntity extends AssignedIdEntity {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    protected OpenQuestionEntity() {
-    }
+    protected OpenQuestionEntity() {}
 
     public static OpenQuestionEntity open(UUID projectId, String question, OffsetDateTime at) {
         OpenQuestionEntity e = new OpenQuestionEntity();

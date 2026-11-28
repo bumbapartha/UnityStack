@@ -21,16 +21,16 @@ Cross-cutting: the parts of UnityStack itself that every SDLC phase relies on â€
 
 ### Adapter requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-109 | P0 | **New.** Every external tool is accessed only through a capability adapter; workflows and agents contain no provider-specific API calls. |
-| FR-042 | P0 | Provide a capability registry and stable provider-independent interfaces for every capability used in the MVP loop. |
-| FR-050 | P0 | The registry maps logical operations to installed or connected provider adapters, with endpoint, credential reference, supported operations and health. |
-| FR-005 | P0 | Show each configured tool in the UnityStack portal with endpoint, connection mode and health. *(Was: show all nine installed tools.)* |
-| FR-127 | P2 | **New.** Support further Git providers behind the source-control adapter (Gitea, GitLab, Bitbucket, Azure DevOps Repos), mapping branches, commits, pull/merge requests, reviews, branch protection and webhooks; operations a provider lacks return an explicit unsupported-operation error. |
-| FR-112 | P1 | **New.** Add Jira as a second project-management provider behind the same adapter, proving that the provider can be swapped without workflow changes. |
-| FR-043 | P2 | Allow each capability to use a UnityStack-provisioned default, an existing customer instance, or a supported alternative provider, chosen by the customer. |
-| FR-060 | P2 | Allow users to select an alternative provider, connect an existing enterprise instance, or provision a supported alternative per capability (BYOT) through the UI. |
+| ID     | Priority | Requirement                                                                                                                                                                                                                                                                                   |
+| ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-109 | P0       | **New.** Every external tool is accessed only through a capability adapter; workflows and agents contain no provider-specific API calls.                                                                                                                                                      |
+| FR-042 | P0       | Provide a capability registry and stable provider-independent interfaces for every capability used in the MVP loop.                                                                                                                                                                           |
+| FR-050 | P0       | The registry maps logical operations to installed or connected provider adapters, with endpoint, credential reference, supported operations and health.                                                                                                                                       |
+| FR-005 | P0       | Show each configured tool in the UnityStack portal with endpoint, connection mode and health. _(Was: show all nine installed tools.)_                                                                                                                                                         |
+| FR-127 | P2       | **New.** Support further Git providers behind the source-control adapter (Gitea, GitLab, Bitbucket, Azure DevOps Repos), mapping branches, commits, pull/merge requests, reviews, branch protection and webhooks; operations a provider lacks return an explicit unsupported-operation error. |
+| FR-112 | P1       | **New.** Add Jira as a second project-management provider behind the same adapter, proving that the provider can be swapped without workflow changes.                                                                                                                                         |
+| FR-043 | P2       | Allow each capability to use a UnityStack-provisioned default, an existing customer instance, or a supported alternative provider, chosen by the customer.                                                                                                                                    |
+| FR-060 | P2       | Allow users to select an alternative provider, connect an existing enterprise instance, or provision a supported alternative per capability (BYOT) through the UI.                                                                                                                            |
 
 ## AI and LLM
 
@@ -43,19 +43,19 @@ Cross-cutting: the parts of UnityStack itself that every SDLC phase relies on â€
 
 ### AI requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-026 | P0 | Provide an LLM adapter that switches model provider and model by configuration, with no workflow changes. |
-| FR-110 | P0 | **New.** Always provide a mock LLM provider for offline development and automated tests. |
-| FR-111 | P0 | **New.** Keep all agent context in UnityStack, Git or connected tools; after a provider or model switch, the next agent turn receives context rebuilt from those stores, with no dependency on provider-side memory. |
-| FR-027 | P0 | Provide an AI business-analyst workflow that turns conversation into structured requirements-as-code. |
-| FR-028 | P0 | Separate AI reasoning and requested actions from trusted identity, authorisation, validation, approval and tool execution. |
-| FR-029 | P0 | Enforce configured reviewer approval for merges (review may be optional where permitted), mandatory policy and quality gates, and separately configured production deployment authorisation. User finalisation of an AI proposal is always explicit. |
-| FR-030 | P0 | Record agent execution state, provider and model, failures, retries and tool-call audit events. |
-| FR-031 | P0 | Add role agents progressively: requirements, planning, developer (code and tests), and observe/analyse agents are needed for the MVP loop; UX, architecture and operations agents follow. *(Was P1.)* |
-| FR-032 | P1 | Introduce MCP-based tool integration where it adds value, with controlled permissions and validation. |
-| FR-033 | P1 | Add RAG over authorised project documents, agent evaluation, and model cost and latency tracing. |
-| FR-034 | P1 | Enforce retry limits, budgets, timeouts and human escalation for failed or ambiguous agent actions. |
+| ID     | Priority | Requirement                                                                                                                                                                                                                                          |
+| ------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-026 | P0       | Provide an LLM adapter that switches model provider and model by configuration, with no workflow changes.                                                                                                                                            |
+| FR-110 | P0       | **New.** Always provide a mock LLM provider for offline development and automated tests.                                                                                                                                                             |
+| FR-111 | P0       | **New.** Keep all agent context in UnityStack, Git or connected tools; after a provider or model switch, the next agent turn receives context rebuilt from those stores, with no dependency on provider-side memory.                                 |
+| FR-027 | P0       | Provide an AI business-analyst workflow that turns conversation into structured requirements-as-code.                                                                                                                                                |
+| FR-028 | P0       | Separate AI reasoning and requested actions from trusted identity, authorisation, validation, approval and tool execution.                                                                                                                           |
+| FR-029 | P0       | Enforce configured reviewer approval for merges (review may be optional where permitted), mandatory policy and quality gates, and separately configured production deployment authorisation. User finalisation of an AI proposal is always explicit. |
+| FR-030 | P0       | Record agent execution state, provider and model, failures, retries and tool-call audit events.                                                                                                                                                      |
+| FR-031 | P0       | Add role agents progressively: requirements, planning, developer (code and tests), and observe/analyse agents are needed for the MVP loop; UX, architecture and operations agents follow. _(Was P1.)_                                                |
+| FR-032 | P1       | Introduce MCP-based tool integration where it adds value, with controlled permissions and validation.                                                                                                                                                |
+| FR-033 | P1       | Add RAG over authorised project documents, agent evaluation, and model cost and latency tracing.                                                                                                                                                     |
+| FR-034 | P1       | Enforce retry limits, budgets, timeouts and human escalation for failed or ambiguous agent actions.                                                                                                                                                  |
 
 ## AI workspace
 
@@ -80,26 +80,26 @@ Cross-cutting: the parts of UnityStack itself that every SDLC phase relies on â€
 - Every proposed revision records source baseline, author/agent run, timestamp, diff and validation results. Drafts live in UnityStack storage; approved Git artifacts live in GitHub.
 - MVP preview is **read-only**. Future: button to open artifacts in a supported web or local editor; no need to build that in the MVP.
 
-| Module | Right-hand preview | First relevant capability |
-|---|---|---|
-| Requirements | BRD/PRD Markdown, inline changes | AI edits an existing Git Markdown document |
-| Architecture | HLD/LLD, ADR, rendered Mermaid and source diff | Generate/revise UnityStack architecture |
-| Planning | Epic/story/bug hierarchy, acceptance criteria and changes | Decompose approved requirements into proposed work |
-| Development | Changed files, code diff, build/test feedback | AI proposes code PRs with bounded execution |
-| Testing | Test scenarios, test code, result summary | Generate tests and review coverage |
-| Delivery | Build/release/deployment state and links | Track release to environment and feature |
-| Intelligence | Cross-tool timeline and traceability graph | Explain past work even when done outside UnityStack |
+| Module       | Right-hand preview                                        | First relevant capability                           |
+| ------------ | --------------------------------------------------------- | --------------------------------------------------- |
+| Requirements | BRD/PRD Markdown, inline changes                          | AI edits an existing Git Markdown document          |
+| Architecture | HLD/LLD, ADR, rendered Mermaid and source diff            | Generate/revise UnityStack architecture             |
+| Planning     | Epic/story/bug hierarchy, acceptance criteria and changes | Decompose approved requirements into proposed work  |
+| Development  | Changed files, code diff, build/test feedback             | AI proposes code PRs with bounded execution         |
+| Testing      | Test scenarios, test code, result summary                 | Generate tests and review coverage                  |
+| Delivery     | Build/release/deployment state and links                  | Track release to environment and feature            |
+| Intelligence | Cross-tool timeline and traceability graph                | Explain past work even when done outside UnityStack |
 
 ### Workspace requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-071 | P0 | Use AI conversation and a read-only live preview for all UnityStack-native artifact creation. |
-| FR-093 | P0 | Provide role-specific two-pane workspaces on a common preview and revision framework. |
-| FR-094 | P0 | Record revision history and show differences for each supported MVP artifact type. |
-| FR-020 | P0 | Show the proposed artifact and diff before publication or approval. |
-| FR-064 | P0 | Apply conversational revisions to versioned previews and show inline or structured diffs. |
-| FR-065 | P0 | Require explicit user finalisation of a specific draft revision before creating a GitHub PR. |
-| FR-131 | P0 | **New.** Show design artifacts read-only in the workspace preview pane: Excalidraw wireframes rendered from Git, Penpot designs as exported images or an embedded prototype, and OpenAPI contracts through Swagger UI. An "Open in tool" action opens the external tool through its adapter for editing ([TD-13](../decisions.md#td-13)). |
-| FR-077 | P2 | Offer launch-in-browser or local editor for manual artifact changes. |
-| FR-078 | P2 | Optionally support direct artifact editing inside UnityStack. |
+| ID     | Priority | Requirement                                                                                                                                                                                                                                                                                                                               |
+| ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-071 | P0       | Use AI conversation and a read-only live preview for all UnityStack-native artifact creation.                                                                                                                                                                                                                                             |
+| FR-093 | P0       | Provide role-specific two-pane workspaces on a common preview and revision framework.                                                                                                                                                                                                                                                     |
+| FR-094 | P0       | Record revision history and show differences for each supported MVP artifact type.                                                                                                                                                                                                                                                        |
+| FR-020 | P0       | Show the proposed artifact and diff before publication or approval.                                                                                                                                                                                                                                                                       |
+| FR-064 | P0       | Apply conversational revisions to versioned previews and show inline or structured diffs.                                                                                                                                                                                                                                                 |
+| FR-065 | P0       | Require explicit user finalisation of a specific draft revision before creating a GitHub PR.                                                                                                                                                                                                                                              |
+| FR-131 | P0       | **New.** Show design artifacts read-only in the workspace preview pane: Excalidraw wireframes rendered from Git, Penpot designs as exported images or an embedded prototype, and OpenAPI contracts through Swagger UI. An "Open in tool" action opens the external tool through its adapter for editing ([TD-13](../decisions.md#td-13)). |
+| FR-077 | P2       | Offer launch-in-browser or local editor for manual artifact changes.                                                                                                                                                                                                                                                                      |
+| FR-078 | P2       | Optionally support direct artifact editing inside UnityStack.                                                                                                                                                                                                                                                                             |

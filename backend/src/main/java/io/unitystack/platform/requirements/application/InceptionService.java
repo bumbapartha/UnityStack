@@ -37,14 +37,16 @@ public class InceptionService {
         String message = req.message() == null ? null : req.message().strip();
         if (message != null && !message.isEmpty()) {
             if (message.length() > MAX_MESSAGE_CHARS) {
-                throw new ApiException(HttpStatus.BAD_REQUEST, "Message is too long (max " + MAX_MESSAGE_CHARS + " characters)");
+                throw new ApiException(
+                        HttpStatus.BAD_REQUEST, "Message is too long (max " + MAX_MESSAGE_CHARS + " characters)");
             }
             history.add(new ChatMessage("user", message));
         } else if (!history.isEmpty()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Message must not be empty");
         }
         if (history.size() > MAX_HISTORY) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Conversation is too long; please create the project or start again");
+            throw new ApiException(
+                    HttpStatus.BAD_REQUEST, "Conversation is too long; please create the project or start again");
         }
 
         AgentTurn turn = agent.respond(List.copyOf(history), charter, questions);
@@ -52,10 +54,13 @@ public class InceptionService {
         // The agent's output is untrusted: normalise and recompute readiness deterministically.
         Charter updated = (turn.charter() == null ? charter : turn.charter()).normalised();
         List<String> updatedQuestions = cleanQuestions(turn.openQuestions() == null ? questions : turn.openQuestions());
-        String reply = turn.reply() == null || turn.reply().isBlank() ? "Could you tell me a bit more?" : turn.reply().strip();
+        String reply = turn.reply() == null || turn.reply().isBlank()
+                ? "Could you tell me a bit more?"
+                : turn.reply().strip();
         history.add(new ChatMessage("assistant", reply));
 
-        return new InceptionTurnResponse(history, updated, updatedQuestions, updated.isReady(), updated.missingMandatory(), agent.agentRef());
+        return new InceptionTurnResponse(
+                history, updated, updatedQuestions, updated.isReady(), updated.missingMandatory(), agent.agentRef());
     }
 
     static List<ChatMessage> validHistory(List<ChatMessage> history) {

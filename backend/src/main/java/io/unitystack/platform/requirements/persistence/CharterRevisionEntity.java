@@ -53,11 +53,18 @@ public class CharterRevisionEntity extends AssignedIdEntity {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    protected CharterRevisionEntity() {
-    }
+    protected CharterRevisionEntity() {}
 
-    public CharterRevisionEntity(UUID projectId, int revision, UUID parentRevisionId, Charter content, String markdown,
-                                 String actor, String source, String agentRef, OffsetDateTime createdAt) {
+    public CharterRevisionEntity(
+            UUID projectId,
+            int revision,
+            UUID parentRevisionId,
+            Charter content,
+            String markdown,
+            String actor,
+            String source,
+            String agentRef,
+            OffsetDateTime createdAt) {
         this.id = UUID.randomUUID();
         this.projectId = projectId;
         this.revision = revision;
@@ -71,8 +78,8 @@ public class CharterRevisionEntity extends AssignedIdEntity {
     }
 
     /** The next revision, linked to this one as its parent. */
-    public CharterRevisionEntity next(Charter content, String markdown, String actor, String source, String agentRef,
-                                      OffsetDateTime at) {
+    public CharterRevisionEntity next(
+            Charter content, String markdown, String actor, String source, String agentRef, OffsetDateTime at) {
         return new CharterRevisionEntity(projectId, revision + 1, id, content, markdown, actor, source, agentRef, at);
     }
 

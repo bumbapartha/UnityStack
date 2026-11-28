@@ -19,18 +19,18 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 
 ### Traceability requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-099 | P0 | Assign persistent Change IDs and propagate them through artifacts, branches, commits, PRs, builds, deployments, logs and bugs. |
-| FR-136 | P0 | **New.** Give every requirement, story, task and bug a permanent short key as its main ID, handed out centrally and never reused, using the project prefix or a confirmed module prefix; show it everywhere as a label with its title and a breadcrumb; handle moves as retire-and-replace with links both ways; map stories and tasks to the ticket tool's IDs; keep an index updated on merge and rebuildable from Git; show retired items struck through; and fail a PR on missing, duplicate or retired references ([AD-7](../decisions.md#ad-7), [Traceability](../traceability.md)). |
-| FR-053 | P0 | Capture stable artifact IDs, Git commit/ref, source request and agent-run linkage for all generated artifacts. |
-| FR-023 | P0 | Maintain traceability across requirement → design → code → tests → deployment → production feedback (thin, explicit links only). *(Was P1.)* |
-| FR-056 | P0 | Support traceability links among requirements, architecture, APIs, implementation, tests, releases and operational feedback. *(Was P1; same scope as FR-023.)* |
-| FR-047 | P0 | Link releases, deployments, quality results and incidents to commits and Change IDs. *(Was P1.)* |
-| FR-100 | P0 | Correlate approved changes, releases, deployment versions, incidents and available runtime telemetry. *(Was P1.)* |
-| FR-082 | P1 | Build cross-tool traceability across requirements, work items, PRs, tests, releases and incidents where evidence exists, including work done outside UnityStack. |
-| FR-083 | P1 | Label AI-inferred associations separately from verified ones. |
-| FR-089 | P2 | Reconstruct historical cross-tool traceability with evidence and explicit confidence. |
+| ID     | Priority | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| FR-099 | P0       | Assign persistent Change IDs and propagate them through artifacts, branches, commits, PRs, builds, deployments, logs and bugs.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| FR-136 | P0       | **New.** Give every requirement, story, task and bug a permanent short key as its main ID, handed out centrally and never reused, using the project prefix or a confirmed module prefix; show it everywhere as a label with its title and a breadcrumb; handle moves as retire-and-replace with links both ways; map stories and tasks to the ticket tool's IDs; keep an index updated on merge and rebuildable from Git; show retired items struck through; and fail a PR on missing, duplicate or retired references ([AD-7](../decisions.md#ad-7), [Traceability](../traceability.md)). |
+| FR-053 | P0       | Capture stable artifact IDs, Git commit/ref, source request and agent-run linkage for all generated artifacts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| FR-023 | P0       | Maintain traceability across requirement → design → code → tests → deployment → production feedback (thin, explicit links only). _(Was P1.)_                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| FR-056 | P0       | Support traceability links among requirements, architecture, APIs, implementation, tests, releases and operational feedback. _(Was P1; same scope as FR-023.)_                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| FR-047 | P0       | Link releases, deployments, quality results and incidents to commits and Change IDs. _(Was P1.)_                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| FR-100 | P0       | Correlate approved changes, releases, deployment versions, incidents and available runtime telemetry. _(Was P1.)_                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| FR-082 | P1       | Build cross-tool traceability across requirements, work items, PRs, tests, releases and incidents where evidence exists, including work done outside UnityStack.                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| FR-083 | P1       | Label AI-inferred associations separately from verified ones.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| FR-089 | P2       | Reconstruct historical cross-tool traceability with evidence and explicit confidence.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## Source authority, sync and coexistence
 
@@ -46,31 +46,31 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 
 ### Coexistence and sync requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-072 | P0 | Allow complete traditional SDLC work outside UnityStack with no dependency on its availability. |
-| FR-079 | P0 | Allow end-to-end SDLC work without using the UnityStack UI. |
-| FR-073 | P0 | Detect externally created or updated GitHub PRs, commits and branches. |
-| FR-074 | P0 | Synchronise PR review, merge and available CI/CD status into UnityStack's derived state. |
-| FR-075 | P0 | Link external records to Change or story IDs using source-backed identifiers and evidence. |
-| FR-084 | P0 | Preserve source-system authority, stable source IDs, URLs, timestamps and sync status. |
-| FR-092 | P0 | Preserve source authority, identity, timestamps and provenance in imported records. |
-| FR-051 | P0 | Assign canonical ownership and sync direction to each artifact type and tool; detect divergence and block silent overwrites. |
-| FR-076 | P1 | Keep unlinked external work and optionally suggest relationships without blocking it. *(Was P0.)* |
-| FR-080 | P1 | Passively ingest external SDLC events and periodically reconcile source records. *(Was P0.)* |
-| FR-091 | P1 | Provide an ongoing sync and reconciliation foundation for connected providers. *(Was P0.)* |
-| FR-055 | P1 | Define durable events, idempotent handlers, retry and dead-letter behaviour and recovery for long-running workflows and webhooks. |
-| FR-081 | P2 | Import available historical records from connected tools. *(Was P1.)* |
-| FR-086 | P2 | Provide scoped initial import of accessible GitHub and tracker records. *(Was P1.)* |
-| FR-087 | P2 | Support large-scale resumable incremental historical ingestion and backfill. |
-| FR-088 | P2 | Connect existing enterprise providers (for example Jira, Jenkins, Confluence) through supported adapters. |
-| FR-090 | P2 | Produce ingestion coverage, exceptions, provenance and reconciliation reports. |
-| FR-085 | P2 | Support existing-organisation adoption alongside greenfield installations. *(Was P0; the adapter design in [Core platform](10-core-platform.md) keeps this possible.)* |
+| ID     | Priority | Requirement                                                                                                                                                            |
+| ------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-072 | P0       | Allow complete traditional SDLC work outside UnityStack with no dependency on its availability.                                                                        |
+| FR-079 | P0       | Allow end-to-end SDLC work without using the UnityStack UI.                                                                                                            |
+| FR-073 | P0       | Detect externally created or updated GitHub PRs, commits and branches.                                                                                                 |
+| FR-074 | P0       | Synchronise PR review, merge and available CI/CD status into UnityStack's derived state.                                                                               |
+| FR-075 | P0       | Link external records to Change or story IDs using source-backed identifiers and evidence.                                                                             |
+| FR-084 | P0       | Preserve source-system authority, stable source IDs, URLs, timestamps and sync status.                                                                                 |
+| FR-092 | P0       | Preserve source authority, identity, timestamps and provenance in imported records.                                                                                    |
+| FR-051 | P0       | Assign canonical ownership and sync direction to each artifact type and tool; detect divergence and block silent overwrites.                                           |
+| FR-076 | P1       | Keep unlinked external work and optionally suggest relationships without blocking it. _(Was P0.)_                                                                      |
+| FR-080 | P1       | Passively ingest external SDLC events and periodically reconcile source records. _(Was P0.)_                                                                           |
+| FR-091 | P1       | Provide an ongoing sync and reconciliation foundation for connected providers. _(Was P0.)_                                                                             |
+| FR-055 | P1       | Define durable events, idempotent handlers, retry and dead-letter behaviour and recovery for long-running workflows and webhooks.                                      |
+| FR-081 | P2       | Import available historical records from connected tools. _(Was P1.)_                                                                                                  |
+| FR-086 | P2       | Provide scoped initial import of accessible GitHub and tracker records. _(Was P1.)_                                                                                    |
+| FR-087 | P2       | Support large-scale resumable incremental historical ingestion and backfill.                                                                                           |
+| FR-088 | P2       | Connect existing enterprise providers (for example Jira, Jenkins, Confluence) through supported adapters.                                                              |
+| FR-090 | P2       | Produce ingestion coverage, exceptions, provenance and reconciliation reports.                                                                                         |
+| FR-085 | P2       | Support existing-organisation adoption alongside greenfield installations. _(Was P0; the adapter design in [Core platform](10-core-platform.md) keeps this possible.)_ |
 
 ## Workflow orchestration
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-095 | P1 | Generate actionable work items from approved workflow events; support parallel work and blocking dependencies. |
-| FR-096 | P1 | Provide My Work assignment, pickup, review and exception queues. |
-| FR-101 | P1 | Allow workflow recovery and replay without duplicate downstream actions or unauthorised transitions. |
+| ID     | Priority | Requirement                                                                                                    |
+| ------ | -------- | -------------------------------------------------------------------------------------------------------------- |
+| FR-095 | P1       | Generate actionable work items from approved workflow events; support parallel work and blocking dependencies. |
+| FR-096 | P1       | Provide My Work assignment, pickup, review and exception queues.                                               |
+| FR-101 | P1       | Allow workflow recovery and replay without duplicate downstream actions or unauthorised transitions.           |

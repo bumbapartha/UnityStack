@@ -37,10 +37,10 @@ public class AuditEventEntity extends AssignedIdEntity {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    protected AuditEventEntity() {
-    }
+    protected AuditEventEntity() {}
 
-    public AuditEventEntity(UUID projectId, String actor, String action, Map<String, Object> details, OffsetDateTime createdAt) {
+    public AuditEventEntity(
+            UUID projectId, String actor, String action, Map<String, Object> details, OffsetDateTime createdAt) {
         this.id = UUID.randomUUID();
         this.projectId = projectId;
         this.actor = actor;

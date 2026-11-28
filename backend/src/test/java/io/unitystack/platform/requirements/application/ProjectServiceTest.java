@@ -35,8 +35,14 @@ class ProjectServiceTest {
     private final CharterRevisionRepository revisions = mock(CharterRevisionRepository.class);
     private final OpenQuestionRepository openQuestions = mock(OpenQuestionRepository.class);
     private final AuditEventRepository audit = mock(AuditEventRepository.class);
-    private final ProjectService service = new ProjectService(projects, revisions, openQuestions,
-            mock(InceptionConversationRepository.class), audit, new MockInceptionAgent(), "tester");
+    private final ProjectService service = new ProjectService(
+            projects,
+            revisions,
+            openQuestions,
+            mock(InceptionConversationRepository.class),
+            audit,
+            new MockInceptionAgent(),
+            "tester");
 
     private final UUID id = UUID.randomUUID();
     private final OffsetDateTime t0 = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -50,7 +56,8 @@ class ProjectServiceTest {
         rev1 = new CharterRevisionEntity(id, 1, null, charter, "# md", "tester", "INCEPTION", "mock:scripted-v2", t0);
         when(projects.findById(id)).thenReturn(Optional.of(project));
         when(revisions.findFirstByProjectIdOrderByRevisionDesc(id)).thenReturn(Optional.of(rev1));
-        when(openQuestions.findByProjectIdAndStatusOrderByCreatedAt(any(), any())).thenReturn(List.of());
+        when(openQuestions.findByProjectIdAndStatusOrderByCreatedAt(any(), any()))
+                .thenReturn(List.of());
         when(audit.findByProjectIdOrderByCreatedAtDesc(any(), any())).thenReturn(List.of());
     }
 

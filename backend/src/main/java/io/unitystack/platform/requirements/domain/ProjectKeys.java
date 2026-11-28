@@ -8,11 +8,12 @@ import java.util.regex.Pattern;
 public final class ProjectKeys {
     public static final Pattern VALID = Pattern.compile("^[A-Z][A-Z0-9]{1,9}$");
 
-    private ProjectKeys() {
-    }
+    private ProjectKeys() {}
 
     static String base(String name) {
-        String cleaned = name == null ? "" : name.toUpperCase(Locale.ROOT).replaceAll("[^A-Z0-9]+", " ").strip();
+        String cleaned = name == null
+                ? ""
+                : name.toUpperCase(Locale.ROOT).replaceAll("[^A-Z0-9]+", " ").strip();
         String key;
         if (cleaned.isEmpty()) {
             key = "PRJ";

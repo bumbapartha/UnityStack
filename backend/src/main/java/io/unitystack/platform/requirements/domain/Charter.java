@@ -38,9 +38,16 @@ public record Charter(
             List.of("name", "problem", "targetUsers", "productType", "expectedBenefit", "scale");
 
     /** All captured items in the order they are asked (productTypeDetails is a sub-item of productType). */
-    public static final List<String> FIELDS =
-            List.of("name", "problem", "targetUsers", "productType", "expectedBenefit", "scale",
-                    "motivation", "constraints", "outOfScope");
+    public static final List<String> FIELDS = List.of(
+            "name",
+            "problem",
+            "targetUsers",
+            "productType",
+            "expectedBenefit",
+            "scale",
+            "motivation",
+            "constraints",
+            "outOfScope");
 
     public static Charter empty() {
         return new Charter(null, null, null, null, null, null, null, null, null, null);
@@ -56,8 +63,17 @@ public record Charter(
         }
         String sc = clean(scale);
         if (sc != null && !SCALES.containsKey(sc)) sc = null;
-        return new Charter(limit(clean(name), 200), clean(problem), clean(targetUsers), type, details,
-                clean(expectedBenefit), sc, clean(motivation), clean(constraints), clean(outOfScope));
+        return new Charter(
+                limit(clean(name), 200),
+                clean(problem),
+                clean(targetUsers),
+                type,
+                details,
+                clean(expectedBenefit),
+                sc,
+                clean(motivation),
+                clean(constraints),
+                clean(outOfScope));
     }
 
     public List<String> missingMandatory() {

@@ -33,10 +33,10 @@ public class InceptionConversationEntity extends AssignedIdEntity {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    protected InceptionConversationEntity() {
-    }
+    protected InceptionConversationEntity() {}
 
-    public InceptionConversationEntity(UUID projectId, List<ChatMessage> transcript, String agentRef, OffsetDateTime createdAt) {
+    public InceptionConversationEntity(
+            UUID projectId, List<ChatMessage> transcript, String agentRef, OffsetDateTime createdAt) {
         this.projectId = projectId;
         this.transcript = transcript;
         this.agentRef = agentRef;

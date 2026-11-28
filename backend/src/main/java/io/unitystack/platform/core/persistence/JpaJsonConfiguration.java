@@ -16,6 +16,7 @@ class JpaJsonConfiguration {
 
     @Bean
     HibernatePropertiesCustomizer jsonFormatMapper(ObjectMapper objectMapper) {
-        return properties -> properties.put(AvailableSettings.JSON_FORMAT_MAPPER, new JacksonJsonFormatMapper(objectMapper));
+        return properties ->
+                properties.put(AvailableSettings.JSON_FORMAT_MAPPER, new JacksonJsonFormatMapper(objectMapper));
     }
 }
