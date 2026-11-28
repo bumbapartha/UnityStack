@@ -1,5 +1,12 @@
 {
   "recommendations": [
-    "pomdtr.excalidraw-editor"
+    "pomdtr.excalidraw-editor",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "Vue.volar",
+    "redhat.java",
+    "vscjava.vscode-gradle",
+    "richardwillis.vscode-spotless-gradle"
   ]
 }

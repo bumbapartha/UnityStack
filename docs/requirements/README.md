@@ -203,3 +203,4 @@ Priorities in this document mean:
 | [NFR-016](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-017](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-018](12-non-functional.md) | — | Non-functional requirements |
+| [NFR-019](12-non-functional.md) | — | Non-functional requirements |
