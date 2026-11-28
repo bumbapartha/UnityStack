@@ -9,6 +9,7 @@ UnityStack is an AI-first, open-source, self-hosted software delivery platform: 
 | What to build and why | `docs/requirements/` — one file per SDLC phase, plus cross-cutting files; ID index in `docs/requirements/README.md` |
 | What is in the MVP and in which phase | `docs/roadmap.md` |
 | Settled decisions (PD, AD, TD) | `docs/decisions.md` |
+| How keys and traceability work | `docs/traceability.md` |
 | Code layout and module rules | `docs/architecture.md` → "Code organisation: feature modules" |
 | Default tool per capability | `docs/tools-and-adapters.md` |
 | Undecided items | `docs/open-questions.md` — do not silently decide these; ask |
@@ -19,7 +20,7 @@ Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If 
 
 1. **Branch and PR only.** Never commit to `main` directly. One logical change per PR.
 2. **Small PRs: at most 500 changed lines.** Additions plus deletions, as GitHub counts them, must not exceed 500 per PR. If a request needs more, say so **before starting**: give an estimate, propose how to split it into a series of small PRs (each reviewable and working on its own), and ask whether to **split** or **skip the limit** for this one PR. Then wait for the answer; do not stop silently. Exceed the limit only when the user explicitly says so (for example "skip the line limit"), and record that in the PR description. Otherwise never open a PR over the limit. **Exception:** a PR that changes only Excalidraw wireframe files (`*.excalidraw`, AI-generated drawings) may have up to 1,000 changed lines. Any PR that touches code or other files stays at 500. Keep generated files compact where practical.
-3. **Reference IDs.** Commit messages and PR descriptions name the requirement and decision IDs they implement (for example `FR-105`, `AD-5`). Once the Change ID scheme exists (open question D-4), carry it in branch names, commits and PRs too.
+3. **Reference IDs.** Commit messages and PR descriptions name the requirement and decision IDs they implement (for example `FR-105`, `AD-5`). When working on a requirement, story or bug, carry its short key (the Change ID, AD-7; see `docs/traceability.md`) in the branch name, commit messages and PR title, for example `feature/TODO-52-due-date-reminder` and `TODO-52: add reminder scheduler`.
 4. **Adapters everywhere (PD-2, PD-5).** Never call a tool's API directly from workflow or agent code. Add or use an adapter in the module that owns the capability. Swapping a provider must only touch its adapter and configuration.
 5. **Feature modules (AD-5).** Code is grouped by feature module (requirements, design, development, testing, deployment, monitoring, security, communication, traceability) plus a small `core`. Never group code by file type across the app.
 6. **AI proposes, humans govern.** AI output is validated by trusted code before any action. AI never merges, deploys to production or creates tracker items without the required human action.

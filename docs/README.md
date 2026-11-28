@@ -13,6 +13,7 @@ This folder replaces the single `Requirements.md` (v2.1) and the dogfooding deve
 | [Vision and principles](vision.md) | What UnityStack is, product decisions, principles, users |
 | [Scope and roadmap](roadmap.md) | MVP thin loop, what comes next, phases, backlog, acceptance |
 | [Requirements](requirements/README.md) | Requirements by SDLC phase, with an ID index |
+| [Traceability](traceability.md) | How every item gets a permanent key and is traced from requirement to code, tests, release and bug |
 | [Tools and adapters](tools-and-adapters.md) | Default tool per capability, alternatives, links to requirements |
 | [Architecture](architecture.md) | The closed loop, components, current implementation, repositories |
 | [Decisions](decisions.md) | Every settled decision in one table |
