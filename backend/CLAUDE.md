@@ -4,7 +4,7 @@ Read the root `CLAUDE.md` first. This file covers the Spring Boot control plane.
 
 ## Stack
 
-Java 21, Spring Boot 3.3, Gradle (Kotlin DSL), PostgreSQL, Flyway migrations, Spring Data JPA (Hibernate) for data access (TD-12), JUnit 5 with AssertJ.
+Java 21, Spring Boot 4.1 (Spring Framework 7), Gradle 9 (Kotlin DSL, via the wrapper), PostgreSQL, Flyway migrations, Spring Data JPA (Hibernate 7) for data access (TD-12), Spring Modulith 2.1, JUnit with AssertJ. JSON is **Jackson 3**: import from `tools.jackson.*` (annotations stay in `com.fasterxml.jackson.annotation`). Take the versions Spring Boot manages; do not override single libraries.
 
 ## Module layout (AD-5)
 
@@ -63,7 +63,7 @@ src/main/java/io/unitystack/platform/
 - For complex reads, use JPQL or Spring Data projections; use native SQL only where JSONB operators are needed, always with bound parameters. Never concatenate SQL strings with user input.
 - Do not use `JdbcClient` or `JdbcTemplate` alongside JPA.
 - Entities with application-assigned UUIDs extend `core.persistence.AssignedIdEntity`, so `save()` always inserts. Mark revision and audit entities `@Immutable`.
-- JSONB is read and written with the application's `ObjectMapper` (unknown fields are ignored), so older rows with extra fields still load.
+- JSONB is read and written with the application's Jackson 3 `JsonMapper` (`core.persistence.JpaJsonConfiguration`; unknown fields are ignored), so older rows with extra fields still load.
 - Migrations go in `src/main/resources/db/migration`, named `V<n>__<module>_<description>.sql`, with versions numbered globally. Never edit a migration that has already been merged; add a new one.
 
 ## Readability and formatting

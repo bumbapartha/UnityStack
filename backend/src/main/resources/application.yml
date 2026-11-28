@@ -5,6 +5,11 @@ spring:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/unitystack}
     username: ${DB_USER:unitystack}
     password: ${DB_PASSWORD:unitystack}
+  jackson:
+    deserialization:
+      # Jackson 3 (Spring Boot 4) rejects data after the JSON body by default; Jackson 2 ignored it.
+      # Kept off so request handling is unchanged by the upgrade.
+      fail-on-trailing-tokens: false
   jpa:
     # Flyway owns the schema; Hibernate only checks that the entities match it (TD-12).
     hibernate:
