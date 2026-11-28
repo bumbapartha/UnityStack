@@ -125,7 +125,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 - Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
 - Restructure the code into feature modules ([AD-5](decisions.md#ad-5)): move inception and projects into `requirements/`, the LLM interface and providers into `core/ai/` (framework-free, [AD-1](decisions.md#ad-1)), and the frontend views into `modules/requirements/`; add Spring Modulith and its boundary test.
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
-- Item identity ([AD-7](decisions.md#ad-7)): UUIDs, short keys such as `TODO-12` and outline labels, created at the start of a change.
+- Item identity ([AD-7](decisions.md#ad-7)): permanent short keys such as `FR-105` or `TODO-12` handed out centrally, and outline labels computed from the hierarchy.
 - GitHub Actions for UnityStack itself on every PR: build, JUnit and Vitest, Semgrep, Trivy (no deployment).
 - `unitystack-demo-app` repository with a Hello World service and the same checks, deployed by its own GitHub Actions pipeline to a small AWS staging and production setup (set up conventionally at first; configured through UnityStack from Phase 3, FR-130).
 - Local rebuild workflow: AI runs `docker compose up --build -d <service>` after a batch of edits; `docker compose watch` for manual edits ([Development setup](dev-setup.md)).
@@ -271,7 +271,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 | BOOT-01 | Deploy Hello World | Demo app reachable on its AWS production URL; smoke test passes |
 | BOOT-02 | Sign in through Keycloak | Only signed-in users reach UnityStack; roles visible |
 | BOOT-03 | Scan and test every PR | Unit tests, Semgrep and Trivy run in CI; failures block per policy |
-| CHG-01 | Create item keys | Every new requirement, story or change gets a UUID and a short key (e.g. `TODO-12`) carried into branch, PR and build |
+| CHG-01 | Create item keys | Every new requirement, story or change gets a permanent short key (e.g. `TODO-12`) carried into branch, PR and build |
 | REQ-01 | Load PRD from GitHub | Correct repo/path/ref and SHA shown |
 | REQ-02 | Discuss a requirement change | AI returns validated proposed revision |
 | REQ-03 | Show preview and diff | Exact additions/deletions visible |
