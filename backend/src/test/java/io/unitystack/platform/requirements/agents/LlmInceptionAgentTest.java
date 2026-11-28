@@ -3,7 +3,6 @@ package io.unitystack.platform.requirements.agents;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.unitystack.platform.core.ai.AiUnavailableException;
 import io.unitystack.platform.core.ai.LlmRequest;
 import io.unitystack.platform.core.ai.mock.MockLlmClient;
@@ -11,6 +10,7 @@ import io.unitystack.platform.requirements.domain.Charter;
 import io.unitystack.platform.requirements.domain.ChatMessage;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 class LlmInceptionAgentTest {
     private final ObjectMapper json = new ObjectMapper();

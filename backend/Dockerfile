@@ -1,4 +1,4 @@
-FROM gradle:8.10.2-jdk21 AS build
+FROM gradle:9.9.2-jdk21-alpine AS build
 WORKDIR /src
 COPY settings.gradle.kts build.gradle.kts gradle.lockfile ./
 RUN gradle dependencies --no-daemon -q > /dev/null

@@ -1,6 +1,5 @@
 package io.unitystack.platform.requirements.agents;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.unitystack.platform.core.ai.AiUnavailableException;
 import io.unitystack.platform.core.ai.LlmClient;
 import io.unitystack.platform.core.ai.LlmMessage;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Inception agent backed by a real model through {@link LlmClient} (FR-026). Builds the prompt and a strict

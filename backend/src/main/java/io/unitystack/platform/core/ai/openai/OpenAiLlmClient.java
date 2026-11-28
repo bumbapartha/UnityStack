@@ -1,7 +1,5 @@
 package io.unitystack.platform.core.ai.openai;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.unitystack.platform.core.ai.AiUnavailableException;
 import io.unitystack.platform.core.ai.LlmClient;
 import io.unitystack.platform.core.ai.LlmMessage;
@@ -18,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Calls the OpenAI Chat Completions API, using a strict JSON schema for structured output when the request
@@ -107,9 +107,9 @@ public final class OpenAiLlmClient implements LlmClient {
         }
         if (message.hasNonNull("refusal")) {
             throw new AiUnavailableException(
-                    "The AI declined to respond: " + message.get("refusal").asText());
+                    "The AI declined to respond: " + message.get("refusal").asString());
         }
-        return message.path("content").asText();
+        return message.path("content").asString();
     }
 
     @Override

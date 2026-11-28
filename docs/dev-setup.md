@@ -33,7 +33,7 @@ This page is about running **UnityStack itself**. The projects UnityStack manage
 
 ```bash
 # Backend, from backend/
-docker run --rm -v "$PWD":/src -v unitystack-gradle-cache:/home/gradle/.gradle -w /src gradle:8.10.2-jdk21 gradle spotlessApply
+docker run --rm -v "$PWD":/src -v unitystack-gradle-cache:/home/gradle/.gradle -w /src gradle:9.9.2-jdk21-alpine gradle spotlessApply
 # Frontend, from the repository root (Prettier reads the root .prettierrc.json)
 docker run --rm -v "$PWD":/repo -w /repo/frontend node:22.11-alpine sh -c "corepack enable && yarn install && yarn format && yarn lint"
 ```
