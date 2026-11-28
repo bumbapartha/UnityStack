@@ -16,13 +16,21 @@ UnityStack's own requirements already follow this: `FR-105` is a short key.
 
 ## 2. Prefixes: project first, then modules
 
-| When                                    | What happens                                                                                                          | Example                            |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| Project inception                       | The AI asks for the project's prefix: 2–5 capital letters, unique in the organisation.                                | Shopping cart → `SHOP`             |
-| No modules yet                          | Every item uses the project prefix.                                                                                   | `SHOP-1`, `SHOP-2`                 |
-| A module is first discussed             | The AI suggests a module prefix, checks it is unique, and asks you to confirm.                                        | Payments → `PAY`, Auditing → `AUD` |
-| After that                              | New items in the module use its prefix, and each prefix counts on its own.                                            | `PAY-1`, `AUD-1`                   |
-| Items created before the module existed | They keep their project key and are tagged with the module. They are only re-keyed if you ask for a move (section 6). | `SHOP-7` tagged _Payments_         |
+| When                                    | What happens                                                                                                                                            | Example                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| Project inception                       | UnityStack suggests a prefix from the project name and shows it in the charter preview ("Key: SHOP (change)"); you confirm it with the charter summary. | Shopping cart → `SHOP`             |
+| No modules yet                          | Every item uses the project prefix.                                                                                                                     | `SHOP-1`, `SHOP-2`                 |
+| A module is first discussed             | The AI suggests a module prefix, checks it is unique, and asks you to confirm.                                                                          | Payments → `PAY`, Auditing → `AUD` |
+| After that                              | New items in the module use its prefix, and each prefix counts on its own.                                                                              | `PAY-1`, `AUD-1`                   |
+| Items created before the module existed | They keep their project key and are tagged with the module. They are only re-keyed if you ask for a move (section 6).                                   | `SHOP-7` tagged _Payments_         |
+
+**Prefix rules**
+
+- **Format:** 2–5 characters, all uppercase. The first character is a letter (A–Z); the rest are letters or digits. Valid: `SHOP`, `PAY`, `HR2`, `B2B`. Not valid: `2FA` (starts with a digit), `shop` (lowercase), `PAYMENTS` (too long).
+- **Why a letter first:** a key must never look like a number, date or version (`12-5`, `2026-3`), so tools can find keys in text with one simple pattern.
+- **One registry for every prefix:** project prefixes and module prefixes share one list (prefix, owner, status), unique across the organisation.
+- **Never reused:** a retired prefix is never handed out again, so an old key such as `PAY-12` can never point to something new.
+- **Changing a project's prefix is allowed:** new items get the new prefix and existing items keep their keys. The old prefix stays reserved as an alias of the same project, so `TF-12` still opens after `TF` becomes `TASK`. Each prefix has its own counter. The settings screen warns: "Existing items keep their keys; only new items use TASK."
 
 ## 3. Labels: what people see
 
