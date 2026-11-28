@@ -66,6 +66,14 @@ src/main/java/io/unitystack/platform/
 - JSONB is read and written with the application's `ObjectMapper` (unknown fields are ignored), so older rows with extra fields still load.
 - Migrations go in `src/main/resources/db/migration`, named `V<n>__<module>_<description>.sql`, with versions numbered globally. Never edit a migration that has already been merged; add a new one.
 
+## Readability and formatting
+
+- **Small methods.** One method does one thing. If it needs a comment to separate its steps, split it into well-named methods.
+- **Clear names.** Name classes, methods and variables after what they mean in the domain (`latestRevision`, not `r` or `tmp`). Short names are fine only for tiny lambdas and loop indexes.
+- **Comments explain why.** The code says what it does; a comment says why it does it that way, what constraint it follows or which requirement it implements (`// FR-105: nothing is stored until confirmation`). Delete comments that only repeat the code.
+- **No clever one-liners.** Prefer a few plain statements over a dense stream chain, nested ternary or packed expression. Readers come first.
+- **Formatting is automatic.** Spotless with Palantir Java Format (4 spaces, 120 columns) owns the layout; do not format by hand. **Always run `./gradlew spotlessApply` before committing.** `./gradlew build` and CI fail on unformatted code (`spotlessCheck`). Without a local JDK, run it in Docker (see `docs/dev-setup.md`).
+
 ## Errors and API
 
 - Throw `ApiException` with an HTTP status for expected errors; the shared handler turns it into JSON `{ "error": ... }`.

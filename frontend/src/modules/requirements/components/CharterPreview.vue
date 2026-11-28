@@ -36,7 +36,9 @@ const rows = computed(() => {
 <template>
   <article class="charter">
     <h2>{{ charter?.name || 'New project' }} <small>Project Charter</small></h2>
-    <p v-if="projectKey" class="muted">Key: <strong>{{ projectKey }}</strong></p>
+    <p v-if="projectKey" class="muted">
+      Key: <strong>{{ projectKey }}</strong>
+    </p>
     <dl>
       <template v-for="r in rows" :key="r.field">
         <dt>
@@ -50,7 +52,9 @@ const rows = computed(() => {
     </dl>
     <section v-if="openQuestions.length">
       <h3>Open questions</h3>
-      <ul><li v-for="q in openQuestions" :key="q">{{ q }}</li></ul>
+      <ul>
+        <li v-for="q in openQuestions" :key="q">{{ q }}</li>
+      </ul>
     </section>
   </article>
 </template>

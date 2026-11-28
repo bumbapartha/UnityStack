@@ -62,7 +62,8 @@ class InceptionFlowTest {
     @Test
     void optionalItemsCanBeSkipped() {
         var r = service.turn(new InceptionTurnRequest(List.of(), null, List.of(), null));
-        for (String s : List.of("X", "problem", "users", "website", "benefit", "one team", "skip", "none", "skip")) r = say(r, s);
+        for (String s : List.of("X", "problem", "users", "website", "benefit", "one team", "skip", "none", "skip"))
+            r = say(r, s);
         assertThat(r.charter().motivation()).isEqualTo("Not specified");
         assertThat(r.history().get(r.history().size() - 1).content()).contains("Create project");
     }

@@ -4,16 +4,17 @@ import java.util.List;
 
 /** Renders a charter as Markdown; this is the form later proposed to Git (FR-108). */
 public final class CharterMarkdown {
-    private CharterMarkdown() {
-    }
+    private CharterMarkdown() {}
 
     public static String render(Charter c, String projectKey, List<String> openQuestions) {
         StringBuilder md = new StringBuilder();
         md.append("# ").append(orTbd(c.name())).append(" — Project Charter\n\n");
-        if (projectKey != null) md.append("**Project key:** ").append(projectKey).append("\n\n");
+        if (projectKey != null)
+            md.append("**Project key:** ").append(projectKey).append("\n\n");
         section(md, "Problem", c.problem());
         section(md, "Target users", c.targetUsers());
-        String type = c.productType() == null ? null : Charter.PRODUCT_TYPES.getOrDefault(c.productType(), c.productType());
+        String type =
+                c.productType() == null ? null : Charter.PRODUCT_TYPES.getOrDefault(c.productType(), c.productType());
         if (type != null && c.productTypeDetails() != null && !type.equalsIgnoreCase(c.productTypeDetails())) {
             type = type + " — " + c.productTypeDetails();
         }

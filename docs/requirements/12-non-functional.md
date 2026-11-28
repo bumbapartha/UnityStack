@@ -6,25 +6,26 @@ Cross-cutting quality requirements.
 
 ## Requirements
 
-| ID | Category | Requirement |
-|---|---|---|
-| NFR-001 | Reproducibility | The same version and configuration produce functionally equivalent deployments. |
-| NFR-002 | Security | Encrypt data in transit and at rest where supported; least privilege; protected secrets; audited administrative access. |
-| NFR-003 | Isolation | Each organisation has its own installation, credentials, databases and resources. |
-| NFR-004 | Extensibility | Integrations use stable capability contracts, never provider-specific logic in agents or workflows. |
-| NFR-005 | Maintainability | Tool images and versions are pinned, documented and independently upgradeable where possible. |
-| NFR-006 | Reliability | Failures are detected and reported; persistent data survives routine redeployments. |
-| NFR-007 | Observability | Record platform health, errors, deployment outcomes and AI run metadata. |
-| NFR-008 | Cost | Nonessential services can be switched off; cloud and LLM cost drivers are documented before larger deployments. |
-| NFR-009 | Portability | Cloud-specific logic stays in infrastructure modules; provider-specific logic stays in adapters. |
-| NFR-010 | Performance | Response-time and capacity targets are set after a baseline measurement. |
-| NFR-011 | Recovery | Backup and restore of persistent data are documented and tested. |
-| NFR-012 | Accessibility | Portal navigation and controls are accessible. |
-| NFR-013 | Model independence | **New.** Switching LLM provider or model needs configuration only and loses no project context. |
-| NFR-014 | Local-first development | **New.** The whole MVP loop can run locally with Docker and the mock LLM, without cloud resources. |
-| NFR-015 | Replaceability | **New.** Changing the provider of any capability touches only that capability's adapter and configuration files. |
-| NFR-016 | AI module portability | **New.** The AI module has no framework dependencies and exchanges only plain data objects, so it can be moved to a separate service in another language without changes elsewhere ([AD-1](../decisions.md#ad-1)). |
-| NFR-017 | Resource footprint | **New.** Local services are grouped in Compose profiles; the everyday `core` profile runs comfortably on a developer laptop. |
-| NFR-018 | Modularity | **New.** Code is organised by feature module in backend and frontend ([AD-5](../decisions.md#ad-5)); modules use only each other's public interfaces or events, have no cyclic dependencies and own their data; an automated test fails the build on a boundary violation. |
+| ID      | Category                | Requirement                                                                                                                                                                                                                                                                |
+| ------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NFR-001 | Reproducibility         | The same version and configuration produce functionally equivalent deployments.                                                                                                                                                                                            |
+| NFR-002 | Security                | Encrypt data in transit and at rest where supported; least privilege; protected secrets; audited administrative access.                                                                                                                                                    |
+| NFR-003 | Isolation               | Each organisation has its own installation, credentials, databases and resources.                                                                                                                                                                                          |
+| NFR-004 | Extensibility           | Integrations use stable capability contracts, never provider-specific logic in agents or workflows.                                                                                                                                                                        |
+| NFR-005 | Maintainability         | Tool images and versions are pinned, documented and independently upgradeable where possible.                                                                                                                                                                              |
+| NFR-006 | Reliability             | Failures are detected and reported; persistent data survives routine redeployments.                                                                                                                                                                                        |
+| NFR-007 | Observability           | Record platform health, errors, deployment outcomes and AI run metadata.                                                                                                                                                                                                   |
+| NFR-008 | Cost                    | Nonessential services can be switched off; cloud and LLM cost drivers are documented before larger deployments.                                                                                                                                                            |
+| NFR-009 | Portability             | Cloud-specific logic stays in infrastructure modules; provider-specific logic stays in adapters.                                                                                                                                                                           |
+| NFR-010 | Performance             | Response-time and capacity targets are set after a baseline measurement.                                                                                                                                                                                                   |
+| NFR-011 | Recovery                | Backup and restore of persistent data are documented and tested.                                                                                                                                                                                                           |
+| NFR-012 | Accessibility           | Portal navigation and controls are accessible.                                                                                                                                                                                                                             |
+| NFR-013 | Model independence      | **New.** Switching LLM provider or model needs configuration only and loses no project context.                                                                                                                                                                            |
+| NFR-014 | Local-first development | **New.** The whole MVP loop can run locally with Docker and the mock LLM, without cloud resources.                                                                                                                                                                         |
+| NFR-015 | Replaceability          | **New.** Changing the provider of any capability touches only that capability's adapter and configuration files.                                                                                                                                                           |
+| NFR-016 | AI module portability   | **New.** The AI module has no framework dependencies and exchanges only plain data objects, so it can be moved to a separate service in another language without changes elsewhere ([AD-1](../decisions.md#ad-1)).                                                         |
+| NFR-017 | Resource footprint      | **New.** Local services are grouped in Compose profiles; the everyday `core` profile runs comfortably on a developer laptop.                                                                                                                                               |
+| NFR-018 | Modularity              | **New.** Code is organised by feature module in backend and frontend ([AD-5](../decisions.md#ad-5)); modules use only each other's public interfaces or events, have no cyclic dependencies and own their data; an automated test fails the build on a boundary violation. |
+| NFR-019 | Readability             | **New.** Code is written for the reader: small methods, clear names, comments that explain why. Formatting is automatic (Spotless for Java, Prettier for the frontend, shared `.editorconfig`), and CI fails a pull request on unformatted code.                           |
 
 Quantitative targets (install time, cloud spend, SLOs, RTO, RPO) are deliberately TBD until measured.

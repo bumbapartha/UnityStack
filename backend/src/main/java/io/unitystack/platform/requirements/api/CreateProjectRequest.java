@@ -4,5 +4,4 @@ import io.unitystack.platform.requirements.domain.Charter;
 import io.unitystack.platform.requirements.domain.ChatMessage;
 import java.util.List;
 
-public record CreateProjectRequest(Charter charter, List<String> openQuestions, List<ChatMessage> transcript) {
-}
+public record CreateProjectRequest(Charter charter, List<String> openQuestions, List<ChatMessage> transcript) {}

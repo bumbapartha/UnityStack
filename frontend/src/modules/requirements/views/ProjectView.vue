@@ -16,8 +16,11 @@ function load(d) {
 }
 
 onMounted(async () => {
-  try { load(await api.getProject(props.id)) }
-  catch (e) { error.value = e.message }
+  try {
+    load(await api.getProject(props.id))
+  } catch (e) {
+    error.value = e.message
+  }
 })
 
 async function save() {
@@ -36,7 +39,12 @@ async function save() {
 function describe(a) {
   if (a.action === 'PROJECT_CREATED') return `Created project ${a.details.key}`
   if (a.action === 'PROJECT_SETTINGS_CHANGED') {
-    return 'Changed ' + Object.entries(a.details).map(([k, v]) => `${k}: ${v.from} → ${v.to}`).join(', ')
+    return (
+      'Changed ' +
+      Object.entries(a.details)
+        .map(([k, v]) => `${k}: ${v.from} → ${v.to}`)
+        .join(', ')
+    )
   }
   return a.action
 }
@@ -47,22 +55,34 @@ function describe(a) {
     <p v-if="error" class="error">{{ error }}</p>
     <template v-else-if="detail">
       <div class="page-head">
-        <h1>{{ detail.project.name }} <span class="key">{{ detail.project.key }}</span></h1>
+        <h1>
+          {{ detail.project.name }} <span class="key">{{ detail.project.key }}</span>
+        </h1>
         <span class="status">{{ detail.project.status }}</span>
       </div>
       <div class="project-grid">
         <div>
-          <CharterPreview :charter="detail.charter" :open-questions="detail.openQuestions" :project-key="detail.project.key" />
-          <p class="muted">Charter revision {{ detail.charterRevision }} · Next steps (coming soon): connect a GitHub repository, start the requirements workspace.</p>
+          <CharterPreview
+            :charter="detail.charter"
+            :open-questions="detail.openQuestions"
+            :project-key="detail.project.key"
+          />
+          <p class="muted">
+            Charter revision {{ detail.charterRevision }} · Next steps (coming soon): connect a GitHub repository, start
+            the requirements workspace.
+          </p>
         </div>
         <aside>
           <form class="card settings" @submit.prevent="save">
             <h3>Settings</h3>
             <label>Name <input v-model="form.name" maxlength="200" /></label>
             <label>Key <input v-model="form.key" maxlength="10" /></label>
-            <label>Status
+            <label
+              >Status
               <select v-model="form.status">
-                <option>ACTIVE</option><option>ON_HOLD</option><option>ARCHIVED</option>
+                <option>ACTIVE</option>
+                <option>ON_HOLD</option>
+                <option>ARCHIVED</option>
               </select>
             </label>
             <button class="btn primary" :disabled="saving">Save</button>

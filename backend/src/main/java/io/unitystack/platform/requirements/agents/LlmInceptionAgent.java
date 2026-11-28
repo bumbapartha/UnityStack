@@ -23,7 +23,8 @@ import org.slf4j.LoggerFactory;
 public class LlmInceptionAgent implements InceptionAgent {
     private static final Logger log = LoggerFactory.getLogger(LlmInceptionAgent.class);
     static final double TEMPERATURE = 0.3;
-    static final String FIRST_TURN = "(The user has just opened the New Project page. Greet them briefly and ask the first question.)";
+    static final String FIRST_TURN =
+            "(The user has just opened the New Project page. Greet them briefly and ask the first question.)";
 
     private final LlmClient llm;
     private final ObjectMapper json;
@@ -45,7 +46,8 @@ public class LlmInceptionAgent implements InceptionAgent {
             messages.add(LlmMessage.user(FIRST_TURN));
         }
 
-        String output = llm.complete(new LlmRequest(messages, TEMPERATURE, new LlmRequest.JsonSchema("inception_turn", schema())));
+        String output = llm.complete(
+                new LlmRequest(messages, TEMPERATURE, new LlmRequest.JsonSchema("inception_turn", schema())));
         try {
             return json.readValue(output, AgentTurn.class);
         } catch (Exception e) {
@@ -72,8 +74,15 @@ public class LlmInceptionAgent implements InceptionAgent {
 
     static Map<String, Object> schema() {
         Map<String, Object> charterProps = new LinkedHashMap<>();
-        for (String f : List.of("name", "problem", "targetUsers", "productTypeDetails", "expectedBenefit",
-                "motivation", "constraints", "outOfScope")) {
+        for (String f : List.of(
+                "name",
+                "problem",
+                "targetUsers",
+                "productTypeDetails",
+                "expectedBenefit",
+                "motivation",
+                "constraints",
+                "outOfScope")) {
             charterProps.put(f, Map.of("type", List.of("string", "null")));
         }
         List<Object> typeEnum = new ArrayList<>(Charter.PRODUCT_TYPES.keySet());
@@ -84,18 +93,26 @@ public class LlmInceptionAgent implements InceptionAgent {
         charterProps.put("scale", Map.of("type", List.of("string", "null"), "enum", scaleEnum));
 
         Map<String, Object> charterSchema = Map.of(
-                "type", "object",
-                "properties", charterProps,
-                "required", new ArrayList<>(charterProps.keySet()),
-                "additionalProperties", false);
+                "type",
+                "object",
+                "properties",
+                charterProps,
+                "required",
+                new ArrayList<>(charterProps.keySet()),
+                "additionalProperties",
+                false);
 
         return Map.of(
-                "type", "object",
-                "properties", Map.of(
+                "type",
+                "object",
+                "properties",
+                Map.of(
                         "reply", Map.of("type", "string"),
                         "charter", charterSchema,
                         "openQuestions", Map.of("type", "array", "items", Map.of("type", "string"))),
-                "required", Arrays.asList("reply", "charter", "openQuestions"),
-                "additionalProperties", false);
+                "required",
+                Arrays.asList("reply", "charter", "openQuestions"),
+                "additionalProperties",
+                false);
     }
 }

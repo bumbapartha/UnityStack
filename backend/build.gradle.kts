@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
+    id("com.diffplug.spotless") version "8.12.0"
 }
 
 group = "io.unitystack"
@@ -38,6 +39,17 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.modulith:spring-modulith-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+// Code formatting. spotlessCheck is part of `check`, so `./gradlew build` fails on unformatted code;
+// run `./gradlew spotlessApply` to fix it. Palantir Java Format: 4-space indent, 120 columns.
+spotless {
+    java {
+        target("src/**/*.java")
+        palantirJavaFormat("2.103.0")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 tasks.withType<Test> {

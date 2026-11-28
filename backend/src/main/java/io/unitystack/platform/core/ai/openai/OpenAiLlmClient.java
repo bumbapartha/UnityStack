@@ -61,12 +61,16 @@ public final class OpenAiLlmClient implements LlmClient {
         body.put("temperature", request.temperature());
         body.put("messages", messages);
         if (request.responseSchema() != null) {
-            body.put("response_format", Map.of(
-                    "type", "json_schema",
-                    "json_schema", Map.of(
-                            "name", request.responseSchema().name(),
-                            "strict", true,
-                            "schema", request.responseSchema().schema())));
+            body.put(
+                    "response_format",
+                    Map.of(
+                            "type",
+                            "json_schema",
+                            "json_schema",
+                            Map.of(
+                                    "name", request.responseSchema().name(),
+                                    "strict", true,
+                                    "schema", request.responseSchema().schema())));
         }
 
         JsonNode response;
@@ -81,7 +85,8 @@ public final class OpenAiLlmClient implements LlmClient {
             int status = httpResponse.statusCode();
             if (status < 200 || status >= 300) {
                 log.warn("OpenAI call failed: {} {}", status, httpResponse.body());
-                throw new AiUnavailableException("The AI provider returned an error (" + status + "). Please try again.");
+                throw new AiUnavailableException(
+                        "The AI provider returned an error (" + status + "). Please try again.");
             }
             response = json.readTree(httpResponse.body());
         } catch (AiUnavailableException e) {
@@ -95,12 +100,14 @@ public final class OpenAiLlmClient implements LlmClient {
             throw new AiUnavailableException("The AI provider could not be reached. Please try again.");
         }
 
-        JsonNode message = response == null ? null : response.path("choices").path(0).path("message");
+        JsonNode message =
+                response == null ? null : response.path("choices").path(0).path("message");
         if (message == null || message.isMissingNode()) {
             throw new AiUnavailableException("The AI provider returned an empty response.");
         }
         if (message.hasNonNull("refusal")) {
-            throw new AiUnavailableException("The AI declined to respond: " + message.get("refusal").asText());
+            throw new AiUnavailableException(
+                    "The AI declined to respond: " + message.get("refusal").asText());
         }
         return message.path("content").asText();
     }

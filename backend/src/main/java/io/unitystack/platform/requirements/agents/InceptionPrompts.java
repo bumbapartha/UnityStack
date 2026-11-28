@@ -1,8 +1,7 @@
 package io.unitystack.platform.requirements.agents;
 
 final class InceptionPrompts {
-    private InceptionPrompts() {
-    }
+    private InceptionPrompts() {}
 
     static final String SYSTEM = """
             You are the UnityStack Project Inception assistant. You help a user start a new software project

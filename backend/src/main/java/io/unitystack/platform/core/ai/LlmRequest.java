@@ -17,6 +17,5 @@ public record LlmRequest(List<LlmMessage> messages, double temperature, JsonSche
     }
 
     /** A named JSON schema for structured output. */
-    public record JsonSchema(String name, Map<String, Object> schema) {
-    }
+    public record JsonSchema(String name, Map<String, Object> schema) {}
 }

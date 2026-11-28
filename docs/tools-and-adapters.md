@@ -6,8 +6,8 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 
 ## Source control
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
+| Capability             | Default (open source)  | Alternatives                                                    | MVP |
+| ---------------------- | ---------------------- | --------------------------------------------------------------- | --- |
 | Source control and PRs | GitHub (first adapter) | Gitea (open source), GitLab, Bitbucket, Azure DevOps Repos (P2) | Yes |
 
 **Requirements:** [Development phase](requirements/03-development.md), [Traceability and integration](requirements/09-traceability-and-integration.md)  
@@ -15,43 +15,43 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 
 ## AI models
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| LLM | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
+| Capability | Default (open source)       | Alternatives                                                       | MVP |
+| ---------- | --------------------------- | ------------------------------------------------------------------ | --- |
+| LLM        | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
 
 **Requirements:** [Core platform](requirements/10-core-platform.md)  
 **Decisions:** [PD-2](decisions.md#pd-2), [AD-1](decisions.md#ad-1)
 
 ## Identity and access
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Identity and access | Keycloak | Azure AD / Entra ID, Okta through Keycloak federation or own adapter (P2) | Yes |
+| Capability          | Default (open source) | Alternatives                                                              | MVP |
+| ------------------- | --------------------- | ------------------------------------------------------------------------- | --- |
+| Identity and access | Keycloak              | Azure AD / Entra ID, Okta through Keycloak federation or own adapter (P2) | Yes |
 
 **Requirements:** [Security](requirements/07-security.md)  
 **Decisions:** [AD-3](decisions.md#ad-3)
 
 ## Project management
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Project management (epics, stories, bugs) | OpenProject | Jira (P1), Plane (P2) | Yes |
+| Capability                                | Default (open source) | Alternatives          | MVP |
+| ----------------------------------------- | --------------------- | --------------------- | --- |
+| Project management (epics, stories, bugs) | OpenProject           | Jira (P1), Plane (P2) | Yes |
 
 **Requirements:** [Requirements phase](requirements/01-requirements.md), [Monitoring and operations phase](requirements/06-monitoring-and-operations.md), [Traceability and integration](requirements/09-traceability-and-integration.md)
 
 ## CI/CD
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| CI/CD | GitHub Actions | Jenkins, Argo CD (P2) | Yes |
+| Capability | Default (open source) | Alternatives          | MVP |
+| ---------- | --------------------- | --------------------- | --- |
+| CI/CD      | GitHub Actions        | Jenkins, Argo CD (P2) | Yes |
 
 **Requirements:** [Deployment phase](requirements/05-deployment.md)  
 **Decisions:** [TD-01](decisions.md#td-01), [TD-10](decisions.md#td-10)
 
 ## Container registry
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
+| Capability                    | Default (open source)     | Alternatives            | MVP                    |
+| ----------------------------- | ------------------------- | ----------------------- | ---------------------- |
 | Artifact (container) registry | GitHub Container Registry | Amazon ECR, Harbor (P2) | Yes (managed projects) |
 
 **Requirements:** [Deployment phase](requirements/05-deployment.md)  
@@ -59,86 +59,86 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 
 ## Security scanning
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Static code security scanning (SAST) | Semgrep (community edition) | SonarQube security rules, others (P2) | Yes |
-| Dependency, image, IaC and secret scanning (SCA) | Trivy | OWASP Dependency-Check, GitHub scanning (P2) | Yes |
-| Dynamic / black-box security testing (DAST) | OWASP ZAP | — | P1 |
+| Capability                                       | Default (open source)       | Alternatives                                 | MVP |
+| ------------------------------------------------ | --------------------------- | -------------------------------------------- | --- |
+| Static code security scanning (SAST)             | Semgrep (community edition) | SonarQube security rules, others (P2)        | Yes |
+| Dependency, image, IaC and secret scanning (SCA) | Trivy                       | OWASP Dependency-Check, GitHub scanning (P2) | Yes |
+| Dynamic / black-box security testing (DAST)      | OWASP ZAP                   | —                                            | P1  |
 
 **Requirements:** [Security](requirements/07-security.md)  
 **Decisions:** [TD-02](decisions.md#td-02)
 
 ## Testing
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Unit tests | JUnit (Java), Vitest (Vue) | — | Yes |
-| End-to-end tests | Playwright | — | Yes |
-| Test management (cases, runs, reports) | Kiwi TCMS | — | Yes |
+| Capability                             | Default (open source)      | Alternatives | MVP |
+| -------------------------------------- | -------------------------- | ------------ | --- |
+| Unit tests                             | JUnit (Java), Vitest (Vue) | —            | Yes |
+| End-to-end tests                       | Playwright                 | —            | Yes |
+| Test management (cases, runs, reports) | Kiwi TCMS                  | —            | Yes |
 
 **Requirements:** [Testing phase](requirements/04-testing.md), [Development phase](requirements/03-development.md)  
 **Decisions:** [TD-03](decisions.md#td-03)
 
 ## Observability
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Telemetry collection | OpenTelemetry (Java agent, SDKs, Collector) | — | Yes |
-| Logs | Loki | Elasticsearch with Kibana, OpenSearch with OpenSearch Dashboards (P2) | Yes |
-| Metrics | Prometheus | — | Yes |
-| Dashboards and alert rules | Grafana (Grafana alerting) | Prometheus Alertmanager (P2) | Yes (dashboards); P1 (alerts) |
+| Capability                 | Default (open source)                       | Alternatives                                                          | MVP                           |
+| -------------------------- | ------------------------------------------- | --------------------------------------------------------------------- | ----------------------------- |
+| Telemetry collection       | OpenTelemetry (Java agent, SDKs, Collector) | —                                                                     | Yes                           |
+| Logs                       | Loki                                        | Elasticsearch with Kibana, OpenSearch with OpenSearch Dashboards (P2) | Yes                           |
+| Metrics                    | Prometheus                                  | —                                                                     | Yes                           |
+| Dashboards and alert rules | Grafana (Grafana alerting)                  | Prometheus Alertmanager (P2)                                          | Yes (dashboards); P1 (alerts) |
 
 **Requirements:** [Monitoring and operations phase](requirements/06-monitoring-and-operations.md), [Traceability and integration](requirements/09-traceability-and-integration.md)  
 **Decisions:** [TD-05](decisions.md#td-05), [TD-06](decisions.md#td-06)
 
 ## Alerting and on-call
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| On-call paging and escalation | GoAlert | Opsgenie, PagerDuty, OneUptime (P2) | P1 |
+| Capability                    | Default (open source) | Alternatives                        | MVP |
+| ----------------------------- | --------------------- | ----------------------------------- | --- |
+| On-call paging and escalation | GoAlert               | Opsgenie, PagerDuty, OneUptime (P2) | P1  |
 
 **Requirements:** [Monitoring and operations phase](requirements/06-monitoring-and-operations.md)  
 **Decisions:** [TD-06](decisions.md#td-06), [TD-07](decisions.md#td-07)
 
 ## Feature flags
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Feature flags | OpenFeature with Unleash | Flagsmith or an organisation's own provider via OpenFeature (P2) | P1 |
+| Capability    | Default (open source)    | Alternatives                                                     | MVP |
+| ------------- | ------------------------ | ---------------------------------------------------------------- | --- |
+| Feature flags | OpenFeature with Unleash | Flagsmith or an organisation's own provider via OpenFeature (P2) | P1  |
 
 **Requirements:** [Deployment phase](requirements/05-deployment.md)  
 **Decisions:** [TD-08](decisions.md#td-08)
 
 ## Notifications
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Notifications and team chat | Mattermost | Slack, Microsoft Teams (P2) | P1 |
+| Capability                  | Default (open source) | Alternatives                | MVP |
+| --------------------------- | --------------------- | --------------------------- | --- |
+| Notifications and team chat | Mattermost            | Slack, Microsoft Teams (P2) | P1  |
 
 **Requirements:** [Communication](requirements/08-communication.md)  
 **Decisions:** [TD-09](decisions.md#td-09)
 
 ## Meetings
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Meetings (AI meeting assistant) | *To be selected, for example Jitsi Meet or Mattermost calls* | Zoom, Teams (P2) | P2 |
+| Capability                      | Default (open source)                                        | Alternatives     | MVP |
+| ------------------------------- | ------------------------------------------------------------ | ---------------- | --- |
+| Meetings (AI meeting assistant) | _To be selected, for example Jitsi Meet or Mattermost calls_ | Zoom, Teams (P2) | P2  |
 
 **Requirements:** [Communication](requirements/08-communication.md)  
 **Decisions:** [TD-11](decisions.md#td-11)
 
 ## Design, documentation and developer tools
 
-| Capability | Default (open source) | Alternatives | MVP |
-|---|---|---|---|
-| Architecture diagrams | Mermaid (library) | — | Yes |
-| Technical documentation | MkDocs | Confluence (P2) | Yes |
-| API documentation | Swagger UI | — | Yes |
-| Code quality | SonarQube Community Build | — | P1 |
-| Initial wireframes | Excalidraw | — | Yes |
-| UX/UI design | Penpot | — | Yes |
-| Software catalogue | Backstage | — | P2 |
-| Web IDE | Eclipse Theia | Local IDE (always) | P2 |
+| Capability              | Default (open source)     | Alternatives       | MVP |
+| ----------------------- | ------------------------- | ------------------ | --- |
+| Architecture diagrams   | Mermaid (library)         | —                  | Yes |
+| Technical documentation | MkDocs                    | Confluence (P2)    | Yes |
+| API documentation       | Swagger UI                | —                  | Yes |
+| Code quality            | SonarQube Community Build | —                  | P1  |
+| Initial wireframes      | Excalidraw                | —                  | Yes |
+| UX/UI design            | Penpot                    | —                  | Yes |
+| Software catalogue      | Backstage                 | —                  | P2  |
+| Web IDE                 | Eclipse Theia             | Local IDE (always) | P2  |
 
 **Requirements:** [Architecture and design phase](requirements/02-architecture-and-design.md), [Testing phase](requirements/04-testing.md)
 
