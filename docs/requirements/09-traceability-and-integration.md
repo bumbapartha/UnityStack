@@ -10,7 +10,7 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 
 ## Traceability and Change ID
 
-- Every UnityStack-initiated change gets a stable **Change ID** at the start of the loop (format to be decided — see [D-4](../open-questions.md); for example `<PROJECTKEY>-CHG-001`).
+- Every requirement, story and UnityStack-initiated change has a permanent UUID, a permanent short key such as `TODO-12` and a computed outline label such as "TODO 1.1.1 Create task" ([AD-7](../decisions.md#ad-7)). The short key acts as the **Change ID** in branch names, commits, PRs, builds and logs.
 - The Change ID is carried through: requirement and story IDs, branch name, commit trailer, PR title or label, CI run metadata, build and image version, deployment record, structured log fields, and bug records.
 - External work keeps its own source IDs (tracker key, PR number, commit SHA) even when no Change ID exists yet.
 - **Verified links** come from explicit references (an ID in a branch, commit, PR or ticket). **Inferred links** proposed by AI are labelled with confidence and evidence and stay unverified until a person confirms them.
@@ -22,6 +22,7 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 | ID | Priority | Requirement |
 |---|---|---|
 | FR-099 | P0 | Assign persistent Change IDs and propagate them through artifacts, branches, commits, PRs, builds, deployments, logs and bugs. |
+| FR-136 | P0 | **New.** Give every requirement, story and change a central UUID, a permanent short key and a computed outline label; show the current label everywhere as a link; keep an index updated on merge and rebuildable from Git; show retired items struck through; and fail a PR on missing, duplicate or retired references ([AD-7](../decisions.md#ad-7)). |
 | FR-053 | P0 | Capture stable artifact IDs, Git commit/ref, source request and agent-run linkage for all generated artifacts. |
 | FR-023 | P0 | Maintain traceability across requirement → design → code → tests → deployment → production feedback (thin, explicit links only). *(Was P1.)* |
 | FR-056 | P0 | Support traceability links among requirements, architecture, APIs, implementation, tests, releases and operational feedback. *(Was P1; same scope as FR-023.)* |

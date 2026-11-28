@@ -12,7 +12,7 @@ Requirements are grouped by SDLC phase, in the order work flows through the loop
 | 2 | Architecture and design | [02-architecture-and-design.md](02-architecture-and-design.md) | 5 |
 | 3 | Development | [03-development.md](03-development.md) | 12 |
 | 4 | Testing | [04-testing.md](04-testing.md) | 2 |
-| 5 | Deployment | [05-deployment.md](05-deployment.md) | 8 |
+| 5 | Deployment | [05-deployment.md](05-deployment.md) | 10 |
 | 6 | Monitoring and operations | [06-monitoring-and-operations.md](06-monitoring-and-operations.md) | 7 |
 
 ## Cross-cutting areas
@@ -21,7 +21,7 @@ Requirements are grouped by SDLC phase, in the order work flows through the loop
 |---|---|---|
 | Security | [07-security.md](07-security.md) | 5 |
 | Communication | [08-communication.md](08-communication.md) | 2 |
-| Traceability and integration | [09-traceability-and-integration.md](09-traceability-and-integration.md) | 30 |
+| Traceability and integration | [09-traceability-and-integration.md](09-traceability-and-integration.md) | 31 |
 | Core platform | [10-core-platform.md](10-core-platform.md) | 28 |
 | Distribution and onboarding | [11-distribution-and-onboarding.md](11-distribution-and-onboarding.md) | 14 |
 | Non-functional requirements | [12-non-functional.md](12-non-functional.md) | 18 |
@@ -182,6 +182,9 @@ Priorities in this document mean:
 | [FR-131](10-core-platform.md) | P0 | Core platform |
 | [FR-132](02-architecture-and-design.md) | P0 | Architecture and design |
 | [FR-133](03-development.md) | P0 | Development |
+| [FR-134](05-deployment.md) | P0 | Deployment |
+| [FR-135](05-deployment.md) | P0 | Deployment |
+| [FR-136](09-traceability-and-integration.md) | P0 | Traceability and integration |
 | [NFR-001](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-002](12-non-functional.md) | — | Non-functional requirements |
 | [NFR-003](12-non-functional.md) | — | Non-functional requirements |

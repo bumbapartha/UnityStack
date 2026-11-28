@@ -8,7 +8,6 @@ When a question is settled, add a row to [Decisions](decisions.md) and remove it
 
 | ID | Decision | Current state |
 |---|---|---|
-| D-4 | Change ID format and how it is carried | For example `<PROJECTKEY>-CHG-001`, in branch names, commit trailers, PR labels, build metadata and log fields. |
 | D-5 | First project-management provider in the loop | OpenProject is the default; Jira follows as the second adapter. |
 | D-7 | Review policy for a sole user | GitHub does not let an author approve their own PR. Decide on self-merge rules for the sole-user phase. |
 | D-8 | OpenProject sync direction | Git-to-tool for approved definitions with field-level ownership ([Traceability and integration](requirements/09-traceability-and-integration.md)); controlled tool-to-PR proposals later. |
@@ -25,7 +24,6 @@ When a question is settled, add a row to [Decisions](decisions.md) and remove it
 
 - PostgreSQL and SSE.
 - Terraform + EC2/Docker Compose as the first AWS deployment mechanism.
-- Change ID format (D-4).
 - Specific release numbering, scope and sequencing.
 - Event broker, model router and operational SLOs.
 

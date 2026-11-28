@@ -52,6 +52,7 @@ Priorities in this document mean:
 - Planning: AI decomposes approved requirements into epics and stories; after merge they are published to the project-management tool through its adapter.
 - Sprint planning: the AI proposes the next sprint from the stories (priority, dependencies, capacity); after approval the sprint is created in OpenProject, and development picks stories from the current sprint (FR-133).
 - Testing and quality as its own stage after merge: test plan and cases (Kiwi), Playwright end-to-end runs, triage of Semgrep and Trivy findings, and a test report with QA sign-off before deployment (FR-117, FR-120).
+- User documentation after each release: Playwright screenshots, an AI-written user guide in Git through a PR, an internal version with requirement links and a public version (site or PDF) without them; comments on the docs can become new requirements (FR-134, FR-135).
 - Development: AI proposes code **and tests together** for a story, on a branch, as a PR that carries the Change ID.
 - Review and merge through GitHub, with UnityStack reflecting PR status.
 - Checks: GitHub Actions runs unit tests (JUnit, Vitest), static code scanning (Semgrep) and dependency/image/secret scanning (Trivy) on every PR. (UnityStack's own code is not deployed by CI while it runs locally; the managed project's pipeline does deploy, see below.)
@@ -124,7 +125,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 - Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
 - Restructure the code into feature modules ([AD-5](decisions.md#ad-5)): move inception and projects into `requirements/`, the LLM interface and providers into `core/ai/` (framework-free, [AD-1](decisions.md#ad-1)), and the frontend views into `modules/requirements/`; add Spring Modulith and its boundary test.
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
-- Change ID scheme ([D-4](open-questions.md)) and generation at the start of a change.
+- Item identity ([AD-7](decisions.md#ad-7)): UUIDs, short keys such as `TODO-12` and outline labels, created at the start of a change.
 - GitHub Actions for UnityStack itself on every PR: build, JUnit and Vitest, Semgrep, Trivy (no deployment).
 - `unitystack-demo-app` repository with a Hello World service and the same checks, deployed by its own GitHub Actions pipeline to a small AWS staging and production setup (set up conventionally at first; configured through UnityStack from Phase 3, FR-130).
 - Local rebuild workflow: AI runs `docker compose up --build -d <service>` after a batch of edits; `docker compose watch` for manual edits ([Development setup](dev-setup.md)).
@@ -270,7 +271,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 | BOOT-01 | Deploy Hello World | Demo app reachable on its AWS production URL; smoke test passes |
 | BOOT-02 | Sign in through Keycloak | Only signed-in users reach UnityStack; roles visible |
 | BOOT-03 | Scan and test every PR | Unit tests, Semgrep and Trivy run in CI; failures block per policy |
-| CHG-01 | Create a Change ID | Every new change gets an ID carried into branch, PR and build |
+| CHG-01 | Create item keys | Every new requirement, story or change gets a UUID and a short key (e.g. `TODO-12`) carried into branch, PR and build |
 | REQ-01 | Load PRD from GitHub | Correct repo/path/ref and SHA shown |
 | REQ-02 | Discuss a requirement change | AI returns validated proposed revision |
 | REQ-03 | Show preview and diff | Exact additions/deletions visible |

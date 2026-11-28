@@ -19,6 +19,7 @@ Every external tool, and the AI model itself, sits behind an adapter, so any of 
 - [PD-3](decisions.md#pd-3) Product core: the closed loop
 - [PD-4](decisions.md#pd-4) Thin loop first
 - [PD-5](decisions.md#pd-5) Open-source defaults
+- [PD-6](decisions.md#pd-6) A complete MVP
 
 All decisions: [Decisions](decisions.md).
 
