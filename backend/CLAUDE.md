@@ -74,6 +74,10 @@ src/main/java/io/unitystack/platform/
 - **No clever one-liners.** Prefer a few plain statements over a dense stream chain, nested ternary or packed expression. Readers come first.
 - **Formatting is automatic.** Spotless with Palantir Java Format (4 spaces, 120 columns) owns the layout; do not format by hand. **Always run `./gradlew spotlessApply` before committing.** `./gradlew build` and CI fail on unformatted code (`spotlessCheck`). Without a local JDK, run it in Docker (see `docs/dev-setup.md`).
 
+## Dependencies
+
+- `gradle.lockfile` pins the shipped (`runtimeClasspath`) dependencies so Trivy can scan them (TD-02). After adding, removing or upgrading a dependency, run `./gradlew dependencies --configuration runtimeClasspath --write-locks` and commit the lockfile; the build fails if it is out of date.
+
 ## Errors and API
 
 - Throw `ApiException` with an HTTP status for expected errors; the shared handler turns it into JSON `{ "error": ... }`.

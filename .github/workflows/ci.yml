@@ -50,3 +50,96 @@ jobs:
         run: yarn lint
       - name: Build
         run: yarn build
+
+  # Semgrep and Trivy (TD-02, FR-117). Every finding goes to the Security tab as SARIF;
+  # the job fails only on HIGH or CRITICAL (Semgrep ERROR) findings.
+  security:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    env:
+      SEMGREP_IMAGE: semgrep/semgrep:1.187.0
+      TRIVY_VERSION: v0.76.2
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build images to scan
+        run: |
+          docker build -t unitystack-backend:ci backend
+          docker build -t unitystack-frontend:ci frontend
+      - name: Semgrep (community edition, open-source rules)
+        run: |
+          mkdir -p scan-results
+          docker run --rm -v "$PWD":/src -w /src "$SEMGREP_IMAGE" semgrep scan --metrics=off \
+            --config p/java --config p/javascript --config p/dockerfile --config p/secrets \
+            --json-output=scan-results/semgrep.json --sarif-output=scan-results/semgrep.sarif
+      - name: Trivy filesystem (Gradle and Yarn dependencies, Dockerfiles, secrets)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          version: ${{ env.TRIVY_VERSION }}
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          skip-dirs: scan-results
+          format: json
+          output: scan-results/trivy-fs.json
+      - name: Trivy backend image
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          skip-setup-trivy: true
+          scan-type: image
+          image-ref: unitystack-backend:ci
+          scanners: vuln,secret
+          format: json
+          output: scan-results/trivy-backend.json
+      - name: Trivy frontend image
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          skip-setup-trivy: true
+          scan-type: image
+          image-ref: unitystack-frontend:ci
+          scanners: vuln,secret
+          format: json
+          output: scan-results/trivy-frontend.json
+      - name: Convert Trivy results to SARIF
+        if: always()
+        run: |
+          for target in fs backend frontend; do
+            trivy convert --format sarif --output "scan-results/trivy-$target.sarif" "scan-results/trivy-$target.json"
+          done
+      - name: Upload Semgrep SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: scan-results/semgrep.sarif
+          category: semgrep
+      - name: Upload Trivy filesystem SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: scan-results/trivy-fs.sarif
+          category: trivy-fs
+      - name: Upload Trivy backend image SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: scan-results/trivy-backend.sarif
+          category: trivy-backend-image
+      - name: Upload Trivy frontend image SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: scan-results/trivy-frontend.sarif
+          category: trivy-frontend-image
+      - name: Fail on HIGH or CRITICAL findings
+        run: |
+          status=0
+          for target in fs backend frontend; do
+            echo "::group::Trivy $target: HIGH and CRITICAL"
+            trivy convert --severity HIGH,CRITICAL --format table --exit-code 1 "scan-results/trivy-$target.json" || status=1
+            echo "::endgroup::"
+          done
+          blocking='[.results[] | select(.extra.severity | IN("ERROR", "HIGH", "CRITICAL"))]'
+          jq -r "$blocking | .[] | \"Semgrep \(.extra.severity) \(.check_id) \(.path):\(.start.line)\"" scan-results/semgrep.json
+          if [ "$(jq "$blocking | length" scan-results/semgrep.json)" -gt 0 ]; then status=1; fi
+          exit "$status"

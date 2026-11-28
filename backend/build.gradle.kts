@@ -27,6 +27,12 @@ dependencyManagement {
     }
 }
 
+// Lock the shipped dependencies in gradle.lockfile so Trivy can scan them (TD-02, FR-117).
+// After changing dependencies run: ./gradlew dependencies --configuration runtimeClasspath --write-locks
+configurations.runtimeClasspath {
+    resolutionStrategy.activateDependencyLocking()
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

@@ -38,6 +38,24 @@ docker run --rm -v "$PWD":/src -v unitystack-gradle-cache:/home/gradle/.gradle -
 docker run --rm -v "$PWD":/repo -w /repo/frontend node:22.11-alpine sh -c "corepack enable && yarn install && yarn format && yarn lint"
 ```
 
+**Security scans (TD-02, FR-117).** The CI `security` job runs Semgrep (community edition, open-source rules for Java, JavaScript/Vue, Dockerfiles and secrets) and Trivy (repository filesystem: Gradle and Yarn dependencies, Dockerfiles, secrets; plus the backend and frontend images). All findings appear in GitHub's Security tab; the job fails on HIGH or CRITICAL. Run the same scans locally from the repository root:
+
+```bash
+# Semgrep. On Apple Silicon, add --platform linux/amd64 if the native image fails to start.
+docker run --rm -v "$PWD":/src -w /src semgrep/semgrep:1.187.0 semgrep scan --metrics=off \
+  --config p/java --config p/javascript --config p/dockerfile --config p/secrets
+# Trivy filesystem. Always skip .env: it holds real keys, and a secret finding prints part of the value.
+docker run --rm -v "$PWD":/src -v trivy-cache:/root/.cache/trivy aquasec/trivy:0.76.2 fs \
+  --scanners vuln,secret,misconfig --severity HIGH,CRITICAL --skip-files /src/.env \
+  --skip-dirs /src/frontend/node_modules,/src/backend/build,/src/backend/.gradle /src
+# Trivy images: build first, then scan each image (the first run downloads the Java database).
+docker compose build backend frontend
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache/trivy \
+  aquasec/trivy:0.76.2 image --timeout 30m --severity HIGH,CRITICAL unitystack-backend
+```
+
+Trivy reads Gradle dependencies only from `backend/gradle.lockfile`; keep it current (see the backend guidelines). Suppress a finding only with a one-line reason: in `.trivyignore`, or a `nosemgrep: <rule-id>` comment next to the code.
+
 **Next — AWS, as soon as the thin loop works.** The same Compose files run on EC2 with minimal change, provisioned by Terraform. Allowed middle step: move only the heavy tools (for example monitoring, chat, test management) to one EC2 host while the app runs locally. Stop the instance when not in use to control cost. From here CI/CD deploys: each PR to a preview environment, merges to main to the main (production) environment ([FR-129](requirements/05-deployment.md)). Images go to GitHub Container Registry, with the ECR adapter added alongside.
 
 **Later — enterprise.** See [Distribution and onboarding](requirements/11-distribution-and-onboarding.md).

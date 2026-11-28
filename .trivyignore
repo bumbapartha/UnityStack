@@ -1,0 +1,5 @@
+# Trivy findings accepted on purpose (TD-02). One ID per line, with a one-line reason above it,
+# for example:
+#   # Only affects SSR, which UnityStack does not use; remove when Vue is upgraded.
+#   GHSA-xxxx-xxxx-xxxx
+# Prefer fixing the finding. Review this list whenever dependencies change.
