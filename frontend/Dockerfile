@@ -8,6 +8,12 @@ RUN yarn install --immutable
 COPY . .
 RUN yarn build
 
-FROM nginx:1.27-alpine
+# Official NGINX image, stable line, run as its non-root nginx user (uid 101) on port 8080 (TD-02).
+# apk upgrade pulls Alpine security fixes that the base image has not picked up yet.
+FROM nginx:1.30.8-alpine
+RUN apk upgrade --no-cache \
+    && sed -i 's#^pid .*#pid /tmp/nginx.pid;#' /etc/nginx/nginx.conf \
+    && chown -R nginx:nginx /var/cache/nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /src/dist /usr/share/nginx/html
+USER 101

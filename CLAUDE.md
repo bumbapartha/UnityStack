@@ -35,6 +35,10 @@ Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If 
 - For manual editing, `docker compose watch` can rebuild or sync automatically once `develop.watch` rules are added to `docker-compose.yml`.
 - CI runs tests and security scans on every PR; it does not deploy UnityStack itself while development is local. Projects that UnityStack manages do deploy to their own environments (AD-6).
 - Run the relevant tests before opening a PR (see the backend and frontend guidelines).
+- **Security scans (TD-02, FR-117).** CI runs Semgrep and Trivy on every PR and fails on HIGH or CRITICAL findings. Before opening a PR that changes dependencies, Dockerfiles or security-relevant code, run them locally from the repository root (full commands and caveats in `docs/dev-setup.md`):
+  - Semgrep: `docker run --rm -v "$PWD":/src -w /src semgrep/semgrep:1.187.0 semgrep scan --metrics=off --config p/java --config p/javascript --config p/dockerfile --config p/secrets`
+  - Trivy: `docker run --rm -v "$PWD":/src -v trivy-cache:/root/.cache/trivy aquasec/trivy:0.76.2 fs --scanners vuln,secret,misconfig --severity HIGH,CRITICAL --skip-files /src/.env --skip-dirs /src/frontend/node_modules,/src/backend/build /src`
+  - Suppress a finding only with a one-line reason: in `.trivyignore`, or as a `nosemgrep` comment next to the code.
 
 ## Current state
 

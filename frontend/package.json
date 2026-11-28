@@ -12,7 +12,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "vue": "3.5.12",
+    "vue": "3.5.46",
     "vue-router": "4.4.5"
   },
   "devDependencies": {

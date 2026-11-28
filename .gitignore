@@ -12,3 +12,5 @@ target/
 !.vscode/settings.json
 .gradle/
 build/
+# Local security scan output (CI writes the same folder).
+scan-results/
