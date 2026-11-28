@@ -10,7 +10,7 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 
 ## Traceability and Change ID
 
-- Every requirement, story and UnityStack-initiated change has a permanent UUID, a permanent short key such as `TODO-12` and a computed outline label such as "TODO 1.1.1 Create task" ([AD-7](../decisions.md#ad-7)). The short key acts as the **Change ID** in branch names, commits, PRs, builds and logs.
+- Every requirement, story, task and bug has a permanent short key, handed out centrally and never reused, such as `FR-105`, `TODO-12` or `PAY-3`, which is its main ID and its **Change ID**. People see it as a label with its title, `TODO-12 · Create task` ([AD-7](../decisions.md#ad-7)). How keys, prefixes, modules, moves and the index work is described in [Traceability](../traceability.md).
 - The Change ID is carried through: requirement and story IDs, branch name, commit trailer, PR title or label, CI run metadata, build and image version, deployment record, structured log fields, and bug records.
 - External work keeps its own source IDs (tracker key, PR number, commit SHA) even when no Change ID exists yet.
 - **Verified links** come from explicit references (an ID in a branch, commit, PR or ticket). **Inferred links** proposed by AI are labelled with confidence and evidence and stay unverified until a person confirms them.
@@ -22,7 +22,7 @@ Cross-cutting: the Change ID, links across the loop, coexistence with external t
 | ID | Priority | Requirement |
 |---|---|---|
 | FR-099 | P0 | Assign persistent Change IDs and propagate them through artifacts, branches, commits, PRs, builds, deployments, logs and bugs. |
-| FR-136 | P0 | **New.** Give every requirement, story and change a central UUID, a permanent short key and a computed outline label; show the current label everywhere as a link; keep an index updated on merge and rebuildable from Git; show retired items struck through; and fail a PR on missing, duplicate or retired references ([AD-7](../decisions.md#ad-7)). |
+| FR-136 | P0 | **New.** Give every requirement, story, task and bug a permanent short key as its main ID, handed out centrally and never reused, using the project prefix or a confirmed module prefix; show it everywhere as a label with its title and a breadcrumb; handle moves as retire-and-replace with links both ways; map stories and tasks to the ticket tool's IDs; keep an index updated on merge and rebuildable from Git; show retired items struck through; and fail a PR on missing, duplicate or retired references ([AD-7](../decisions.md#ad-7), [Traceability](../traceability.md)). |
 | FR-053 | P0 | Capture stable artifact IDs, Git commit/ref, source request and agent-run linkage for all generated artifacts. |
 | FR-023 | P0 | Maintain traceability across requirement → design → code → tests → deployment → production feedback (thin, explicit links only). *(Was P1.)* |
 | FR-056 | P0 | Support traceability links among requirements, architecture, APIs, implementation, tests, releases and operational feedback. *(Was P1; same scope as FR-023.)* |
