@@ -144,6 +144,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 - Project/repository/artifact configuration for the UnityStack PRD path; charter proposed to Git via PR when a repository is linked ([FR-108](requirements/01-requirements.md)).
 - Two-pane UI with chat, Markdown preview, baseline/proposed diff, revision history and finalise action.
+- Voice conversation in the AI chat: a microphone next to Send, a speech adapter, and Whisper and Kokoro in the Compose profile `voice` ([FR-137](requirements/10-core-platform.md), [TD-16](decisions.md#td-16)).
 - AI requirements flow: retrieve approved Markdown from GitHub; discuss change; produce a structured patch or revised document; validate document shape and identifiers; save draft revision with its Change ID.
 - Trusted GitHub integration: create branch, commit proposed Markdown, open PR; show PR URL/status.
 - Webhook ingestion plus basic periodic reconciliation for PR merge/rejection status.
@@ -252,7 +253,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 ## MVP scope boundaries
 
-**MVP (v0.4, thin loop) includes:** Inception; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; Excalidraw wireframes and Penpot UX designs through PRs; HLD with ADRs, LLD with sequence diagrams, OpenAPI contracts and a design review PR; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy; deployment target set up in UnityStack; release, image in GitHub Container Registry, deployment to staging and (after approval) production on AWS; monitoring of staging and production; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
+**MVP (v0.4, thin loop) includes:** Inception; voice or typed conversation in every AI chat; requirements AI conversation with GitHub PRD retrieval, preview, diff, revisions and finalise → PR; Excalidraw wireframes and Penpot UX designs through PRs; HLD with ADRs, LLD with sequence diagrams, OpenAPI contracts and a design review PR; stories published to OpenProject; AI code and tests in one PR; CI checks with unit tests, Semgrep and Trivy; deployment target set up in UnityStack; release, image in GitHub Container Registry, deployment to staging and (after approval) production on AWS; monitoring of staging and production; Playwright tests with results in Kiwi TCMS; OpenTelemetry logs, metrics and traces in Grafana, Loki and Prometheus; AI log analysis; accepted bugs back in OpenProject; Change ID timeline; Keycloak sign-in; status synchronisation; audit; conventional GitHub workflow compatibility.
 
 **Not required for the MVP:** hosting UnityStack itself on AWS (Phase 5); preview environment per PR; OWASP ZAP; alerting and on-call; Mattermost; feature flags; Jira; manual artifact editors; full multi-agent autonomy; multi-cloud; enterprise historical ingestion; sophisticated visual diagram diffs; production-grade HA.
 
