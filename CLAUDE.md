@@ -30,7 +30,7 @@ Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If 
 
 ## Local development (TD-10)
 
-- Start the everyday stack: `docker compose up --build` (Compose profiles such as `core` and `monitoring` are planned; see `docs/dev-setup.md`).
+- Start the everyday stack: `docker compose up --build`. Core services always start; optional tools start only with their profile, for example `--profile monitoring` (see `docs/dev-setup.md`).
 - **After finishing a batch of edits** — not after each file — rebuild only what changed: `docker compose up --build -d backend` or `docker compose up --build -d frontend`.
 - For manual editing, `docker compose watch` can rebuild or sync automatically once `develop.watch` rules are added to `docker-compose.yml`.
 - CI runs tests and security scans on every PR; it does not deploy UnityStack itself while development is local. Projects that UnityStack manages do deploy to their own environments (AD-6).
