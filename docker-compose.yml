@@ -5,7 +5,7 @@ name: unitystack
 #   always start: `docker compose up --build`.
 # - Each optional tool joins one profile when its service is added, and starts only
 #   when asked: `docker compose --profile pm --profile monitoring up`.
-#   Profiles: pm, test, monitoring, oncall, chat, flags, design.
+#   Profiles: pm, voice, test, monitoring, oncall, chat, flags, design.
 
 services:
   db:

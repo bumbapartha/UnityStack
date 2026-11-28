@@ -15,6 +15,7 @@ This page is about running **UnityStack itself**. The projects UnityStack manage
 | core, no profile | PostgreSQL, backend, frontend                           | Built; Keycloak next |
 | `pm`             | OpenProject                                             | Phase 2              |
 | `test`           | Kiwi TCMS                                               | Phase 3              |
+| `voice`          | Whisper, Kokoro (speech for voice conversations)        | Phase 1              |
 | `monitoring`     | OpenTelemetry Collector, Grafana, Loki, Prometheus      | Phase 4              |
 | `oncall`         | GoAlert                                                 | After the MVP        |
 | `chat`           | Mattermost                                              | After the MVP        |

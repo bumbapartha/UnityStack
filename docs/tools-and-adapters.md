@@ -15,12 +15,13 @@ Every capability is reached through an adapter ([Core platform](requirements/10-
 
 ## AI models
 
-| Capability | Default (open source)       | Alternatives                                                       | MVP |
-| ---------- | --------------------------- | ------------------------------------------------------------------ | --- |
-| LLM        | Configurable (mock, OpenAI) | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
+| Capability                  | Default (open source)                                          | Alternatives                                                       | MVP |
+| --------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------ | --- |
+| LLM                         | Configurable (mock, OpenAI)                                    | Any provider via the adapter; routing gateway such as LiteLLM (P1) | Yes |
+| Speech (voice conversation) | Whisper (speech to text), Kokoro (text to speech), self-hosted | OpenAI voice or other providers via the adapter                    | Yes |
 
 **Requirements:** [Core platform](requirements/10-core-platform.md)  
-**Decisions:** [PD-2](decisions.md#pd-2), [AD-1](decisions.md#ad-1)
+**Decisions:** [PD-2](decisions.md#pd-2), [AD-1](decisions.md#ad-1), [TD-16](decisions.md#td-16)
 
 ## Identity and access
 
