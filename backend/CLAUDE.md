@@ -18,6 +18,7 @@ src/main/java/io/unitystack/platform/
     identity/      Keycloak integration, roles, resource permissions
     changeid/      Change ID generation and propagation
     common/        errors (ApiException), shared types
+    persistence/   shared JPA support (JSONB mapping, AssignedIdEntity)
   <module>/        requirements | design | development | testing | deployment |
                    monitoring | security | communication | traceability
     api/           REST controllers, the module's public interfaces, DTOs and events
@@ -33,8 +34,8 @@ src/main/java/io/unitystack/platform/
 1. **Public surface only.** Another module may use only your `api/` package. Everything else is internal. Never import another module's `application`, `domain`, `agents`, `adapters` or `persistence` classes.
 2. **Events between phases.** Use application events for hand-offs (for example `RequirementApproved`, `DeploymentCompleted`). Name them in the past tense, as Java records in the publishing module's `api/` package.
 3. **No cycles.** `core` never depends on a feature module. Feature modules do not form cycles.
-4. **Own your data.** Tables for a new module are prefixed with the module name (for example `testing_run`). No module reads another module's tables. Existing inception tables keep their names until the restructure.
-5. **Boundary test.** Once Spring Modulith is added, `ApplicationModules.of(UnityStackApplication.class).verify()` must pass. Do not weaken or skip it to make a change compile.
+4. **Own your data.** Tables for a new module are prefixed with the module name (for example `testing_run`). No module reads another module's tables. The original inception tables (`project`, `charter_revision`, …) are unprefixed; renaming them is a separate change.
+5. **Boundary test.** `ModularityTest` runs `ApplicationModules.of(UnityStackApplication.class).verify()` with Spring Modulith; it must pass. Other modules may use only `core.ai`, `core.common` and `core.persistence` from core, and only `api` from a feature module (marked with `@NamedInterface`). Do not weaken or skip it to make a change compile.
 
 ## Adapters
 
@@ -60,7 +61,9 @@ src/main/java/io/unitystack/platform/
 - **No relationships across modules.** Reference another module's data by ID only, never through `@ManyToOne` or `@OneToMany` to its entities. Within a module, prefer `LAZY` fetching and explicit fetch joins or projections for reads, and watch for N+1 queries.
 - **Transactions** belong on application services (`@Transactional`), not controllers or repositories.
 - For complex reads, use JPQL or Spring Data projections; use native SQL only where JSONB operators are needed, always with bound parameters. Never concatenate SQL strings with user input.
-- The existing inception repository uses `JdbcClient`. Move it to JPA during the Phase 0 restructure; do not mix both in new code.
+- Do not use `JdbcClient` or `JdbcTemplate` alongside JPA.
+- Entities with application-assigned UUIDs extend `core.persistence.AssignedIdEntity`, so `save()` always inserts. Mark revision and audit entities `@Immutable`.
+- JSONB is read and written with the application's `ObjectMapper` (unknown fields are ignored), so older rows with extra fields still load.
 - Migrations go in `src/main/resources/db/migration`, named `V<n>__<module>_<description>.sql`, with versions numbered globally. Never edit a migration that has already been merged; add a new one.
 
 ## Errors and API

@@ -96,6 +96,7 @@ backend/src/main/java/io/unitystack/platform/
     identity/                Keycloak integration, roles, resource permissions
     changeid/                Change ID generation and propagation
     common/                  errors, shared types
+    persistence/             shared JPA support (JSONB mapping, assigned-ID base entity)
   requirements/              inception, projects, requirements and planning
     api/  application/  domain/  agents/  adapters/openproject/  persistence/
   design/                    architecture and design phase features (diagrams, ADRs, docs)
@@ -145,15 +146,20 @@ Each frontend module registers its own routes and talks to its backend module's 
 6. **AI stays portable.** Agents and prompts live in their feature module but use only `core/ai` interfaces and plain data objects, so the AI parts can be moved to another language later without touching the rest ([AD-1](decisions.md#ad-1)).
 7. **Checked automatically.** A Spring Modulith test (`ApplicationModules.of(...).verify()`) fails the build if a module reaches into another module's internals or creates a cycle. Spring Modulith can also generate module diagrams for this document. On the frontend, a lint rule (for example `eslint-plugin-boundaries`) blocks imports from another module's internals.
 
-### Mapping the current code
+### Where the original code went
 
-| Today | Moves to |
+The Phase 0 restructure moved the first inception code into this layout without changing behaviour:
+
+| Before | Now |
 |---|---|
-| `inception/`, `project/` | `requirements/` |
-| `ai/` (InceptionAgent, mock and OpenAI implementations, prompts) | LLM interface and providers → `core/ai/`; inception agent and prompts → `requirements/agents/` |
+| `inception/`, `project/` | `requirements/api` (controllers, request and response records), `application` (services), `domain` (`Charter`, `CharterMarkdown`, `ProjectKeys`), `persistence` (JPA entities and repositories) |
+| `ai/` (inception agent, mock and OpenAI implementations, prompts) | Provider-neutral `LlmClient` and the OpenAI provider → `core/ai/`; inception agents (LLM-backed and scripted mock) and prompts → `requirements/agents/` |
 | `common/` | `core/common/` |
+| JDBC repository | Spring Data JPA in `requirements/persistence/`, with shared JPA support in `core/persistence/` (TD-12) |
 | `frontend/src/views/*`, `components/CharterPreview.vue` | `frontend/src/modules/requirements/` |
-| `frontend/src/api.js` | HTTP client → `core/`; inception calls → `modules/requirements/api` |
+| `frontend/src/api.js` | HTTP client → `core/http.js`; inception calls → `modules/requirements/api.js` |
+
+The existing tables (`project`, `charter_revision`, `open_question`, `inception_conversation`, `audit_event`) and REST paths (`/api/inception`, `/api/projects`) kept their names. Renaming them to the module prefix is a separate change.
 
 ## Delivery architecture
 

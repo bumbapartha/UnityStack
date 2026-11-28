@@ -254,7 +254,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Immediate implementation order:**
 
 1. Docker Compose profiles and Keycloak sign-in.
-2. Restructure backend and frontend into feature modules, with the Spring Modulith boundary test.
+2. ~~Restructure backend and frontend into feature modules, with the Spring Modulith boundary test.~~ Done.
 3. Change ID scheme and generation.
 4. GitHub Actions with unit tests, Semgrep and Trivy on every PR.
 5. `unitystack-demo-app` Hello World deployed by its pipeline to AWS staging and production.
