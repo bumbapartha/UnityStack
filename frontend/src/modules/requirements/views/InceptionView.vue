@@ -96,7 +96,9 @@ onMounted(() => send(null))
     <section class="pane preview-pane">
       <div class="readiness" :class="ready ? 'ok' : 'pending'">
         <template v-if="ready">Ready to create</template>
-        <template v-else>{{ MANDATORY.length - missing.length }} of {{ MANDATORY.length }} required items captured</template>
+        <template v-else
+          >{{ MANDATORY.length - missing.length }} of {{ MANDATORY.length }} required items captured</template
+        >
       </div>
       <CharterPreview :charter="state.charter" :open-questions="state.openQuestions" :missing="missing" />
       <div class="actions">

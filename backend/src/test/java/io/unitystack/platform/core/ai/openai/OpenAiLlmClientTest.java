@@ -46,7 +46,9 @@ class OpenAiLlmClientTest {
     }
 
     private static LlmRequest request() {
-        return new LlmRequest(List.of(LlmMessage.system("rules"), LlmMessage.user("hi")), 0.3,
+        return new LlmRequest(
+                List.of(LlmMessage.system("rules"), LlmMessage.user("hi")),
+                0.3,
                 new LlmRequest.JsonSchema("inception_turn", Map.of("type", "object")));
     }
 
@@ -63,8 +65,13 @@ class OpenAiLlmClientTest {
         assertThat(body.path("temperature").asDouble()).isEqualTo(0.3);
         assertThat(body.path("messages").get(1).path("role").asText()).isEqualTo("user");
         assertThat(body.path("response_format").path("type").asText()).isEqualTo("json_schema");
-        assertThat(body.path("response_format").path("json_schema").path("name").asText()).isEqualTo("inception_turn");
-        assertThat(body.path("response_format").path("json_schema").path("strict").asBoolean()).isTrue();
+        assertThat(body.path("response_format").path("json_schema").path("name").asText())
+                .isEqualTo("inception_turn");
+        assertThat(body.path("response_format")
+                        .path("json_schema")
+                        .path("strict")
+                        .asBoolean())
+                .isTrue();
         assertThat(client.ref()).isEqualTo("openai:gpt-test");
     }
 
@@ -78,7 +85,8 @@ class OpenAiLlmClientTest {
 
     @Test
     void refusalIsReported() throws Exception {
-        var client = new OpenAiLlmClient("sk-test", "m", serve(200, "{\"choices\":[{\"message\":{\"refusal\":\"no\"}}]}"), json);
+        var client = new OpenAiLlmClient(
+                "sk-test", "m", serve(200, "{\"choices\":[{\"message\":{\"refusal\":\"no\"}}]}"), json);
         assertThatThrownBy(() -> client.complete(request())).hasMessage("The AI declined to respond: no");
     }
 

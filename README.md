@@ -43,9 +43,9 @@ A team may independently create work items in OpenProject or Jira, develop in it
 
 UnityStack is designed for two onboarding models:
 
-| Model | Experience |
-| --- | --- |
-| **Greenfield** | Deploy UnityStack and a supported tool stack into the organisation's AWS environment. |
+| Model                     | Experience                                                                                                       |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Greenfield**            | Deploy UnityStack and a supported tool stack into the organisation's AWS environment.                            |
 | **Existing organisation** | Connect existing SDLC systems, ingest accessible history, reconstruct links, and enable ongoing synchronisation. |
 
 The long-term vision is **Bring Your Own Tool (BYOT)**: each organisation can choose a supported default, connect an existing system, or provision another supported tool where possible. This is a future capability, not a promise of full MVP support.
@@ -54,15 +54,15 @@ Initial historical ingestion and ongoing synchronisation are separate processes.
 
 ## Architecture at a glance
 
-| Layer | Responsibility |
-| --- | --- |
-| **Vue 3 workspace** | AI chat, role-specific live preview, diffs, finalisation and review surfaces. |
-| **Spring Boot control plane** | Identity, policy, artifact metadata, orchestration state, approvals, integrations and audit. |
-| **AI orchestration** | Agent workflows for business analysis, architecture, development and testing; model-agnostic routing is planned. |
-| **Tool adapters and ingestion** | Connectors, webhooks, API reconciliation, historical import and normalised SDLC records. |
-| **GitHub** | Authoritative repository, branch, commit, PR and approved Git-artifact state. |
-| **UnityStack state store** | Authoritative AI session, draft revision, assignment and workflow state. |
-| **CI/CD and observability** | Build, test, release, deployment and operational feedback from their respective systems. |
+| Layer                           | Responsibility                                                                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Vue 3 workspace**             | AI chat, role-specific live preview, diffs, finalisation and review surfaces.                                    |
+| **Spring Boot control plane**   | Identity, policy, artifact metadata, orchestration state, approvals, integrations and audit.                     |
+| **AI orchestration**            | Agent workflows for business analysis, architecture, development and testing; model-agnostic routing is planned. |
+| **Tool adapters and ingestion** | Connectors, webhooks, API reconciliation, historical import and normalised SDLC records.                         |
+| **GitHub**                      | Authoritative repository, branch, commit, PR and approved Git-artifact state.                                    |
+| **UnityStack state store**      | Authoritative AI session, draft revision, assignment and workflow state.                                         |
+| **CI/CD and observability**     | Build, test, release, deployment and operational feedback from their respective systems.                         |
 
 **Source-system ownership:** Each connected tool remains authoritative for its native records. UnityStack retains source provenance and distinguishes verified links from AI-inferred associations.
 
@@ -70,31 +70,31 @@ Initial historical ingestion and ongoing synchronisation are separate processes.
 
 The initial selected tool stack is:
 
-| Capability | Tool |
-| --- | --- |
-| Project management | [OpenProject](https://github.com/opf/openproject) |
-| Wireframing | [Excalidraw](https://github.com/excalidraw/excalidraw) |
-| UX design | [Penpot](https://github.com/penpot/penpot) |
-| Architecture diagrams | [Mermaid](https://github.com/mermaid-js/mermaid) |
-| Documentation | [MkDocs](https://github.com/mkdocs/mkdocs) |
-| Software catalog | [Backstage](https://github.com/backstage/backstage) |
-| API documentation | [Swagger UI](https://github.com/swagger-api/swagger-ui) |
-| Browser IDE | [Eclipse Theia](https://github.com/eclipse-theia/theia) |
-| Code quality | [SonarQube Community Build](https://github.com/SonarSource/sonarqube) |
+| Capability            | Tool                                                                  |
+| --------------------- | --------------------------------------------------------------------- |
+| Project management    | [OpenProject](https://github.com/opf/openproject)                     |
+| Wireframing           | [Excalidraw](https://github.com/excalidraw/excalidraw)                |
+| UX design             | [Penpot](https://github.com/penpot/penpot)                            |
+| Architecture diagrams | [Mermaid](https://github.com/mermaid-js/mermaid)                      |
+| Documentation         | [MkDocs](https://github.com/mkdocs/mkdocs)                            |
+| Software catalog      | [Backstage](https://github.com/backstage/backstage)                   |
+| API documentation     | [Swagger UI](https://github.com/swagger-api/swagger-ui)               |
+| Browser IDE           | [Eclipse Theia](https://github.com/eclipse-theia/theia)               |
+| Code quality          | [SonarQube Community Build](https://github.com/SonarSource/sonarqube) |
 
 The default set also covers the rest of the SDLC, all open source:
 
-| Capability | Tool |
-| --- | --- |
-| Identity | Keycloak |
-| CI/CD | GitHub Actions |
-| Container registry | GitHub Container Registry from the AWS move (Amazon ECR, Harbor later) |
-| Security scanning | Semgrep (code), Trivy (dependencies, images, secrets), OWASP ZAP (black-box) |
-| Testing | JUnit, Vitest, Playwright; Kiwi TCMS for test management |
-| Observability | OpenTelemetry, Grafana, Loki, Prometheus |
-| On-call | GoAlert |
-| Feature flags | OpenFeature with Unleash |
-| Notifications | Mattermost |
+| Capability         | Tool                                                                         |
+| ------------------ | ---------------------------------------------------------------------------- |
+| Identity           | Keycloak                                                                     |
+| CI/CD              | GitHub Actions                                                               |
+| Container registry | GitHub Container Registry from the AWS move (Amazon ECR, Harbor later)       |
+| Security scanning  | Semgrep (code), Trivy (dependencies, images, secrets), OWASP ZAP (black-box) |
+| Testing            | JUnit, Vitest, Playwright; Kiwi TCMS for test management                     |
+| Observability      | OpenTelemetry, Grafana, Loki, Prometheus                                     |
+| On-call            | GoAlert                                                                      |
+| Feature flags      | OpenFeature with Unleash                                                     |
+| Notifications      | Mattermost                                                                   |
 
 Every tool, and the AI model, sits behind an adapter, so any of them can be replaced (for example Jira instead of OpenProject). See [Tools and adapters](docs/tools-and-adapters.md) for the full list and alternatives.
 
@@ -157,11 +157,11 @@ OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4.1-mini
 ```
 
-| Path | Contents |
-| --- | --- |
-| `frontend/` | Vue 3 + Vite workspace (served by nginx in Docker) |
-| `backend/` | Spring Boot control plane, AI adapter (mock/OpenAI), Flyway migrations |
-| `docker-compose.yml` | PostgreSQL + backend + frontend |
+| Path                 | Contents                                                               |
+| -------------------- | ---------------------------------------------------------------------- |
+| `frontend/`          | Vue 3 + Vite workspace (served by nginx in Docker)                     |
+| `backend/`           | Spring Boot control plane, AI adapter (mock/OpenAI), Flyway migrations |
+| `docker-compose.yml` | PostgreSQL + backend + frontend                                        |
 
 PostgreSQL is reachable from your machine at `localhost:5433` (database/user/password `unitystack`; change the port with `UNITYSTACK_DB_PORT`). Data persists in the `pgdata` Docker volume; `docker compose down -v` deletes it.
 
@@ -174,4 +174,4 @@ PostgreSQL is reachable from your machine at `localhost:5433` (database/user/pas
 ## Vision
 
 **UnityStack — Enterprise AI Software Factory**  
-*From Requirements to Production. Powered by AI. Governed by Humans.*
+_From Requirements to Production. Powered by AI. Governed by Humans._

@@ -10,7 +10,7 @@ Test cases, test runs, release test reports and code quality.
 
 ## Requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-120 | P0 | **New.** Keep test cases in Git, record every test run's results (unit, end-to-end, manual) in the test-management tool against the build or release, and link them to requirement, story and Change ID; provide a per-release test report kept in history. |
-| FR-041 | P1 | Bring code-quality results (SonarQube) and IDE workflows into PR review. |
+| ID     | Priority | Requirement                                                                                                                                                                                                                                                 |
+| ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-120 | P0       | **New.** Keep test cases in Git, record every test run's results (unit, end-to-end, manual) in the test-management tool against the build or release, and link them to requirement, story and Change ID; provide a per-release test report kept in history. |
+| FR-041 | P1       | Bring code-quality results (SonarQube) and IDE workflows into PR review.                                                                                                                                                                                    |

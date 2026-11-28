@@ -19,11 +19,14 @@ public class MockInceptionAgent implements InceptionAgent {
             "name", "Hi! Let's set up your new project. What should we call it?",
             "problem", "What problem will this project solve, and for whom?",
             "targetUsers", "Who will use it?",
-            "productType", "What kind of product is it: a website, mobile app, API/backend, desktop app, internal tool, data/AI product, or something else?",
+            "productType",
+                    "What kind of product is it: a website, mobile app, API/backend, desktop app, internal tool, data/AI product, or something else?",
             "expectedBenefit", "Once this exists, what will be better for its users or the business?",
-            "scale", "How big is this: a personal or team tool, one department, the whole organisation, or public (external customers)?",
+            "scale",
+                    "How big is this: a personal or team tool, one department, the whole organisation, or public (external customers)?",
             "motivation", "Optional: why is this needed now? (say \"skip\" to move on)",
-            "constraints", "Optional: any constraints, such as a deadline, budget, compliance or technology preferences? (or \"skip\")",
+            "constraints",
+                    "Optional: any constraints, such as a deadline, budget, compliance or technology preferences? (or \"skip\")",
             "outOfScope", "Optional: anything this project should definitely NOT do? (or \"skip\")");
 
     private static final Map<String, String> LABELS = Map.of(
@@ -49,8 +52,11 @@ public class MockInceptionAgent implements InceptionAgent {
                 questions.add(openQuestion);
             }
             if (mandatory && (unknown || skip)) {
-                return new AgentTurn("That one is needed to create the project. What's your best current guess? "
-                        + QUESTIONS.get(asked), c, questions);
+                return new AgentTurn(
+                        "That one is needed to create the project. What's your best current guess? "
+                                + QUESTIONS.get(asked),
+                        c,
+                        questions);
             }
             if (unknown || skip) {
                 c = c.with(asked, NOT_SPECIFIED);
@@ -67,8 +73,11 @@ public class MockInceptionAgent implements InceptionAgent {
 
         String next = nextField(c);
         if (next == null) {
-            return new AgentTurn(prefix + "That's everything I need. Review the charter on the right, then press "
-                    + "\"Create project\", or tell me what to change.", c, questions);
+            return new AgentTurn(
+                    prefix + "That's everything I need. Review the charter on the right, then press "
+                            + "\"Create project\", or tell me what to change.",
+                    c,
+                    questions);
         }
         String q = QUESTIONS.get(next);
         if (next.equals("name") && userText != null) q = "What should we call the project?";
@@ -105,8 +114,11 @@ public class MockInceptionAgent implements InceptionAgent {
     private static String lastUserMessage(List<ChatMessage> history) {
         if (history == null || history.isEmpty()) return null;
         ChatMessage last = history.get(history.size() - 1);
-        return "user".equals(last.role()) && last.content() != null && !last.content().isBlank()
-                ? last.content().strip() : null;
+        return "user".equals(last.role())
+                        && last.content() != null
+                        && !last.content().isBlank()
+                ? last.content().strip()
+                : null;
     }
 
     private static boolean isUnknown(String s) {
@@ -132,7 +144,8 @@ public class MockInceptionAgent implements InceptionAgent {
 
     static String scaleOf(String answer) {
         String t = answer.toLowerCase(Locale.ROOT);
-        if (t.matches(".*\\b(public|external|customers?|everyone|consumers?|citizens?|patients?)\\b.*")) return "public";
+        if (t.matches(".*\\b(public|external|customers?|everyone|consumers?|citizens?|patients?)\\b.*"))
+            return "public";
         if (t.matches(".*\\b(company|organi[sz]ation|org|enterprise|whole|group[- ]wide)\\b.*")) return "organisation";
         if (t.matches(".*\\b(department|dept|division|business unit)\\b.*")) return "department";
         if (t.matches(".*\\b(team|squad)\\b.*")) return "team";

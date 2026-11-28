@@ -10,7 +10,7 @@ People work with AI through a two-pane workspace: a conversation on the left and
 
 Every external tool, and the AI model itself, sits behind an adapter, so any of them can be swapped without changing the product.
 
-**Guiding statement:** *From requirements to production. Powered by AI. Governed by humans.*
+**Guiding statement:** _From requirements to production. Powered by AI. Governed by humans._
 
 ## Product decisions
 
@@ -42,14 +42,14 @@ All decisions: [Decisions](decisions.md).
 
 **Later:** each role can be a different person, and an organisation can require that the reviewer is not the author.
 
-| Role | Responsibility |
-|---|---|
-| Organisation administrator | Configure UnityStack, connected tools, policies and access |
-| Product owner / business analyst | Shape requirements, epics, stories and priorities |
-| UX designer | Review wireframes and UX artifacts |
-| Solution architect | Review architecture, ADRs and API contracts |
-| Developer | Discuss requirements, review and implement code and tests |
-| Reviewer | Review and approve PRs |
-| QA engineer | Review tests and quality evidence |
-| DevOps / SRE | Manage pipelines, environments, releases, monitoring and incidents |
-| AI agent | Propose artifacts and actions only within granted permissions |
+| Role                             | Responsibility                                                     |
+| -------------------------------- | ------------------------------------------------------------------ |
+| Organisation administrator       | Configure UnityStack, connected tools, policies and access         |
+| Product owner / business analyst | Shape requirements, epics, stories and priorities                  |
+| UX designer                      | Review wireframes and UX artifacts                                 |
+| Solution architect               | Review architecture, ADRs and API contracts                        |
+| Developer                        | Discuss requirements, review and implement code and tests          |
+| Reviewer                         | Review and approve PRs                                             |
+| QA engineer                      | Review tests and quality evidence                                  |
+| DevOps / SRE                     | Manage pipelines, environments, releases, monitoring and incidents |
+| AI agent                         | Propose artifacts and actions only within granted permissions      |

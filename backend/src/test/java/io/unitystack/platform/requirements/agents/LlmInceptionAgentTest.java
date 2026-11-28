@@ -53,6 +53,7 @@ class LlmInceptionAgentTest {
 
     @Test
     void agentRefComesFromTheProvider() {
-        assertThat(new LlmInceptionAgent(MockLlmClient.replying("{}"), json).agentRef()).isEqualTo("mock:llm");
+        assertThat(new LlmInceptionAgent(MockLlmClient.replying("{}"), json).agentRef())
+                .isEqualTo("mock:llm");
     }
 }

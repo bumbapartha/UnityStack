@@ -37,11 +37,16 @@ public class ProjectEntity extends AssignedIdEntity {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    protected ProjectEntity() {
-    }
+    protected ProjectEntity() {}
 
-    public ProjectEntity(UUID id, String projectKey, String name, String status, String productType,
-                         String createdBy, OffsetDateTime createdAt) {
+    public ProjectEntity(
+            UUID id,
+            String projectKey,
+            String name,
+            String status,
+            String productType,
+            String createdBy,
+            OffsetDateTime createdAt) {
         this.id = id;
         this.projectKey = projectKey;
         this.name = name;

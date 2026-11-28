@@ -10,16 +10,16 @@ This page is about running **UnityStack itself**. The projects UnityStack manage
 
 **Now — local Docker Compose.** Every tool runs as a container from its official image; nothing is installed on the developer's machine. Services are grouped with Docker Compose profiles so only what is needed starts, for example:
 
-| Profile | Services |
-|---|---|
-| `core` | PostgreSQL, backend, frontend, Keycloak |
-| `pm` | OpenProject |
-| `test` | Kiwi TCMS |
-| `monitoring` | Grafana, Loki, Prometheus |
-| `oncall` | GoAlert |
-| `chat` | Mattermost |
-| `flags` | Unleash |
-| `design` | Penpot (Excalidraw files open in VS Code or the Excalidraw container) |
+| Profile      | Services                                                              |
+| ------------ | --------------------------------------------------------------------- |
+| `core`       | PostgreSQL, backend, frontend, Keycloak                               |
+| `pm`         | OpenProject                                                           |
+| `test`       | Kiwi TCMS                                                             |
+| `monitoring` | Grafana, Loki, Prometheus                                             |
+| `oncall`     | GoAlert                                                               |
+| `chat`       | Mattermost                                                            |
+| `flags`      | Unleash                                                               |
+| `design`     | Penpot (Excalidraw files open in VS Code or the Excalidraw container) |
 
 `docker compose --profile core up` starts the everyday stack; adding `--profile monitoring` and others brings in the rest. Memory use is the main constraint on a laptop.
 

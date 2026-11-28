@@ -8,9 +8,13 @@ const error = ref(null)
 const loading = ref(true)
 
 onMounted(async () => {
-  try { projects.value = await api.listProjects() }
-  catch (e) { error.value = e.message }
-  finally { loading.value = false }
+  try {
+    projects.value = await api.listProjects()
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    loading.value = false
+  }
 })
 </script>
 

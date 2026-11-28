@@ -39,15 +39,15 @@ Cross-cutting: identity, permissions, security scanning, agent safety and secret
 
 ## Identity and access requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-052 | P0 | All agent action requests pass through a trusted policy, authorisation and execution layer with scoped credentials and approval checks. |
-| FR-049 | P0 | Provide central identity, session management and platform roles through the identity provider (Keycloak, [AD-3](../decisions.md#ad-3)); map platform identities to tool access where supported and document exceptions. |
-| FR-125 | P0 | **New.** Enforce resource-level permissions: which user or role may perform which operation (for example view, edit, finalise, approve, deploy) on which resource (for example a project, artifact, PR or environment). The identity provider supplies identity, groups and broad roles; UnityStack evaluates project-level rules. |
+| ID     | Priority | Requirement                                                                                                                                                                                                                                                                                                                        |
+| ------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-052 | P0       | All agent action requests pass through a trusted policy, authorisation and execution layer with scoped credentials and approval checks.                                                                                                                                                                                            |
+| FR-049 | P0       | Provide central identity, session management and platform roles through the identity provider (Keycloak, [AD-3](../decisions.md#ad-3)); map platform identities to tool access where supported and document exceptions.                                                                                                            |
+| FR-125 | P0       | **New.** Enforce resource-level permissions: which user or role may perform which operation (for example view, edit, finalise, approve, deploy) on which resource (for example a project, artifact, PR or environment). The identity provider supplies identity, groups and broad roles; UnityStack evaluates project-level rules. |
 
 ## Security scanning requirements
 
-| ID | Priority | Requirement |
-|---|---|---|
-| FR-117 | P0 | **New.** Run static code security scanning (SAST) and dependency, image, infrastructure and secret scanning (SCA) in CI on every PR; link findings to the PR and Change ID; failing scans block merge according to policy. |
-| FR-118 | P1 | **New.** Run dynamic black-box security testing (DAST) against the deployed application after deployment; link findings to the deployment and Change ID, and let AI propose bugs from them ([FR-115](06-monitoring-and-operations.md)). |
+| ID     | Priority | Requirement                                                                                                                                                                                                                             |
+| ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-117 | P0       | **New.** Run static code security scanning (SAST) and dependency, image, infrastructure and secret scanning (SCA) in CI on every PR; link findings to the PR and Change ID; failing scans block merge according to policy.              |
+| FR-118 | P1       | **New.** Run dynamic black-box security testing (DAST) against the deployed application after deployment; link findings to the deployment and Change ID, and let AI propose bugs from them ([FR-115](06-monitoring-and-operations.md)). |

@@ -37,10 +37,10 @@ flowchart TD
 
 Priorities in this document mean:
 
-| Priority | Meaning |
-|---|---|
-| **P0 — MVP** | Needed for the thin closed loop, used by the sole user ([PD-1](decisions.md#pd-1), [PD-3](decisions.md#pd-3)). |
-| **P1 — Next** | Deepens the loop while dogfooding and prepares for a small group of demo users. |
+| Priority       | Meaning                                                                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **P0 — MVP**   | Needed for the thin closed loop, used by the sole user ([PD-1](decisions.md#pd-1), [PD-3](decisions.md#pd-3)).             |
+| **P1 — Next**  | Deepens the loop while dogfooding and prepares for a small group of demo users.                                            |
 | **P2 — Later** | Enterprise distribution and adoption: installer, full default-tool bundle, BYOT selection, SSO, HA, large-scale ingestion. |
 
 ### MVP (P0) — the thin closed loop
@@ -121,6 +121,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Already built:** Project Inception ([Requirements phase](requirements/01-requirements.md)) with Vue, Spring Boot, PostgreSQL and the mock/OpenAI LLM adapter in Docker Compose.
 
 **Build:**
+
 - Docker Compose profiles (`core`, `pm`, `test`, `monitoring`, …) so only the needed tools start.
 - Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
 - Restructure the code into feature modules ([AD-5](decisions.md#ad-5)): move inception and projects into `requirements/`, the LLM interface and providers into `core/ai/` (framework-free, [AD-1](decisions.md#ad-1)), and the frontend views into `modules/requirements/`; add Spring Modulith and its boundary test.
@@ -140,6 +141,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Goal:** Use UnityStack to update its own requirements document.
 
 **Build:**
+
 - Project/repository/artifact configuration for the UnityStack PRD path; charter proposed to Git via PR when a repository is linked ([FR-108](requirements/01-requirements.md)).
 - Two-pane UI with chat, Markdown preview, baseline/proposed diff, revision history and finalise action.
 - AI requirements flow: retrieve approved Markdown from GitHub; discuss change; produce a structured patch or revised document; validate document shape and identifiers; save draft revision with its Change ID.
@@ -156,6 +158,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Goal:** Turn approved requirements into reviewable work without manual story entry in UnityStack.
 
 **Build:**
+
 - AI proposes epics, stories and acceptance criteria according to scope; hierarchical preview with change indicators.
 - Finalisation → Git PR for canonical YAML/Markdown work definitions → review/merge.
 - Architecture and design workspace before development: HLD with ADRs, LLD with Mermaid sequence diagrams (published with MkDocs), OpenAPI contracts in Swagger UI, design review PR (FR-038, FR-039).
@@ -170,6 +173,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Goal:** AI proposes code and tests together for a story; CI scans, tests and deploys them.
 
 **Build:**
+
 - Developer agent reads the linked requirement, story, ADRs, repository context and conventions; proposes code **and** tests in a bounded, isolated workspace; file allowlist; lint and test execution; code diff preview.
 - Branch/commit/PR via trusted service after finalisation; PR carries the Change ID; never direct merge or production credentials.
 - CI on the PR: unit tests, Semgrep, Trivy. After merge, the pipeline builds the demo app's image (GitHub Container Registry), deploys it to staging and, after approval, to production on AWS, labelled with version, commit SHA and Change ID.
@@ -185,6 +189,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Goal:** See how the deployed change behaves, let AI analyse it, and feed problems back as bugs.
 
 **Build:**
+
 - Demo app instrumented with the OpenTelemetry Java agent; logs (Logback/Log4j with trace IDs), metrics and traces tagged with `service.name`, `service.version` and Change ID.
 - OpenTelemetry Collector, Loki, Prometheus and Grafana in Compose profile `monitoring`; observability adapter for querying logs and metrics.
 - AI analysis: the user asks whether things work as expected for an environment and time window; answers cite log entries.
@@ -200,6 +205,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 **Goal:** Run UnityStack itself in AWS as soon as possible after the MVP ([AD-2](decisions.md#ad-2)). Managed projects already deploy to AWS from the MVP ([AD-6](decisions.md#ad-6)).
 
 **Build:**
+
 - Terraform for EC2, networking, storage and secrets (Secrets Manager or SSM); S3 remote state with locking.
 - The same Docker Compose files on EC2; HTTPS; Keycloak behind TLS.
 - UnityStack's own CI/CD starts deploying UnityStack: images to GitHub Container Registry (Amazon ECR adapter alongside); merges to main to its environment; GitHub Actions uses OIDC with least-privilege roles.
@@ -212,6 +218,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 ### Phase 6 — Deepen the loop (v0.6)
 
 **Build (each behind its adapter):**
+
 - OWASP ZAP black-box scan after each deployment; findings linked to the deployment and Change ID.
 - Grafana alerting rules kept in Git and provisioned into Grafana (export sync opens a PR on drift) → GoAlert on-call paging with rotations, overrides and escalation; the same alert reaches UnityStack, where AI investigates and adds a summary to the incident.
 - Mattermost notifications for review requests, alerts, incident summaries and failures.
@@ -224,6 +231,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 ### Phase 7 — Passive intelligence and demo users (v0.7)
 
 **Build:**
+
 - GitHub webhooks for PRs, commits, reviews and merges; OpenProject events where supported; CI/CD ingestion; reconciliation, deduplication, checkpoints and replay.
 - Bounded import of historical GitHub/OpenProject records with source IDs, URLs, timestamps and evidence; verified vs AI-inferred links.
 - Multi-user roles and resource permissions; onboard a few developers for free demos.
@@ -233,6 +241,7 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 ### Phase 8 — Enterprise distribution and onboarding (v0.8+)
 
 **Build:**
+
 - Versioned AWS installer and manifests; installation profiles, preflight checks, health validation, upgrade/rollback, backup/restore.
 - Install-time choice of provider per capability (for example GitHub, Gitea, GitLab or Bitbucket; GitHub Container Registry, ECR or Harbor; GitHub Actions, Jenkins or Argo CD; Mattermost, Slack or Teams), with the default open-source set as the full profile.
 - Organisation configuration, identity federation, domain/TLS, secrets and tool health.
@@ -265,44 +274,44 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 **Suggested vertical-slice backlog:**
 
-| ID | Story | Evidence of completion |
-|---|---|---|
-| PRJ-01 | Create a project via AI inception | Done: project + charter revision 1 stored after explicit confirmation |
-| BOOT-01 | Deploy Hello World | Demo app reachable on its AWS production URL; smoke test passes |
-| BOOT-02 | Sign in through Keycloak | Only signed-in users reach UnityStack; roles visible |
-| BOOT-03 | Scan and test every PR | Unit tests, Semgrep and Trivy run in CI; failures block per policy |
-| CHG-01 | Create item keys | Every new requirement, story or change gets a permanent short key (e.g. `TODO-12`) carried into branch, PR and build |
-| REQ-01 | Load PRD from GitHub | Correct repo/path/ref and SHA shown |
-| REQ-02 | Discuss a requirement change | AI returns validated proposed revision |
-| REQ-03 | Show preview and diff | Exact additions/deletions visible |
-| REQ-04 | Keep draft revisions | Previous draft accessible; baseline unchanged |
-| GOV-01 | Finalise and create PR | GitHub PR contains only intended changes |
-| GOV-02 | Track review/merge | UI reflects GitHub source state |
-| GOV-03 | Enforce policies | Unauthorised merges/actions rejected |
-| SYNC-01 | Recover missed webhook | Scheduled reconciliation restores status |
-| DOG-01 | Update UnityStack PRD with UnityStack | Merged PR becomes approved baseline |
-| PLAN-01 | Publish stories to OpenProject | Stories appear once, linked to Git and Change ID |
-| DEV-01 | AI code and tests in one PR | PR contains code and tests for the story |
-| TEST-01 | Run Playwright against the deployment | E2E results in CI |
-| TEST-02 | Record test runs in Kiwi TCMS | Per-release report lists tests run and passed |
-| OBS-01 | Logs and metrics in Grafana | Demo app logs tagged with Change ID visible |
-| OBS-02 | AI log analysis | AI answer cites log entries |
-| FB-01 | Accepted bug to OpenProject | Bug linked to Change ID, deployment and logs |
-| TRACE-01 | Change ID timeline | Requirement → bug timeline, gaps shown |
+| ID       | Story                                 | Evidence of completion                                                                                               |
+| -------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| PRJ-01   | Create a project via AI inception     | Done: project + charter revision 1 stored after explicit confirmation                                                |
+| BOOT-01  | Deploy Hello World                    | Demo app reachable on its AWS production URL; smoke test passes                                                      |
+| BOOT-02  | Sign in through Keycloak              | Only signed-in users reach UnityStack; roles visible                                                                 |
+| BOOT-03  | Scan and test every PR                | Unit tests, Semgrep and Trivy run in CI; failures block per policy                                                   |
+| CHG-01   | Create item keys                      | Every new requirement, story or change gets a permanent short key (e.g. `TODO-12`) carried into branch, PR and build |
+| REQ-01   | Load PRD from GitHub                  | Correct repo/path/ref and SHA shown                                                                                  |
+| REQ-02   | Discuss a requirement change          | AI returns validated proposed revision                                                                               |
+| REQ-03   | Show preview and diff                 | Exact additions/deletions visible                                                                                    |
+| REQ-04   | Keep draft revisions                  | Previous draft accessible; baseline unchanged                                                                        |
+| GOV-01   | Finalise and create PR                | GitHub PR contains only intended changes                                                                             |
+| GOV-02   | Track review/merge                    | UI reflects GitHub source state                                                                                      |
+| GOV-03   | Enforce policies                      | Unauthorised merges/actions rejected                                                                                 |
+| SYNC-01  | Recover missed webhook                | Scheduled reconciliation restores status                                                                             |
+| DOG-01   | Update UnityStack PRD with UnityStack | Merged PR becomes approved baseline                                                                                  |
+| PLAN-01  | Publish stories to OpenProject        | Stories appear once, linked to Git and Change ID                                                                     |
+| DEV-01   | AI code and tests in one PR           | PR contains code and tests for the story                                                                             |
+| TEST-01  | Run Playwright against the deployment | E2E results in CI                                                                                                    |
+| TEST-02  | Record test runs in Kiwi TCMS         | Per-release report lists tests run and passed                                                                        |
+| OBS-01   | Logs and metrics in Grafana           | Demo app logs tagged with Change ID visible                                                                          |
+| OBS-02   | AI log analysis                       | AI answer cites log entries                                                                                          |
+| FB-01    | Accepted bug to OpenProject           | Bug linked to Change ID, deployment and logs                                                                         |
+| TRACE-01 | Change ID timeline                    | Requirement → bug timeline, gaps shown                                                                               |
 
 ## Measuring success
 
-| Milestone | Demonstrable outcome |
-|---|---|
-| v0.0.x | A conventional PR to the demo app is tested, scanned and deployed to AWS by its pipeline; sign-in through Keycloak |
-| v0.1 | UnityStack updates its own PRD via AI preview and GitHub PR |
-| v0.2 | UnityStack generates approved stories and publishes them to OpenProject |
-| v0.3 | UnityStack proposes code and tests in one PR; CI deploys it; Kiwi shows the release's test results |
-| v0.4 | Thin loop complete: logs analysed by AI, accepted bug back in OpenProject, one Change ID timeline (MVP) |
-| v0.5 | The same loop runs in AWS, with per-PR preview environments and a main environment |
-| v0.6 | DAST, on-call alerts with AI incident summaries, notifications, feature flags and a second tracker adapter work |
-| v0.7 | External-only story/PR activity appears without UnityStack participation; first demo users onboarded |
-| v0.8+ | A new organisation can install, choose its tools, connect, ingest and begin using the platform |
+| Milestone | Demonstrable outcome                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------------------ |
+| v0.0.x    | A conventional PR to the demo app is tested, scanned and deployed to AWS by its pipeline; sign-in through Keycloak |
+| v0.1      | UnityStack updates its own PRD via AI preview and GitHub PR                                                        |
+| v0.2      | UnityStack generates approved stories and publishes them to OpenProject                                            |
+| v0.3      | UnityStack proposes code and tests in one PR; CI deploys it; Kiwi shows the release's test results                 |
+| v0.4      | Thin loop complete: logs analysed by AI, accepted bug back in OpenProject, one Change ID timeline (MVP)            |
+| v0.5      | The same loop runs in AWS, with per-PR preview environments and a main environment                                 |
+| v0.6      | DAST, on-call alerts with AI incident summaries, notifications, feature flags and a second tracker adapter work    |
+| v0.7      | External-only story/PR activity appears without UnityStack participation; first demo users onboarded               |
+| v0.8+     | A new organisation can install, choose its tools, connect, ingest and begin using the platform                     |
 
 Track practical engineering measures: PR success rate, AI revision acceptance rate, escaped defects, time from proposal to merge, deployment frequency, change failure rate, recovery time, sync lag, ingestion coverage and cost per AI task. Establish baselines before setting numerical targets.
 
@@ -312,4 +321,4 @@ The first sprint is complete when a developer can clone the repositories, run `d
 
 ---
 
-**Guiding statement:** *We will build the smallest UnityStack that can improve UnityStack, then use each approved capability to help build the next one—without disrupting conventional software engineering.*
+**Guiding statement:** _We will build the smallest UnityStack that can improve UnityStack, then use each approved capability to help build the next one—without disrupting conventional software engineering._

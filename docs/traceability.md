@@ -16,13 +16,13 @@ UnityStack's own requirements already follow this: `FR-105` is a short key.
 
 ## 2. Prefixes: project first, then modules
 
-| When | What happens | Example |
-|---|---|---|
-| Project inception | The AI asks for the project's prefix: 2–5 capital letters, unique in the organisation. | Shopping cart → `SHOP` |
-| No modules yet | Every item uses the project prefix. | `SHOP-1`, `SHOP-2` |
-| A module is first discussed | The AI suggests a module prefix, checks it is unique, and asks you to confirm. | Payments → `PAY`, Auditing → `AUD` |
-| After that | New items in the module use its prefix, and each prefix counts on its own. | `PAY-1`, `AUD-1` |
-| Items created before the module existed | They keep their project key and are tagged with the module. They are only re-keyed if you ask for a move (section 6). | `SHOP-7` tagged *Payments* |
+| When                                    | What happens                                                                                                          | Example                            |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| Project inception                       | The AI asks for the project's prefix: 2–5 capital letters, unique in the organisation.                                | Shopping cart → `SHOP`             |
+| No modules yet                          | Every item uses the project prefix.                                                                                   | `SHOP-1`, `SHOP-2`                 |
+| A module is first discussed             | The AI suggests a module prefix, checks it is unique, and asks you to confirm.                                        | Payments → `PAY`, Auditing → `AUD` |
+| After that                              | New items in the module use its prefix, and each prefix counts on its own.                                            | `PAY-1`, `AUD-1`                   |
+| Items created before the module existed | They keep their project key and are tagged with the module. They are only re-keyed if you ask for a move (section 6). | `SHOP-7` tagged _Payments_         |
 
 ## 3. Labels: what people see
 
@@ -44,11 +44,11 @@ TODO-1 · Task management
 
 ## 4. Links in files
 
-| Where | How | Shows |
-|---|---|---|
-| Markdown | `[TODO-12 · Create task](req:TODO-12)` | the current title, as a link |
-| Excalidraw | the element's link field holds `req:TODO-12` | clickable box or text |
-| Plain text (branch, commit, PR title) | the bare key | `feature/TODO-12-create-task`, `TODO-12: add create task endpoint` |
+| Where                                 | How                                          | Shows                                                              |
+| ------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------ |
+| Markdown                              | `[TODO-12 · Create task](req:TODO-12)`       | the current title, as a link                                       |
+| Excalidraw                            | the element's link field holds `req:TODO-12` | clickable box or text                                              |
+| Plain text (branch, commit, PR title) | the bare key                                 | `feature/TODO-12-create-task`, `TODO-12: add create task endpoint` |
 
 The workspace preview and the MkDocs build replace the stored title with the current one. A scheduled PR refreshes stored titles in Git, so the plain GitHub view stays readable.
 
@@ -91,22 +91,23 @@ UnityStack keeps an index table: key, title, type, parent, module, status (activ
 
 ## 8. Through the loop
 
-| Step | Carries the key in |
-|---|---|
-| Requirement, story, task | its own key, and its parent link |
-| Design (HLD, LLD, ADRs, API contracts) | `req:` links to the requirements it covers |
-| Branch, commit, PR | `feature/TODO-52-…`, `TODO-52: …`, PR title |
-| Tests and test runs | test case links; Kiwi run records |
-| Build, image, release | build metadata, image tags, release notes |
-| Deployment and logs | deployment record; OpenTelemetry attributes |
-| Bug | its own key, linked to the key, release and log lines it came from |
-| User documentation | internal edition links each page and screenshot to its keys |
+| Step                                   | Carries the key in                                                 |
+| -------------------------------------- | ------------------------------------------------------------------ |
+| Requirement, story, task               | its own key, and its parent link                                   |
+| Design (HLD, LLD, ADRs, API contracts) | `req:` links to the requirements it covers                         |
+| Branch, commit, PR                     | `feature/TODO-52-…`, `TODO-52: …`, PR title                        |
+| Tests and test runs                    | test case links; Kiwi run records                                  |
+| Build, image, release                  | build metadata, image tags, release notes                          |
+| Deployment and logs                    | deployment record; OpenTelemetry attributes                        |
+| Bug                                    | its own key, linked to the key, release and log lines it came from |
+| User documentation                     | internal edition links each page and screenshot to its keys        |
 
 The **timeline** for a key shows all of this in order. Missing links are shown as gaps and are never filled in by AI. Links the AI suggests are marked as inferred until a person confirms them.
 
 ## 9. Checks
 
 A PR check fails when:
+
 - a `req:` link points to a key that does not exist;
 - a key is defined twice;
 - a new reference points to a retired item (it should point to the replacement).

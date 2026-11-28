@@ -1,6 +1,6 @@
 # UnityStack documentation
 
-UnityStack — Enterprise AI Software Factory. *From requirements to production. Powered by AI. Governed by humans.*
+UnityStack — Enterprise AI Software Factory. _From requirements to production. Powered by AI. Governed by humans._
 
 **Owner:** Partha Sarathi Ghosh · **Status:** Draft for review · **Version:** 2.5 (27 November 2026)
 
@@ -8,19 +8,19 @@ This folder replaces the single `Requirements.md` (v2.1) and the dogfooding deve
 
 ## Start here
 
-| File | What it covers |
-|---|---|
-| [Vision and principles](vision.md) | What UnityStack is, product decisions, principles, users |
-| [Scope and roadmap](roadmap.md) | MVP thin loop, what comes next, phases, backlog, acceptance |
-| [Requirements](requirements/README.md) | Requirements by SDLC phase, with an ID index |
-| [Traceability](traceability.md) | How every item gets a permanent key and is traced from requirement to code, tests, release and bug |
-| [Tools and adapters](tools-and-adapters.md) | Default tool per capability, alternatives, links to requirements |
-| [Architecture](architecture.md) | The closed loop, components, current implementation, repositories |
-| [Decisions](decisions.md) | Every settled decision in one table |
-| [Open questions and risks](open-questions.md) | Undecided items and risks |
-| [Development setup](dev-setup.md) | Docker Compose profiles, local rebuilds, move to AWS |
-| [Wireframes](wireframes/README.md) | Excalidraw wireframes of UnityStack's screens, starting with the whole journey |
-| [Document history](history.md) | Version history and where old sections went |
+| File                                          | What it covers                                                                                     |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [Vision and principles](vision.md)            | What UnityStack is, product decisions, principles, users                                           |
+| [Scope and roadmap](roadmap.md)               | MVP thin loop, what comes next, phases, backlog, acceptance                                        |
+| [Requirements](requirements/README.md)        | Requirements by SDLC phase, with an ID index                                                       |
+| [Traceability](traceability.md)               | How every item gets a permanent key and is traced from requirement to code, tests, release and bug |
+| [Tools and adapters](tools-and-adapters.md)   | Default tool per capability, alternatives, links to requirements                                   |
+| [Architecture](architecture.md)               | The closed loop, components, current implementation, repositories                                  |
+| [Decisions](decisions.md)                     | Every settled decision in one table                                                                |
+| [Open questions and risks](open-questions.md) | Undecided items and risks                                                                          |
+| [Development setup](dev-setup.md)             | Docker Compose profiles, local rebuilds, move to AWS                                               |
+| [Wireframes](wireframes/README.md)            | Excalidraw wireframes of UnityStack's screens, starting with the whole journey                     |
+| [Document history](history.md)                | Version history and where old sections went                                                        |
 
 ## Coding guidelines
 

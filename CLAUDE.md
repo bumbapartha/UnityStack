@@ -4,15 +4,15 @@ UnityStack is an AI-first, open-source, self-hosted software delivery platform: 
 
 ## Where things are
 
-| Need | Read |
-|---|---|
-| What to build and why | `docs/requirements/` — one file per SDLC phase, plus cross-cutting files; ID index in `docs/requirements/README.md` |
-| What is in the MVP and in which phase | `docs/roadmap.md` |
-| Settled decisions (PD, AD, TD) | `docs/decisions.md` |
-| How keys and traceability work | `docs/traceability.md` |
-| Code layout and module rules | `docs/architecture.md` → "Code organisation: feature modules" |
-| Default tool per capability | `docs/tools-and-adapters.md` |
-| Undecided items | `docs/open-questions.md` — do not silently decide these; ask |
+| Need                                  | Read                                                                                                                |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| What to build and why                 | `docs/requirements/` — one file per SDLC phase, plus cross-cutting files; ID index in `docs/requirements/README.md` |
+| What is in the MVP and in which phase | `docs/roadmap.md`                                                                                                   |
+| Settled decisions (PD, AD, TD)        | `docs/decisions.md`                                                                                                 |
+| How keys and traceability work        | `docs/traceability.md`                                                                                              |
+| Code layout and module rules          | `docs/architecture.md` → "Code organisation: feature modules"                                                       |
+| Default tool per capability           | `docs/tools-and-adapters.md`                                                                                        |
+| Undecided items                       | `docs/open-questions.md` — do not silently decide these; ask                                                        |
 
 Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If none exists, propose one in `docs/requirements/` in the same PR.
 

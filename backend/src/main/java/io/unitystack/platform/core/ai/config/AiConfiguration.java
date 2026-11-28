@@ -20,7 +20,8 @@ class AiConfiguration {
 
     AiConfiguration(@Value("${unitystack.ai.provider:mock}") String provider) {
         if (!PROVIDERS.contains(provider)) {
-            throw new IllegalStateException("Unknown unitystack.ai.provider '" + provider + "'; expected one of " + PROVIDERS);
+            throw new IllegalStateException(
+                    "Unknown unitystack.ai.provider '" + provider + "'; expected one of " + PROVIDERS);
         }
     }
 
