@@ -136,7 +136,12 @@ jobs:
           status=0
           for target in fs backend frontend; do
             echo "::group::Trivy $target: HIGH and CRITICAL"
-            trivy convert --severity HIGH,CRITICAL --format table --exit-code 1 "scan-results/trivy-$target.json" || status=1
+            if trivy convert --scanners vuln,secret --severity HIGH,CRITICAL --format table --exit-code 1 \
+              "scan-results/trivy-$target.json"; then
+              echo "$target: no HIGH or CRITICAL findings"
+            else
+              status=1
+            fi
             echo "::endgroup::"
           done
           blocking='[.results[] | select(.extra.severity | IN("ERROR", "HIGH", "CRITICAL"))]'
