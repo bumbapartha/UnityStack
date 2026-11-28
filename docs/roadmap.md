@@ -122,8 +122,8 @@ The phases follow the thin loop ([PD-4](decisions.md#pd-4)): Phases 0–4 build 
 
 **Build:**
 
-- Docker Compose profiles (`core`, `pm`, `test`, `monitoring`, …) so only the needed tools start.
-- Keycloak in the `core` profile; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
+- Docker Compose profiles: core services always start, and each optional tool joins a profile (`pm`, `test`, `monitoring`, …) so only the needed tools start.
+- Keycloak in the core services; UnityStack sign-in and basic roles; realm configuration exported to Git (no secrets).
 - Restructure the code into feature modules ([AD-5](decisions.md#ad-5)): move inception and projects into `requirements/`, the LLM interface and providers into `core/ai/` (framework-free, [AD-1](decisions.md#ad-1)), and the frontend views into `modules/requirements/`; add Spring Modulith and its boundary test.
 - Capability registry skeleton and the first adapter interfaces (SCM, CI, registry, project management, test management, observability).
 - Item identity ([AD-7](decisions.md#ad-7), [Traceability](traceability.md)): permanent short keys such as `FR-105` or `TODO-12` handed out centrally, with project and module prefixes, shown as "key · title" labels.
@@ -317,7 +317,7 @@ Track practical engineering measures: PR success rate, AI revision acceptance ra
 
 ## First sprint: definition of done
 
-The first sprint is complete when a developer can clone the repositories, run `docker compose --profile core up`, sign in through Keycloak, submit a PR to the demo app that passes unit tests, Semgrep and Trivy, merge it with the required review, and see the pipeline deploy the healthy new Hello World version to AWS. Document the start, deployment and recovery commands. Then begin Phase 1 with the approved UnityStack requirements document in GitHub.
+The first sprint is complete when a developer can clone the repositories, run `docker compose up`, sign in through Keycloak, submit a PR to the demo app that passes unit tests, Semgrep and Trivy, merge it with the required review, and see the pipeline deploy the healthy new Hello World version to AWS. Document the start, deployment and recovery commands. Then begin Phase 1 with the approved UnityStack requirements document in GitHub.
 
 ---
 
