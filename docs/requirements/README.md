@@ -61,7 +61,7 @@ Priorities in this document mean:
 | [FR-010](11-distribution-and-onboarding.md)  | P2       | Distribution and onboarding  |
 | [FR-011](01-requirements.md)                 | P0       | Requirements                 |
 | [FR-012](01-requirements.md)                 | P0       | Requirements                 |
-| [FR-013](01-requirements.md)                 | P1       | Requirements                 |
+| [FR-013](01-requirements.md)                 | P0       | Requirements                 |
 | [FR-014](01-requirements.md)                 | P0       | Requirements                 |
 | [FR-015](01-requirements.md)                 | P1       | Requirements                 |
 | [FR-016](01-requirements.md)                 | P2       | Requirements                 |
