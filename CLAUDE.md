@@ -27,6 +27,7 @@ Before changing behaviour, find the requirement (FR-/NFR- ID) it implements. If 
 7. **Secrets.** Real keys live only in `.env` (git-ignored). `.env.example` holds placeholders only. Never log, commit or send secrets to a model.
 8. **Open source first.** Default dependencies and tools must be open source. Flag any licence that is not (for example AGPL or source-available) in the PR.
 9. **Keep docs in step.** If a change alters behaviour, a decision or the module layout, update the matching file under `docs/` in the same PR.
+10. **Keep docs and PR descriptions short.** Write a summary, not an essay: one or two lines per requirement or decision, bullets over paragraphs, no repeated background. Add detail only when a topic is discussed in depth. PR descriptions list what changed and anything the reviewer must decide, in a few bullets.
 
 ## Local development (TD-10)
 
