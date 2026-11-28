@@ -1,6 +1,5 @@
 package io.unitystack.platform.core.ai.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.unitystack.platform.core.ai.LlmClient;
 import io.unitystack.platform.core.ai.openai.OpenAiLlmClient;
 import java.util.Set;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Spring wiring for the framework-free AI layer. {@code unitystack.ai.provider} selects the provider:

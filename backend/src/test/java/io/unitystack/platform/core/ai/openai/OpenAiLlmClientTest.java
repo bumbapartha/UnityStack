@@ -3,8 +3,6 @@ package io.unitystack.platform.core.ai.openai;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpServer;
 import io.unitystack.platform.core.ai.AiUnavailableException;
 import io.unitystack.platform.core.ai.LlmMessage;
@@ -16,6 +14,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /** Runs against a throwaway server on localhost; no real provider is called. */
 class OpenAiLlmClientTest {
@@ -61,11 +61,11 @@ class OpenAiLlmClientTest {
         assertThat(lastPath.get()).isEqualTo("/v1/chat/completions");
         assertThat(lastAuth.get()).isEqualTo("Bearer sk-test");
         JsonNode body = json.readTree(lastBody.get());
-        assertThat(body.path("model").asText()).isEqualTo("gpt-test");
+        assertThat(body.path("model").asString()).isEqualTo("gpt-test");
         assertThat(body.path("temperature").asDouble()).isEqualTo(0.3);
-        assertThat(body.path("messages").get(1).path("role").asText()).isEqualTo("user");
-        assertThat(body.path("response_format").path("type").asText()).isEqualTo("json_schema");
-        assertThat(body.path("response_format").path("json_schema").path("name").asText())
+        assertThat(body.path("messages").get(1).path("role").asString()).isEqualTo("user");
+        assertThat(body.path("response_format").path("type").asString()).isEqualTo("json_schema");
+        assertThat(body.path("response_format").path("json_schema").path("name").asString())
                 .isEqualTo("inception_turn");
         assertThat(body.path("response_format")
                         .path("json_schema")

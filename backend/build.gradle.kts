@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.3.5"
-    id("io.spring.dependency-management") version "1.1.6"
+    id("org.springframework.boot") version "4.1.3"
+    id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.12.0"
 }
 
@@ -18,8 +18,8 @@ repositories {
     mavenCentral()
 }
 
-// Spring Modulith 1.2.x is the line for Spring Boot 3.3 (AD-5 boundary checks).
-extra["springModulithVersion"] = "1.2.13"
+// Spring Modulith 2.1.x is the line for Spring Boot 4.1 (AD-5 boundary checks).
+extra["springModulithVersion"] = "2.1.3"
 
 dependencyManagement {
     imports {
@@ -34,11 +34,11 @@ configurations.runtimeClasspath {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.modulith:spring-modulith-api")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
 
